@@ -96,6 +96,15 @@ async function priceIdsForProduct(productId: string): Promise<string[]> {
   }
 }
 
+function parseUsdAmount(value: string | undefined): number | null {
+  if (!value) return null;
+  const cleaned = value.replace(/[^0-9.]/g, "");
+  if (!cleaned) return null;
+  const n = Number(cleaned);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.round(n * 100) / 100;
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -150,13 +159,6 @@ export async function POST(req: Request) {
   }
 
   const checkoutBase = process.env.GHL_STORE_CHECKOUT_BASE_URL;
-  if (!checkoutBase) {
-    return NextResponse.json({
-      ok: true,
-      checkoutUrl: null,
-      warning: "Set GHL_STORE_CHECKOUT_BASE_URL to enable checkout redirect.",
-    });
-  }
 
   const planProductIds = parsePlanProductIds(process.env.GHL_PLAN_PRODUCT_IDS);
   const planProductId = planProductIds[planSlug];
@@ -194,6 +196,101 @@ export async function POST(req: Request) {
     if (priceId) upgradePriceIds.push(priceId);
   }
 
+  const products = [...new Set([planPriceId, ...upgradePriceIds].filter(Boolean))];
+
+  const locationId = process.env.GHL_LOCATION_ID?.trim();
+  const ghl = createGhlClient();
+  const planAmount = parseUsdAmount(payload.plan?.price);
+
+  if (ghl && locationId && planPriceId && planAmount != null) {
+    const items: Array<{
+      name: string;
+      productId?: string;
+      priceId?: string;
+      currency: string;
+      amount: number;
+      qty: number;
+    }> = [
+      {
+        name: payload.plan?.name?.trim() || planSlug,
+        productId: planProductId,
+        priceId: planPriceId,
+        currency: "USD",
+        amount: planAmount,
+        qty: 1,
+      },
+      ...(payload.upgrades ?? []).map((u, idx) => ({
+        name: u.name?.trim() || `Upgrade ${idx + 1}`,
+        productId: u.ghlProductId?.trim() || undefined,
+        priceId: upgradePriceIds[idx],
+        currency: "USD",
+        amount:
+          typeof u.price === "number" && Number.isFinite(u.price) && u.price > 0
+            ? Math.round(u.price * 100) / 100
+            : 0,
+        qty: 1,
+      })),
+    ].filter((i) => i.priceId);
+
+    try {
+      const invoiceRes = await ghl.invoices.text2payInvoice(
+        {
+          altId: locationId,
+          altType: "location",
+          name: `${payload.plan?.name || planSlug} checkout`,
+          currency: "USD",
+          items,
+          termsNotes: "Created from pricing wizard checkout.",
+          title: `ListQik - ${payload.plan?.name || planSlug}`,
+          contactDetails: {
+            name,
+            phoneNo: phone,
+            email,
+            address: {
+              addressLine1: address,
+              addressLine2: payload.property?.unit?.trim() || undefined,
+              city: payload.property?.city?.trim() || undefined,
+              state: payload.property?.state?.trim() || undefined,
+              postalCode: payload.property?.zip?.trim() || undefined,
+              countryCode: "US",
+            },
+          },
+          sentTo: { email: [email] },
+          liveMode: true,
+          action: "send",
+          // Optional in practice for many sub-accounts; if required by your location,
+          // set GHL_INVOICE_USER_ID and we will pass that instead.
+          userId: process.env.GHL_INVOICE_USER_ID?.trim() || undefined,
+        } as never,
+        { __preferredTokenType: "location" } as never,
+      );
+
+      if ((invoiceRes as { invoiceUrl?: string }).invoiceUrl) {
+        return NextResponse.json({
+          ok: true,
+          checkoutUrl: (invoiceRes as { invoiceUrl: string }).invoiceUrl,
+          mode: "invoice",
+        });
+      }
+    } catch (e) {
+      const details = e instanceof Error ? e.message : "Invoice checkout creation failed.";
+      if (!checkoutBase) {
+        return NextResponse.json(
+          { ok: false, error: "GHL invoice checkout failed.", details },
+          { status: 502 },
+        );
+      }
+    }
+  }
+
+  if (!checkoutBase) {
+    return NextResponse.json({
+      ok: true,
+      checkoutUrl: null,
+      warning: "Set GHL_STORE_CHECKOUT_BASE_URL to enable fallback checkout redirect.",
+    });
+  }
+
   const url = new URL(checkoutBase);
   url.searchParams.set("plan", planSlug);
   url.searchParams.set("name", name);
@@ -201,7 +298,6 @@ export async function POST(req: Request) {
   url.searchParams.set("phone", phone);
   url.searchParams.set("address", address);
   url.searchParams.set("propertyType", propertyType);
-  const products = [...new Set([planPriceId, ...upgradePriceIds].filter(Boolean))];
   if (products.length > 0) {
     url.searchParams.set("products", products.join(","));
   }
@@ -209,6 +305,7 @@ export async function POST(req: Request) {
   return NextResponse.json({
     ok: true,
     checkoutUrl: url.toString(),
+    mode: "legacy-url",
     warning:
       !planPriceId
         ? `No mapped plan price id for '${planSlug}'. Set GHL_PLAN_PRICE_IDS or ensure GHL plan products have prices.`
