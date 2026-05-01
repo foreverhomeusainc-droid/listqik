@@ -34,6 +34,21 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+function parsePlanProductIds(raw: string | undefined): Record<string, string> {
+  if (!raw?.trim()) return {};
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const out: Record<string, string> = {};
+    for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
+      if (typeof value === "string" && value.trim()) out[key] = value.trim();
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -47,13 +62,14 @@ export async function POST(req: Request) {
   }
 
   const payload = body as CheckoutPayload;
+  const planSlug = payload.plan?.id?.trim();
   const name = payload.contact?.fullName?.trim();
   const email = payload.contact?.email?.trim();
   const phone = payload.contact?.phone?.trim();
   const address = payload.property?.address?.trim();
   const propertyType = payload.property?.propertyType?.trim();
 
-  if (!name || !email || !phone || !address || !propertyType || !payload.plan?.id) {
+  if (!name || !email || !phone || !address || !propertyType || !planSlug) {
     return NextResponse.json(
       { ok: false, error: "Missing required plan/contact/property fields." },
       { status: 400 },
@@ -98,21 +114,28 @@ export async function POST(req: Request) {
   const upgradeIds = (payload.upgrades ?? [])
     .map((u) => u.ghlProductId)
     .filter((v): v is string => typeof v === "string" && v.length > 0);
+  const planProductIds = parsePlanProductIds(process.env.GHL_PLAN_PRODUCT_IDS);
+  const planProductId = planProductIds[planSlug];
 
   const url = new URL(checkoutBase);
-  url.searchParams.set("plan", payload.plan.id);
+  url.searchParams.set("plan", planSlug);
   url.searchParams.set("name", name);
   url.searchParams.set("email", email);
   url.searchParams.set("phone", phone);
   url.searchParams.set("address", address);
   url.searchParams.set("propertyType", propertyType);
-  if (upgradeIds.length > 0) {
-    url.searchParams.set("products", upgradeIds.join(","));
+  const products = [...new Set([planProductId, ...upgradeIds].filter(Boolean))];
+  if (products.length > 0) {
+    url.searchParams.set("products", products.join(","));
   }
 
   return NextResponse.json({
     ok: true,
     checkoutUrl: url.toString(),
+    warning:
+      !planProductId && Object.keys(planProductIds).length > 0
+        ? `No mapped GHL plan product for '${planSlug}' in GHL_PLAN_PRODUCT_IDS.`
+        : undefined,
   });
 }
 
