@@ -33,6 +33,12 @@ type IntakeBody = {
   }>;
 };
 
+function mapPropertyType(raw: string | undefined): "SINGLE_FAMILY" | "CONDOMINIUM" {
+  const t = raw?.toLowerCase().trim() ?? "";
+  if (t.includes("condo")) return "CONDOMINIUM";
+  return "SINGLE_FAMILY";
+}
+
 export async function POST(req: Request) {
   let body: IntakeBody;
   try {
@@ -128,6 +134,10 @@ export async function POST(req: Request) {
     state,
     zip,
     county: county || undefined,
+    propertyType: mapPropertyType(propertyType),
+    sellerNames: fullName,
+    contactPhone: phone || undefined,
+    contactEmail: email,
     status: "INCOMPLETE",
     planLabel,
     price: 0,
