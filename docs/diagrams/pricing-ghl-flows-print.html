@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ListQik — Pricing &amp; GHL flowcharts</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 1.5rem;
+        color: #111;
+        background: #fff;
+      }
+      h1 {
+        font-size: 1.1rem;
+        margin: 2rem 0 0.75rem;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 0.35rem;
+      }
+      h1:first-of-type {
+        margin-top: 0;
+      }
+      figure {
+        margin: 0;
+        overflow: auto;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      @media print {
+        body {
+          padding: 0;
+        }
+        h1 {
+          page-break-after: avoid;
+        }
+        figure {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Path A — Paid in GHL → webhook → user provisioning</h1>
+    <figure>
+      <img src="pricing-ghl-path-a.svg" alt="Flowchart: GHL checkout through order-complete" />
+    </figure>
+    <h1>Path B — In-app pricing wizard (intake / complete)</h1>
+    <figure>
+      <img src="pricing-ghl-path-b.svg" alt="Flowchart: in-app account creation" />
+    </figure>
+    <p style="margin-top: 2rem; font-size: 0.85rem; color: #555">
+      To save one combined PDF: use your browser’s <strong>Print → Save as PDF</strong> on this page.
+    </p>
+  </body>
+</html>

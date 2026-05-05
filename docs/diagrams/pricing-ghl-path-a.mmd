@@ -1,0 +1,47 @@
+%% Path A — Paid in GHL → webhook creates user (ListQik codebase)
+flowchart TB
+  subgraph client["Browser — pricing / marketing site"]
+    A[User picks plan, property, upgrades, contact]
+    A --> B{How checkout is started?}
+    B -->|Integration: POST payload| C["ListQik API\nPOST /api/ghl/pricing/checkout"]
+  end
+
+  subgraph listqik_checkout["ListQik — checkout route"]
+    C --> V{Required fields OK?}
+    V -->|No| R400[400 Missing fields]
+    V -->|Yes| W{GHL_PRICING_WEBHOOK_URL set?}
+    W -->|Yes| WH["Server POST JSON to GHL\nInbound Webhook URL"]
+    WH -->|Fail| E502[502 GHL pricing webhook failed]
+    WH -->|OK| INV
+    W -->|No| INV{GHL API + price IDs OK?}
+    INV -->|text2pay invoice| PAY["Customer opens invoice URL\nand pays in GHL Payments"]
+    INV -->|Fallback| LEG["Redirect-style checkout URL\nGHL_STORE_CHECKOUT_BASE_URL + query params"]
+    LEG --> PAY
+  end
+
+  subgraph ghl["GoHighLevel — you configure workflows"]
+    WH -.->|Payload: plan, contact, property, upgrades, receivedAt| WF1["Workflow A optional:\nInternal actions from webhook\n— e.g. tag contact, internal email"]
+    PAY --> WF2["Workflow B required for app user:\nTrigger on Payment success / Order paid"]
+    WF2 --> HTTP["HTTP POST to ListQik\nPOST /api/webhooks/order-complete"]
+  end
+
+  subgraph listqik_webhook["ListQik — order-complete"]
+    HTTP --> SEC{Header matches\nORDER_WEBHOOK_SECRET?}
+    SEC -->|No| U401[401 Unauthorized]
+    SEC -->|Yes| PROV["provisionSellerFromPaidOrder()\n— idempotent on externalOrderId"]
+    PROV --> DUP{Duplicate externalOrderId?}
+    DUP -->|Yes| OKDUP[200 ok duplicate]
+    DUP -->|No| USER{User exists for email?}
+    USER -->|No| NEW["Create User\nplaceholder password hash\n+ password setup token"]
+    USER -->|Yes| LINK[Link to existing user]
+    NEW --> PP[Create ACTIVE PlanPurchase]
+    LINK --> PP
+    PP --> LIST{Property address complete?}
+    LIST -->|Yes| LST[Create INCOMPLETE Listing draft]
+    LIST -->|No| SKIPL[No listing]
+    NEW --> SMTP{SMTP configured?}
+    SMTP -->|Yes| EM["sendSetupAccountEmail()\n/setup-account?token=…"]
+    SMTP -->|No| NOEM[setupEmailSent false]
+  end
+
+  PAY -.->|Same customer| WF2

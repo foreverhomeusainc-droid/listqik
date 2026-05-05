@@ -1,0 +1,14 @@
+%% Path B — In-app pricing wizard (Step 2 + Step 3 checkouts in GHL)
+flowchart LR
+  S2[Step 2: User selects core plan]
+  S2 --> C2["Checkout #1 in GHL\nselected plan only"]
+  C2 --> P2{Plan payment successful?}
+  P2 -->|No| R2[Stay on Step 2]
+  P2 -->|Yes| S3[Step 3: User selects upgrades]
+  S3 --> C3["Checkout #2 in GHL\nupgrades only"]
+  C3 --> P3{Upgrade payment successful?}
+  P3 -->|No| R3[Stay on Step 3]
+  P3 -->|Yes| I["POST /api/pricing/intake/complete"]
+  I --> UCR["Create User + PlanPurchase + Listing\n(plus upgrade records if selected)"]
+  UCR --> SI[signIn credentials]
+  SI --> DASH["Redirect /dashboard"]

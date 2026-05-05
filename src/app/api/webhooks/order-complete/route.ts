@@ -2,7 +2,44 @@ import { NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import type { OrderWebhookPayload } from "@/lib/seller-order-provision";
 import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
+import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { sendSetupAccountEmail } from "@/lib/transactional-email";
+
+type CheckoutKind = "plan" | "upgrades";
+type WebhookBody = OrderWebhookPayload & {
+  checkoutSessionId?: string;
+  checkoutKind?: CheckoutKind;
+};
+
+async function markSessionPaid(
+  sessionId: string | undefined,
+  kind: CheckoutKind,
+  externalOrderId: string | undefined,
+  purchaserEmail?: string,
+  planId?: string,
+) {
+  const update = {
+    $set: {
+      ...(kind === "plan"
+        ? { planPaid: true, planExternalOrderId: externalOrderId || null }
+        : { upgradesPaid: true, upgradesExternalOrderId: externalOrderId || null }),
+      lastWebhookAt: new Date(),
+    },
+  };
+  const id = sessionId?.trim();
+  if (id) {
+    await PricingCheckoutSession.findOneAndUpdate({ sessionId: id }, update, { new: true });
+    return;
+  }
+  const email = purchaserEmail?.trim().toLowerCase();
+  const plan = planId?.trim();
+  if (!email || !plan) return;
+  await PricingCheckoutSession.findOneAndUpdate(
+    { purchaserEmail: email, planId: plan },
+    update,
+    { sort: { updatedAt: -1 }, new: true },
+  );
+}
 
 function normalizeSecret(req: Request): string | null {
   const header = req.headers.get("x-webhook-secret")?.trim();
@@ -38,19 +75,44 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Unauthorized." }, { status: 401 });
   }
 
-  let body: OrderWebhookPayload;
+  let body: WebhookBody;
   try {
-    body = (await req.json()) as OrderWebhookPayload;
+    body = (await req.json()) as WebhookBody;
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid JSON." }, { status: 400 });
   }
 
   await connectDb();
+  const checkoutKind: CheckoutKind = body.checkoutKind === "upgrades" ? "upgrades" : "plan";
+  const externalOrderId = body.externalOrderId?.trim();
 
   try {
+    if (checkoutKind === "upgrades") {
+      await markSessionPaid(
+        body.checkoutSessionId,
+        checkoutKind,
+        externalOrderId,
+        body.contact?.email,
+        body.plan?.id,
+      );
+      return NextResponse.json({
+        ok: true,
+        duplicate: false,
+        checkoutKind,
+        sessionUpdated: Boolean(body.checkoutSessionId?.trim()),
+      });
+    }
+
     const result = await provisionSellerFromPaidOrder(body);
+    await markSessionPaid(
+      body.checkoutSessionId,
+      checkoutKind,
+      externalOrderId,
+      body.contact?.email,
+      body.plan?.id,
+    );
     if (result.status === "duplicate") {
-      return NextResponse.json({ ok: true, duplicate: true });
+      return NextResponse.json({ ok: true, duplicate: true, checkoutKind });
     }
     let setupEmailSent = false;
     let setupEmailError: string | null = null;
@@ -71,6 +133,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       ok: true,
       duplicate: false,
+      checkoutKind,
       linkedToUser: result.linkedToUser,
       createdUser: result.createdUser,
       listingCreated: result.listingCreated,

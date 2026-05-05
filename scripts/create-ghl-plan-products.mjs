@@ -39,8 +39,8 @@ const ghl = new HighLevel({
 
 const plans = [
   { slug: "subsonic", name: "Subsonic", amount: 99 },
-  { slug: "supersonic", name: "Supersonic", amount: 195 },
-  { slug: "hypersonic", name: "Hypersonic", amount: 395 },
+  { slug: "supersonic", name: "Supersonic", amount: 295 },
+  { slug: "hypersonic", name: "Hypersonic", amount: 595 },
 ];
 
 const list = await ghl.products.listInvoices(
