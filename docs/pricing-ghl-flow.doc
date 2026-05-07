@@ -1,0 +1,166 @@
+<html><head><meta charset="utf-8"><title>pricing-ghl-flow</title><style>body{font-family:Calibri,Arial,sans-serif;line-height:1.5;margin:24px;}pre{background:#f5f5f5;padding:10px;border-radius:4px;}code{font-family:Consolas,monospace;}table{border-collapse:collapse;}th,td{border:1px solid #999;padding:6px 8px;}</style></head><body><h1>Pricing plan purchase → GHL → user provisioning</h1>
+<p>This document describes how <strong>ListQik</strong> connects <strong>pricing / checkout</strong>, <strong>GoHighLevel (GHL)</strong>, and <strong>user + listing creation</strong> in this codebase.</p>
+<p>There are <strong>two paths</strong>:</p>
+<ol>
+<li><strong>Path A — Pay in GHL</strong> — <code>POST /api/ghl/pricing/checkout</code> (optional GHL notify webhook, then GHL payment), then <strong>your GHL workflow</strong> calls <code>POST /api/webhooks/order-complete</code> after payment.</li>
+<li><strong>Path B — In-app pricing wizard with staged GHL payments</strong> — Step 2 runs a <strong>plan-only GHL checkout</strong>, then Step 3 runs an <strong>upgrades checkout</strong> before intake is completed.</li>
+</ol>
+<p>Implementation references:</p>
+<ul>
+<li>Checkout + optional GHL webhook: <code>src/app/api/ghl/pricing/checkout/route.ts</code></li>
+<li>Paid-order webhook: <code>src/app/api/webhooks/order-complete/route.ts</code></li>
+<li>Provisioning logic: <code>src/lib/seller-order-provision.ts</code></li>
+<li>In-app intake: <code>src/app/api/pricing/intake/complete/route.ts</code></li>
+<li>Wizard UI: <code>src/components/pricing/pricing-console.tsx</code></li>
+</ul>
+<h2>Rendered flowcharts (shapes — not Mermaid source)</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="diagrams/pricing-ghl-path-a.pdf">diagrams/pricing-ghl-path-a.pdf</a></td>
+<td>Path A as PDF (boxes, diamonds, arrows).</td>
+</tr>
+<tr>
+<td><a href="diagrams/pricing-ghl-path-b.pdf">diagrams/pricing-ghl-path-b.pdf</a></td>
+<td>Path B as PDF.</td>
+</tr>
+<tr>
+<td><a href="diagrams/pricing-ghl-path-a.svg">diagrams/pricing-ghl-path-a.svg</a></td>
+<td>Path A as SVG (open in browser or editor).</td>
+</tr>
+<tr>
+<td><a href="diagrams/pricing-ghl-path-b.svg">diagrams/pricing-ghl-path-b.svg</a></td>
+<td>Path B as SVG.</td>
+</tr>
+<tr>
+<td><a href="diagrams/pricing-ghl-flows-print.html">diagrams/pricing-ghl-flows-print.html</a></td>
+<td>Both charts on one page — <strong>Print → Save as PDF</strong> for a single combined PDF.</td>
+</tr>
+</tbody>
+</table>
+<p>Source definitions (editable): <code>diagrams/pricing-ghl-path-a.mmd</code>, <code>diagrams/pricing-ghl-path-b.mmd</code>. Regenerate PDF/SVG after edits:</p>
+<pre><code class="language-bash">npx -y @mermaid-js/mermaid-cli@11 -q -i docs/diagrams/pricing-ghl-path-a.mmd -o docs/diagrams/pricing-ghl-path-a.pdf -f -w 1600 -H 2400 -t neutral
+npx -y @mermaid-js/mermaid-cli@11 -q -i docs/diagrams/pricing-ghl-path-b.mmd -o docs/diagrams/pricing-ghl-path-b.pdf -f -w 1200 -H 400 -t neutral
+npx -y @mermaid-js/mermaid-cli@11 -q -i docs/diagrams/pricing-ghl-path-a.mmd -o docs/diagrams/pricing-ghl-path-a.svg -w 1600 -H 2400 -t neutral -b transparent
+npx -y @mermaid-js/mermaid-cli@11 -q -i docs/diagrams/pricing-ghl-path-b.mmd -o docs/diagrams/pricing-ghl-path-b.svg -w 1200 -H 400 -t neutral -b transparent
+</code></pre>
+<hr />
+<h2>Path A — Paid in GHL → webhook creates user</h2>
+<pre><code class="language-mermaid">flowchart TB
+  subgraph client[&quot;Browser — pricing / marketing site&quot;]
+    A[User picks plan, property, upgrades, contact]
+    A --&gt; B{How checkout is started?}
+    B --&gt;|Integration: POST payload| C[&quot;ListQik API\nPOST /api/ghl/pricing/checkout&quot;]
+  end
+
+  subgraph listqik_checkout[&quot;ListQik — checkout route&quot;]
+    C --&gt; V{Required fields OK?}
+    V --&gt;|No| R400[400 Missing fields]
+    V --&gt;|Yes| W{GHL_PRICING_WEBHOOK_URL set?}
+    W --&gt;|Yes| WH[&quot;Server POST JSON to GHL\nInbound Webhook URL&quot;]
+    WH --&gt;|Fail| E502[502 GHL pricing webhook failed]
+    WH --&gt;|OK| INV
+    W --&gt;|No| INV{GHL API + price IDs OK?}
+    INV --&gt;|text2pay invoice| PAY[&quot;Customer opens invoice URL\nand pays in GHL Payments&quot;]
+    INV --&gt;|Fallback| LEG[&quot;Redirect-style checkout URL\nGHL_STORE_CHECKOUT_BASE_URL + query params&quot;]
+    LEG --&gt; PAY
+  end
+
+  subgraph ghl[&quot;GoHighLevel — you configure workflows&quot;]
+    WH -.-&gt;|Payload: plan, contact, property, upgrades, receivedAt| WF1[&quot;Workflow A optional:\nInternal actions from webhook\n— e.g. tag contact, internal email&quot;]
+    PAY --&gt; WF2[&quot;Workflow B required for app user:\nTrigger on Payment success / Order paid&quot;]
+    WF2 --&gt; HTTP[&quot;HTTP POST to ListQik\nPOST /api/webhooks/order-complete&quot;]
+  end
+
+  subgraph listqik_webhook[&quot;ListQik — order-complete&quot;]
+    HTTP --&gt; SEC{Header matches\nORDER_WEBHOOK_SECRET?}
+    SEC --&gt;|No| U401[401 Unauthorized]
+    SEC --&gt;|Yes| PROV[&quot;provisionSellerFromPaidOrder()\n— idempotent on externalOrderId&quot;]
+    PROV --&gt; DUP{Duplicate externalOrderId?}
+    DUP --&gt;|Yes| OKDUP[200 ok duplicate]
+    DUP --&gt;|No| USER{User exists for email?}
+    USER --&gt;|No| NEW[&quot;Create User\nplaceholder password hash\n+ password setup token&quot;]
+    USER --&gt;|Yes| LINK[Link to existing user]
+    NEW --&gt; PP[Create ACTIVE PlanPurchase]
+    LINK --&gt; PP
+    PP --&gt; LIST{Property address complete?}
+    LIST --&gt;|Yes| LST[Create INCOMPLETE Listing draft]
+    LIST --&gt;|No| SKIPL[No listing]
+    NEW --&gt; SMTP{SMTP configured?}
+    SMTP --&gt;|Yes| EM[&quot;sendSetupAccountEmail()\n/setup-account?token=…&quot;]
+    SMTP --&gt;|No| NOEM[setupEmailSent false]
+  end
+
+  PAY -.-&gt;|Same customer| WF2
+</code></pre>
+<h3>Environment and contracts</h3>
+<table>
+<thead>
+<tr>
+<th>Variable / endpoint</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GHL_PRICING_WEBHOOK_URL</code></td>
+<td>ListQik <strong>forwards</strong> the checkout JSON to your GHL inbound webhook (optional; if set, webhook failure returns <strong>502</strong>).</td>
+</tr>
+<tr>
+<td><code>GHL_PRIVATE_INTEGRATION_TOKEN</code>, <code>GHL_LOCATION_ID</code></td>
+<td>Used to build <strong>Text2Pay</strong> invoice or resolve price IDs.</td>
+</tr>
+<tr>
+<td><code>GHL_PLAN_PRICE_IDS</code> / <code>GHL_PLAN_PRODUCT_IDS</code>, <code>GHL_UPGRADE_PRICE_IDS</code></td>
+<td>Map plans and upgrades to GHL price/product IDs.</td>
+</tr>
+<tr>
+<td><code>GHL_STORE_CHECKOUT_BASE_URL</code></td>
+<td>Fallback <strong>redirect</strong> checkout URL when invoice path is not used or fails.</td>
+</tr>
+<tr>
+<td><code>POST /api/webhooks/order-complete</code></td>
+<td>Expects <code>x-webhook-secret</code> or <code>Authorization: Bearer</code> matching <code>ORDER_WEBHOOK_SECRET</code>. Body: <code>OrderWebhookPayload</code> — include <code>externalOrderId</code> for idempotency.</td>
+</tr>
+<tr>
+<td>SMTP env vars</td>
+<td>Used by <code>sendSetupAccountEmail</code> in <code>src/lib/transactional-email.ts</code> — <strong>ListQik</strong> sends the password-setup email, not GHL (unless you duplicate email in GHL).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Path B — Pricing wizard with Step 2 + Step 3 GHL checkouts</h2>
+<pre><code class="language-mermaid">flowchart LR
+  S2[Step 2: User selects core plan]
+  S2 --&gt; C2[&quot;Checkout #1 in GHL\nselected plan only&quot;]
+  C2 --&gt; P2{Plan payment successful?}
+  P2 --&gt;|No| R2[Stay on Step 2]
+  P2 --&gt;|Yes| S3[Step 3: User selects upgrades]
+  S3 --&gt; C3[&quot;Checkout #2 in GHL\nupgrades only&quot;]
+  C3 --&gt; P3{Upgrade payment successful?}
+  P3 --&gt;|No| R3[Stay on Step 3]
+  P3 --&gt;|Yes| I[&quot;POST /api/pricing/intake/complete&quot;]
+  I --&gt; UCR[&quot;Create User + PlanPurchase + Listing\n(plus upgrade records if selected)&quot;]
+  UCR --&gt; SI[signIn credentials]
+  SI --&gt; DASH[&quot;Redirect /dashboard&quot;]
+</code></pre>
+<p>This path performs two explicit GHL checkout events in the wizard:</p>
+<ul>
+<li>Step 2 checkout: the selected base plan.</li>
+<li>Step 3 checkout: selected upgrades (if any).</li>
+</ul>
+<p>The wizard should only proceed to <code>POST /api/pricing/intake/complete</code> after the required payment(s) succeed.</p>
+<hr />
+<h2>Exporting to PDF (summary)</h2>
+<ul>
+<li>Use the prebuilt <strong><code>diagrams/pricing-ghl-path-a.pdf</code></strong> and <strong><code>pricing-ghl-path-b.pdf</code></strong>, or open <strong><code>diagrams/pricing-ghl-flows-print.html</code></strong> in a browser and choose <strong>Print → Save as PDF</strong> for one file with both flowcharts.</li>
+</ul>
+<hr />
+<h2>Related: lead capture (not pricing)</h2>
+<p><code>POST /api/ghl/lead</code> forwards to <code>GHL_LEAD_WEBHOOK_URL</code> — separate from the pricing checkout flow. See <code>src/app/api/ghl/lead/route.ts</code> and <code>README.md</code>.</p></body></html>

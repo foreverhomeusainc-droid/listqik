@@ -566,7 +566,7 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
             Back to dashboard
           </Link>
           <Link
-            href="/pricing"
+            href="/upgrades"
             className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white/85 transition hover:border-white/35 hover:bg-white/10"
           >
             Upgrade listing options

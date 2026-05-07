@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import {
   AddressAutocompleteInput,
   type ParsedPlace,
 } from "@/components/pricing/address-autocomplete-input";
-import { staticWizardUpgrades } from "@/data/pricing-static-upgrades";
-import type { PlanId, WizardUpgrade } from "@/types/pricing-wizard";
+import type { PlanId } from "@/types/pricing-wizard";
 
 type PropertyType =
   | "single-family"
@@ -170,7 +170,6 @@ type WizardState = {
   email: string;
   phone: string;
   propertyType: PropertyType | "";
-  selectedUpgrades: string[];
 };
 
 const initialState: WizardState = {
@@ -186,27 +185,19 @@ const initialState: WizardState = {
   email: "",
   phone: "",
   propertyType: "",
-  selectedUpgrades: [],
 };
 
 export function PricingConsole() {
   const [wizard, setWizard] = useState<WizardState>(initialState);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
-  const [wizardUpgrades, setWizardUpgrades] = useState<WizardUpgrade[]>([]);
-  const [upgradesLoading, setUpgradesLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const submitting = false;
   const [error, setError] = useState("");
   const [planCheckoutLoading, setPlanCheckoutLoading] = useState(false);
   const [planCheckoutUrl, setPlanCheckoutUrl] = useState<string | null>(null);
-  const [upgradesCheckoutLoading, setUpgradesCheckoutLoading] = useState(false);
-  const [upgradesCheckoutUrl, setUpgradesCheckoutUrl] = useState<string | null>(null);
   const [checkingPlanPayment, setCheckingPlanPayment] = useState(false);
   const [planPaymentRecorded, setPlanPaymentRecorded] = useState(false);
   const [planAutoAdvanced, setPlanAutoAdvanced] = useState(false);
-  const [checkingUpgradesPayment, setCheckingUpgradesPayment] = useState(false);
-  const [upgradesPaymentRecorded, setUpgradesPaymentRecorded] = useState(false);
-  const [requiresUpgradePayment, setRequiresUpgradePayment] = useState(false);
 
   const advanceToUpgradesIfReady = useCallback(() => {
     setPlanAutoAdvanced((alreadyAdvanced) => {
@@ -215,37 +206,6 @@ export function PricingConsole() {
       return true;
     });
   }, []);
-
-  useEffect(() => {
-    if (!isWizardOpen) return;
-    let cancelled = false;
-    setUpgradesLoading(true);
-    fetch("/api/ghl/pricing/upgrades")
-      .then((r) => r.json())
-      .then((data: { ok?: boolean; upgrades?: WizardUpgrade[] }) => {
-        if (cancelled) return;
-        if (data?.ok && Array.isArray(data.upgrades) && data.upgrades.length > 0) {
-          setWizardUpgrades(data.upgrades);
-        } else {
-          setWizardUpgrades(staticWizardUpgrades);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setWizardUpgrades(staticWizardUpgrades);
-      })
-      .finally(() => {
-        if (!cancelled) setUpgradesLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [isWizardOpen]);
-
-  const selectedUpgradeRows = useMemo(
-    () => wizardUpgrades.filter((u) => wizard.selectedUpgrades.includes(u.slug)),
-    [wizard.selectedUpgrades, wizardUpgrades],
-  );
-  const upgradesSubtotal = selectedUpgradeRows.reduce((sum, u) => sum + u.price, 0);
 
   function selectPlan(plan: Plan) {
     const nextSessionId =
@@ -256,15 +216,11 @@ export function PricingConsole() {
       ...prev,
       plan,
       step: 1,
-      selectedUpgrades: [],
     }));
     setCheckoutSessionId(nextSessionId);
     setPlanCheckoutUrl(null);
-    setUpgradesCheckoutUrl(null);
     setPlanPaymentRecorded(false);
     setPlanAutoAdvanced(false);
-    setUpgradesPaymentRecorded(false);
-    setRequiresUpgradePayment(false);
     setError("");
     setIsWizardOpen(true);
   }
@@ -274,73 +230,7 @@ export function PricingConsole() {
     setIsWizardOpen(false);
   }
 
-  async function createCheckout(
-    kind: "plan" | "upgrades",
-    selectedUpgrades: WizardUpgrade[] = [],
-  ): Promise<string | null> {
-    if (!wizard.plan || !checkoutSessionId) return null;
-    const payload = {
-      checkoutSessionId,
-      checkoutKind: kind,
-      source: "pricing-console",
-      plan: {
-        id: wizard.plan.id,
-        name: wizard.plan.name,
-        price: wizard.plan.price,
-        closeFee: wizard.plan.closeFee,
-      },
-      contact: {
-        fullName: wizard.fullName.trim(),
-        email: wizard.email.trim().toLowerCase(),
-        phone: wizard.phone.trim(),
-      },
-      property: {
-        address: wizard.propertyAddress.trim(),
-        unit: wizard.unit.trim() || undefined,
-        city: wizard.city.trim(),
-        state: wizard.state.trim(),
-        zip: wizard.zip.trim(),
-        county: wizard.county.trim(),
-        propertyType: wizard.propertyType,
-      },
-      upgrades: selectedUpgrades.map((u) => ({
-        slug: u.slug,
-        name: u.name,
-        price: u.price,
-        ghlProductId: u.ghlProductId,
-      })),
-    };
-
-    const res = await fetch("/api/ghl/pricing/checkout", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    }).catch(() => null);
-
-    if (!res) {
-      setError("Network error while preparing checkout.");
-      return null;
-    }
-    const data = (await res.json().catch(() => null)) as
-      | { ok?: boolean; checkoutUrl?: string | null; error?: string; warning?: string }
-      | null;
-    if (!res.ok || !data?.ok || !data.checkoutUrl) {
-      setError(data?.error || "Could not create checkout link.");
-      return null;
-    }
-    if (data.warning) {
-      setError(data.warning);
-    } else {
-      setError("");
-    }
-    return data.checkoutUrl;
-  }
-
-  async function syncCheckoutSession({
-    selectedUpgradeSlugs = [],
-  }: {
-    selectedUpgradeSlugs?: string[];
-  } = {}) {
+  async function syncCheckoutSession() {
     if (!wizard.plan || !checkoutSessionId) return false;
     const email = wizard.email.trim().toLowerCase();
     if (!email.includes("@")) return false;
@@ -352,19 +242,10 @@ export function PricingConsole() {
         email,
         planId: wizard.plan.id,
         planCheckoutUrl: planCheckoutLinks[wizard.plan.id],
-        selectedUpgradeSlugs,
+        selectedUpgradeSlugs: [],
       }),
     }).catch(() => null);
     return Boolean(res?.ok);
-  }
-
-  function toggleUpgrade(slug: string) {
-    setWizard((prev) => ({
-      ...prev,
-      selectedUpgrades: prev.selectedUpgrades.includes(slug)
-        ? prev.selectedUpgrades.filter((s) => s !== slug)
-        : [...prev.selectedUpgrades, slug],
-    }));
   }
 
   const onAddressPlaceSelected = useCallback((place: ParsedPlace) => {
@@ -409,8 +290,6 @@ export function PricingConsole() {
       | {
           ok?: boolean;
           planPaid?: boolean;
-          upgradesPaid?: boolean;
-          requiresUpgradePayment?: boolean;
           error?: string;
         }
       | null;
@@ -419,8 +298,6 @@ export function PricingConsole() {
       return null;
     }
     setPlanPaymentRecorded(Boolean(data.planPaid));
-    setUpgradesPaymentRecorded(Boolean(data.upgradesPaid));
-    setRequiresUpgradePayment(Boolean(data.requiresUpgradePayment));
     if (data.planPaid) {
       setError("");
       advanceToUpgradesIfReady();
@@ -444,49 +321,6 @@ export function PricingConsole() {
     return true;
   }, [checkoutSessionId, checkCheckoutStatus]);
 
-  const checkUpgradesPaymentStatus = useCallback(async () => {
-    if (!checkoutSessionId) return false;
-    setCheckingUpgradesPayment(true);
-    const data = await checkCheckoutStatus();
-    setCheckingUpgradesPayment(false);
-    if (!data) return false;
-    if (data.requiresUpgradePayment && !data.upgradesPaid) {
-      setError("Upgrades payment is not recorded yet.");
-      return false;
-    }
-    return true;
-  }, [checkoutSessionId, checkCheckoutStatus]);
-
-  async function finalizeAfterUpgrades() {
-    if (!checkoutSessionId) {
-      setError("Missing checkout session. Restart plan selection.");
-      return;
-    }
-
-    setSubmitting(true);
-    setError("");
-    const res = await fetch("/api/pricing/checkout/finalize", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ sessionId: checkoutSessionId }),
-    }).catch(() => null);
-    setSubmitting(false);
-
-    if (!res) {
-      setError("Network error while finalizing checkout.");
-      return;
-    }
-    const data = (await res.json().catch(() => null)) as
-      | { ok?: boolean; error?: string; nextUrl?: string }
-      | null;
-    if (!res.ok || !data?.ok || !data.nextUrl) {
-      setError(data?.error || "Could not complete setup routing yet.");
-      return;
-    }
-
-    window.location.href = data.nextUrl;
-  }
-
   async function openPlanCheckoutStep() {
     if (!canContinueToUpgrades()) return;
     if (!wizard.plan) return;
@@ -503,28 +337,6 @@ export function PricingConsole() {
     setError("");
   }
 
-  async function createUpgradesCheckout() {
-    if (!wizard.plan || !checkoutSessionId) return;
-    if (selectedUpgradeRows.length === 0) {
-      setUpgradesCheckoutUrl(null);
-      setRequiresUpgradePayment(false);
-      setUpgradesPaymentRecorded(false);
-      await syncCheckoutSession({ selectedUpgradeSlugs: [] });
-      setError("");
-      return;
-    }
-    await syncCheckoutSession({ selectedUpgradeSlugs: selectedUpgradeRows.map((u) => u.slug) });
-    setUpgradesCheckoutLoading(true);
-    const url = await createCheckout("upgrades", selectedUpgradeRows);
-    setUpgradesCheckoutLoading(false);
-    if (url) {
-      setUpgradesCheckoutUrl(url);
-      setRequiresUpgradePayment(true);
-      setUpgradesPaymentRecorded(false);
-      await checkCheckoutStatus();
-    }
-  }
-
   useEffect(() => {
     if (!isWizardOpen || wizard.step !== 2 || !wizard.plan || !checkoutSessionId || planPaymentRecorded) return;
     const timer = window.setInterval(() => {
@@ -532,20 +344,6 @@ export function PricingConsole() {
     }, 5000);
     return () => window.clearInterval(timer);
   }, [isWizardOpen, wizard.step, wizard.plan, checkoutSessionId, planPaymentRecorded, checkPlanPaymentStatus]);
-
-  useEffect(() => {
-    if (!isWizardOpen || wizard.step !== 3 || !requiresUpgradePayment || upgradesPaymentRecorded) return;
-    const timer = window.setInterval(() => {
-      void checkUpgradesPaymentStatus();
-    }, 5000);
-    return () => window.clearInterval(timer);
-  }, [
-    isWizardOpen,
-    wizard.step,
-    requiresUpgradePayment,
-    upgradesPaymentRecorded,
-    checkUpgradesPaymentStatus,
-  ]);
 
   useEffect(() => {
     if (!isWizardOpen) return;
@@ -575,8 +373,8 @@ export function PricingConsole() {
                 Pricing that keeps your equity in your hands.
               </h1>
               <p className="max-w-2xl text-sm text-muted sm:text-base">
-                Select your speed tier, complete property intake, finish checkout, then continue with
-                upgrades and account setup routing.
+                Select your speed tier, complete property intake, finish checkout, and continue to
+                your success screen.
               </p>
             </div>
             <div className="flex flex-wrap items-end justify-start gap-2 sm:gap-4 lg:justify-end">
@@ -903,134 +701,36 @@ export function PricingConsole() {
                   onClick={() => setWizard((s) => ({ ...s, step: 3 }))}
                   disabled={submitting || checkingPlanPayment || planCheckoutLoading || !planPaymentRecorded}
                 >
-                  Continue: Upgrades
+                  Continue: Success
                 </button>
               </div>
             </div>
           ) : null}
           {wizard.step === 3 ? (
             <div className="grid gap-4">
-              <h2 className="text-xl font-semibold text-white">Step 3: Package upgrades</h2>
-              {upgradesLoading ? (
-                <div className="rounded-xl border border-white/10 bg-black/25 px-4 py-6 text-sm text-white/65">
-                  Loading add-ons from your store…
-                </div>
-              ) : null}
-              <div className="grid gap-3 md:grid-cols-2">
-                {wizardUpgrades.map((item) => {
-                  const selected = wizard.selectedUpgrades.includes(item.slug);
-                  const recommended = wizard.plan
-                    ? item.recommendedFor.includes(wizard.plan.id)
-                    : false;
-                  return (
-                    <div
-                      key={item.ghlProductId}
-                      className={[
-                        "rounded-2xl border p-4",
-                        selected ? "border-emerald-400/60 bg-emerald-500/10" : "border-white/10 bg-white/5",
-                      ].join(" ")}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <div className="font-semibold text-white">{item.name}</div>
-                          <div className="mt-1 text-sm text-white/70">{item.description}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="font-mono text-xl font-bold text-white">${item.price}</div>
-                          {recommended ? (
-                            <div className="text-[11px] text-emerald-300/90">Recommended</div>
-                          ) : null}
-                        </div>
-                      </div>
-                      <div className="mt-3">
-                        <button
-                          type="button"
-                          onClick={() => toggleUpgrade(item.slug)}
-                          className={selected ? "btn-secondary w-full" : "btn-primary w-full justify-center"}
-                        >
-                          {selected
-                            ? item.toggleRemoveLabel ?? `Remove ${item.name}`
-                            : item.toggleAddLabel ?? `Add ${item.name}`}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-white/70">Upgrade subtotal</div>
-                  <div className="font-mono text-2xl font-bold text-white">${upgradesSubtotal}</div>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-emerald-400/25 bg-emerald-950/20 p-4 text-sm text-emerald-100/90">
-                <p className="font-semibold text-emerald-100">Upgrade checkout</p>
-                <p className="mt-2 text-emerald-100/85">
-                  Generate checkout after selecting upgrades. Finish is locked until webhook confirms
-                  payment when upgrades are selected.
+              <h2 className="text-xl font-semibold text-white">Step 3: Success</h2>
+              <div className="rounded-2xl border border-emerald-400/35 bg-emerald-950/20 p-4 text-sm text-emerald-100/90">
+                <p className="font-semibold text-emerald-100">Your plan checkout is complete.</p>
+                <p className="mt-2">
+                  You can now add optional upgrades from the dedicated upgrades page, or continue
+                  straight to your dashboard.
                 </p>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm text-white/85">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span>
-                    Upgrades payment:{" "}
-                    <span
-                      className={
-                        !requiresUpgradePayment
-                          ? "text-white/70"
-                          : upgradesPaymentRecorded
-                            ? "text-emerald-300"
-                            : "text-amber-200"
-                      }
-                    >
-                      {!requiresUpgradePayment
-                        ? "Not required"
-                        : upgradesPaymentRecorded
-                          ? "Confirmed"
-                          : "Pending"}
-                    </span>
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() => {
-                        void createUpgradesCheckout();
-                      }}
-                      disabled={upgradesCheckoutLoading || submitting || selectedUpgradeRows.length === 0}
-                    >
-                      {upgradesCheckoutLoading ? "Preparing..." : "Generate upgrades checkout"}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() => {
-                        void checkUpgradesPaymentStatus();
-                      }}
-                      disabled={checkingUpgradesPayment || submitting || !requiresUpgradePayment}
-                    >
-                      {checkingUpgradesPayment ? "Checking..." : "Check payment"}
-                    </button>
-                  </div>
-                </div>
+              <div className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm text-white/85">
+                <p>
+                  Selected plan: <span className="font-semibold text-white">{wizard.plan?.name}</span>
+                </p>
+                <p className="mt-1">
+                  Property: {wizard.propertyAddress}
+                  {wizard.unit ? `, ${wizard.unit}` : ""}, {wizard.city}, {wizard.state} {wizard.zip}
+                </p>
               </div>
-              {upgradesCheckoutUrl ? (
-                <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
-                  <iframe
-                    title="Upgrades checkout"
-                    src={upgradesCheckoutUrl}
-                    className="h-[72vh] min-h-[640px] w-full rounded-xl border border-white/10 bg-black/20"
-                    loading="lazy"
-                    allow="payment *"
-                  />
-                </div>
-              ) : null}
               {error ? (
                 <div className="rounded-xl border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-300">
                   {error}
                 </div>
               ) : null}
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
                   className="btn-secondary"
@@ -1039,17 +739,20 @@ export function PricingConsole() {
                 >
                   Back
                 </button>
-                <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={finalizeAfterUpgrades}
-                  disabled={
-                    submitting ||
-                    (requiresUpgradePayment && (!upgradesCheckoutUrl || !upgradesPaymentRecorded))
-                  }
-                >
-                  {submitting ? "Finalizing..." : "Finish"}
-                </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link
+                    href="/upgrades"
+                    className="btn-secondary"
+                  >
+                    Add upgrades
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="btn-primary"
+                  >
+                    Proceed to user dashboard
+                  </Link>
+                </div>
               </div>
             </div>
           ) : null}

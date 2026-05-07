@@ -272,7 +272,7 @@ export async function POST(req: Request) {
     planPriceId = (await firstPriceIdForProduct(planProductId)) || undefined;
   }
 
-  const upgradePriceIds: string[] = [];
+  const resolvedUpgradePriceIds: Array<string | undefined> = [];
   for (const upgrade of payload.upgrades ?? []) {
     const slug = upgrade.slug?.trim();
     const productId = upgrade.ghlProductId?.trim();
@@ -294,9 +294,13 @@ export async function POST(req: Request) {
     } else if (mapped) {
       priceId = mapped;
     }
-    if (priceId) upgradePriceIds.push(priceId);
+    resolvedUpgradePriceIds.push(priceId);
   }
 
+  const upgradePriceIds = resolvedUpgradePriceIds.filter((v): v is string => Boolean(v));
+  const unresolvedUpgradeSlugs = (payload.upgrades ?? [])
+    .map((u, idx) => (resolvedUpgradePriceIds[idx] ? null : u.slug?.trim() || u.name?.trim() || null))
+    .filter((v): v is string => Boolean(v));
   const products = [...new Set([planPriceId, ...upgradePriceIds].filter(Boolean))];
   const planAmount = parseUsdAmount(payload.plan?.price);
   const includePlanItem = checkoutKind === "plan";
@@ -313,7 +317,7 @@ export async function POST(req: Request) {
         ...(payload.upgrades ?? []).map((u, idx) => ({
           name: u.name?.trim() || `Upgrade ${idx + 1}`,
           productId: u.ghlProductId?.trim() || undefined,
-          priceId: upgradePriceIds[idx],
+          priceId: resolvedUpgradePriceIds[idx],
           currency: "USD",
           amount:
             typeof u.price === "number" && Number.isFinite(u.price) && u.price > 0
@@ -326,7 +330,7 @@ export async function POST(req: Request) {
         .map((u, idx) => ({
           name: u.name?.trim() || `Upgrade ${idx + 1}`,
           productId: u.ghlProductId?.trim() || undefined,
-          priceId: upgradePriceIds[idx],
+          priceId: resolvedUpgradePriceIds[idx],
           currency: "USD",
           amount:
             typeof u.price === "number" && Number.isFinite(u.price) && u.price > 0
@@ -405,7 +409,14 @@ export async function POST(req: Request) {
           mode: "invoice",
           checkoutKind,
           checkoutSessionId: checkoutSessionId || null,
-          warning: contactUpsertWarning,
+          warning: [
+            unresolvedUpgradeSlugs.length > 0
+              ? `Could not resolve price IDs for upgrades: ${unresolvedUpgradeSlugs.join(", ")}`
+              : undefined,
+            contactUpsertWarning,
+          ]
+            .filter(Boolean)
+            .join(" | "),
         });
       }
     } catch (e) {
@@ -466,6 +477,9 @@ export async function POST(req: Request) {
     checkoutKind,
     checkoutSessionId: checkoutSessionId || null,
     warning: [
+      unresolvedUpgradeSlugs.length > 0
+        ? `Could not resolve price IDs for upgrades: ${unresolvedUpgradeSlugs.join(", ")}`
+        : undefined,
       !planPriceId
         ? `No mapped plan price id for '${planSlug}'. Set GHL_PLAN_PRICE_IDS or ensure GHL plan products have prices.`
         : undefined,

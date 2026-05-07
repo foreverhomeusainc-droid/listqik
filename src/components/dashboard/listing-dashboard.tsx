@@ -1143,17 +1143,12 @@ export function ListingDashboard() {
                       >
                         Change status
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setExpanded(l.id);
-                          setActiveUpgradeListingId(l.id);
-                          void loadUpgrades(l.id);
-                        }}
+                      <Link
+                        href="/upgrades"
                         className="rounded-lg border border-indigo-400/35 bg-indigo-950/35 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-indigo-100 transition hover:border-indigo-300/70 hover:bg-indigo-900/45"
                       >
                         Upgrade your listing
-                      </button>
+                      </Link>
                       <button
                         type="button"
                         onClick={() => {
