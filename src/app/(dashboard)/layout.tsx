@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { authOptions } from "@/lib/auth-options";
+import { isAdminEmail } from "@/lib/admin";
 
 export const metadata: Metadata = {
   title: "Listing Dashboard",
@@ -15,10 +16,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/dashboard");
   }
+  const isAdmin = isAdminEmail(session.user.email);
 
   return (
     <div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),rgba(2,6,3,0.95)_55%)] text-emerald-100 antialiased">
-      <DashboardShell>{children}</DashboardShell>
+      <DashboardShell isAdmin={isAdmin}>{children}</DashboardShell>
     </div>
   );
 }

@@ -2,7 +2,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { SignOutButton } from "@/components/dashboard/sign-out-button";
 
-export function DashboardShell({ children }: { children: ReactNode }) {
+export function DashboardShell({
+  children,
+  isAdmin,
+}: {
+  children: ReactNode;
+  isAdmin: boolean;
+}) {
   return (
     <>
       <header className="sticky top-0 z-30 border-b border-emerald-500/25 bg-black/55 backdrop-blur">
@@ -40,6 +46,14 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 >
                   Profile/Password
                 </Link>
+                {isAdmin ? (
+                  <Link
+                    href="/dashboard/admin"
+                    className="block rounded-lg px-3 py-2 text-sm text-emerald-100/90 transition hover:bg-emerald-900/35 hover:text-emerald-50"
+                  >
+                    Admin
+                  </Link>
+                ) : null}
                 <div className="mt-1 border-t border-emerald-500/20 pt-2">
                   <SignOutButton />
                 </div>

@@ -110,7 +110,7 @@ export async function POST(req: Request) {
     .filter((u) => Boolean(u.slug));
 
   const selectedUpgradeSlugs = selectedUpgrades.map((u) => u.slug);
-  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  const lineItems: Array<{ price: string; quantity: number }> = [];
 
   if (checkoutKind === "plan") {
     const planPriceId = planMap[planSlug];

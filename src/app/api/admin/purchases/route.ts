@@ -2,18 +2,10 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth-options";
 import { connectDb } from "@/lib/mongodb";
+import { isAdminEmail } from "@/lib/admin";
 import { PlanPurchase } from "@/models/PlanPurchase";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
 import { User } from "@/models/User";
-
-function parseAdminEmails(raw: string | undefined): Set<string> {
-  return new Set(
-    (raw ?? "")
-      .split(",")
-      .map((value) => value.trim().toLowerCase())
-      .filter(Boolean),
-  );
-}
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -22,8 +14,7 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: "Unauthorized." }, { status: 401 });
   }
 
-  const admins = parseAdminEmails(process.env.ADMIN_EMAILS);
-  if (!admins.has(actorEmail)) {
+  if (!isAdminEmail(actorEmail)) {
     return NextResponse.json({ ok: false, error: "Forbidden." }, { status: 403 });
   }
 
