@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth-options";
 import { connectDb } from "@/lib/mongodb";
 import { Listing } from "@/models/Listing";
 import { PlanPurchase } from "@/models/PlanPurchase";
+import { UpgradePurchase } from "@/models/UpgradePurchase";
 
 function iso(value: unknown) {
   if (!value) return null;
@@ -20,12 +21,21 @@ export async function GET() {
 
   await connectDb();
   const userId = new Types.ObjectId(session.user.id);
-  const [listings, plans] = await Promise.all([
+  const [listings, plans, upgrades] = await Promise.all([
     Listing.find({ userId }).sort({ createdAt: -1 }).lean(),
     PlanPurchase.find({
       $or: [{ userId }, { purchaserEmail: session.user.email.toLowerCase().trim() }],
     })
       .sort({ purchasedAt: -1 })
+      .lean(),
+    UpgradePurchase.find({
+      $or: [
+        { userId },
+        { purchaserEmail: session.user.email.toLowerCase().trim() },
+        { externalUserId: session.user.id },
+      ],
+    })
+      .sort({ purchasedAt: -1, createdAt: -1 })
       .lean(),
   ]);
 
@@ -53,5 +63,30 @@ export async function GET() {
     expiresOn: null,
   }));
 
-  return NextResponse.json({ ok: true, orders: [...listingOrders, ...planOrders] });
+  const seenUpgradeOrders = new Set<string>();
+  const upgradeOrders = upgrades
+    .filter((row) => {
+      const key = row.externalOrderId ?? `${row._id.toString()}:fallback`;
+      if (seenUpgradeOrders.has(key)) return false;
+      seenUpgradeOrders.add(key);
+      return true;
+    })
+    .map((row) => ({
+      id: row._id.toString(),
+      type: "UPGRADE_PURCHASE",
+      title:
+        row.upgradeSlugs && row.upgradeSlugs.length > 0
+          ? `Upgrades: ${row.upgradeSlugs.join(", ")}`
+          : "Upgrade Purchase",
+      status: row.paymentStatus || "paid",
+      planLabel: "",
+      total: row.amountTotal ?? null,
+      purchasedAt: iso(row.purchasedAt ?? row.createdAt),
+      listedOn: null,
+      expiresOn: null,
+      upgradeSlugs: row.upgradeSlugs ?? [],
+      externalOrderId: row.externalOrderId ?? null,
+    }));
+
+  return NextResponse.json({ ok: true, orders: [...upgradeOrders, ...listingOrders, ...planOrders] });
 }

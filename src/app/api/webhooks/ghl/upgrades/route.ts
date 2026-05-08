@@ -200,6 +200,20 @@ export async function POST(req: Request) {
   const resolvedUserId = await resolveUserId(externalUserId ?? undefined, contactEmail ?? undefined);
   const amountTotal = toNumber(body.amount_total);
 
+  if (resolvedUpgradeSlugs.length > 0) {
+    if (resolvedUserId) {
+      await User.updateOne(
+        { _id: resolvedUserId },
+        { $addToSet: { purchasedUpgradeSlugs: { $each: resolvedUpgradeSlugs } } },
+      );
+    } else if (contactEmail) {
+      await User.updateOne(
+        { email: contactEmail },
+        { $addToSet: { purchasedUpgradeSlugs: { $each: resolvedUpgradeSlugs } } },
+      );
+    }
+  }
+
   const purchaseDoc = await UpgradePurchase.create({
     purchaserEmail: contactEmail,
     userId: resolvedUserId,

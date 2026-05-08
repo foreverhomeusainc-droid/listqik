@@ -1,10 +1,12 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Types } from "mongoose";
 import { connectDb } from "@/lib/mongodb";
 import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
+import { User } from "@/models/User";
 
 function parseStringMap(raw: string | undefined): Record<string, string> {
   if (!raw?.trim()) return {};
@@ -137,6 +139,22 @@ export async function POST(req: Request) {
     .map((row) => row.price?.id || "")
     .map((priceId) => reverse.get(priceId) || "")
     .filter(Boolean);
+
+  if (upgradeSlugs.length > 0) {
+    const externalUserId = (metadata.externalUserId || "").trim();
+    const buyerEmail = (metadata.buyerEmail || session.customer_details?.email || "").trim().toLowerCase();
+    if (externalUserId && Types.ObjectId.isValid(externalUserId)) {
+      await User.updateOne(
+        { _id: externalUserId },
+        { $addToSet: { purchasedUpgradeSlugs: { $each: upgradeSlugs } } },
+      );
+    } else if (buyerEmail) {
+      await User.updateOne(
+        { email: buyerEmail },
+        { $addToSet: { purchasedUpgradeSlugs: { $each: upgradeSlugs } } },
+      );
+    }
+  }
 
   const existing = await UpgradePurchase.findOne({ externalOrderId }).select("_id").lean();
   if (!existing?._id) {
