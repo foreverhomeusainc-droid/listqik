@@ -137,7 +137,7 @@ export function Step3CartLab() {
     setWarning("");
     setCheckoutUrl("");
     setResponseMode("");
-    const res = await fetch("/api/ghl/pricing/checkout", {
+    const res = await fetch("/api/stripe/pricing/checkout", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(payload),
@@ -166,7 +166,7 @@ export function Step3CartLab() {
           <h1 className="text-2xl font-semibold text-white">Step 3 Cart Lab</h1>
           <p className="mt-2 text-sm text-white/75">
             Isolated tester for dynamic upgrades checkout. Select upgrades, generate checkout, and
-            verify which items make it into the GHL cart.
+            verify which items make it into the Stripe checkout session.
           </p>
           <p className="mt-2 text-xs text-white/60">Session: {checkoutSessionId}</p>
         </div>
@@ -217,7 +217,7 @@ export function Step3CartLab() {
               }}
               disabled={submitting || selectedRows.length === 0}
             >
-              {submitting ? "Generating..." : "Generate dynamic upgrades checkout"}
+              {submitting ? "Generating..." : "Generate dynamic upgrades Stripe checkout"}
             </button>
           </div>
 

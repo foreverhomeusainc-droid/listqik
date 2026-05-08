@@ -18,8 +18,20 @@ export async function connectDb(): Promise<typeof mongoose> {
     throw new Error("MONGODB_URI is not set. Add it to your environment (e.g. .env.local).");
   }
 
-  if (cached.conn) {
+  // readyState: 0=disconnected, 1=connected, 2=connecting, 3=disconnecting
+  if (cached.conn && cached.conn.connection.readyState === 1) {
     return cached.conn;
+  }
+
+  if (cached.promise && mongoose.connection.readyState === 2) {
+    cached.conn = await cached.promise;
+    globalForMongoose.mongoose = cached;
+    return cached.conn;
+  }
+
+  if (cached.conn && mongoose.connection.readyState !== 1) {
+    cached.conn = null;
+    cached.promise = null;
   }
 
   if (!cached.promise) {

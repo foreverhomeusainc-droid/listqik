@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  EmbeddedCheckout,
+  EmbeddedCheckoutProvider,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import {
@@ -118,12 +123,6 @@ const plans: Plan[] = [
   },
 ];
 
-const planCheckoutLinks: Record<PlanId, string> = {
-  subsonic: "https://link.fastpaydirect.com/payment-link/69f9f20e6e0a7e5150a6fd13",
-  supersonic: "https://link.fastpaydirect.com/payment-link/69f9f22d6e0a7e5150a6fd15",
-  hypersonic: "https://link.fastpaydirect.com/payment-link/69f9f240c43a7488828c0d77",
-};
-
 const propertyTypes: { id: PropertyType; label: string; description: string }[] = [
   {
     id: "single-family",
@@ -188,6 +187,10 @@ const initialState: WizardState = {
 };
 
 export function PricingConsole() {
+  const stripePromise = useMemo(
+    () => loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""),
+    [],
+  );
   const [wizard, setWizard] = useState<WizardState>(initialState);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
@@ -195,6 +198,7 @@ export function PricingConsole() {
   const [error, setError] = useState("");
   const [planCheckoutLoading, setPlanCheckoutLoading] = useState(false);
   const [planCheckoutUrl, setPlanCheckoutUrl] = useState<string | null>(null);
+  const [planCheckoutClientSecret, setPlanCheckoutClientSecret] = useState<string | null>(null);
   const [checkingPlanPayment, setCheckingPlanPayment] = useState(false);
   const [planPaymentRecorded, setPlanPaymentRecorded] = useState(false);
   const [, setPlanAutoAdvanced] = useState(false);
@@ -219,6 +223,7 @@ export function PricingConsole() {
     }));
     setCheckoutSessionId(nextSessionId);
     setPlanCheckoutUrl(null);
+    setPlanCheckoutClientSecret(null);
     setPlanPaymentRecorded(false);
     setPlanAutoAdvanced(false);
     setError("");
@@ -241,7 +246,6 @@ export function PricingConsole() {
         sessionId: checkoutSessionId,
         email,
         planId: wizard.plan.id,
-        planCheckoutUrl: planCheckoutLinks[wizard.plan.id],
         selectedUpgradeSlugs: [],
       }),
     }).catch(() => null);
@@ -321,19 +325,70 @@ export function PricingConsole() {
     return true;
   }, [checkoutSessionId, checkCheckoutStatus]);
 
+  const handleEmbeddedCheckoutComplete = useCallback(() => {
+    // Stripe reports completion in the embedded frame; advance UX immediately.
+    setPlanPaymentRecorded(true);
+    advanceToUpgradesIfReady();
+    // Keep server-side confirmation in the background for resiliency.
+    void checkPlanPaymentStatus(false);
+  }, [advanceToUpgradesIfReady, checkPlanPaymentStatus]);
+
   async function openPlanCheckoutStep() {
     if (!canContinueToUpgrades()) return;
     if (!wizard.plan) return;
     setWizard((s) => ({ ...s, step: 2 }));
-    const directPlanUrl = planCheckoutLinks[wizard.plan.id];
-    setPlanCheckoutUrl(directPlanUrl);
     setPlanCheckoutLoading(true);
     const synced = await syncCheckoutSession();
-    setPlanCheckoutLoading(false);
     if (!synced) {
+      setPlanCheckoutLoading(false);
       setError("Could not initialize checkout session. Please retry.");
       return;
     }
+    const res = await fetch("/api/stripe/pricing/checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        checkoutSessionId,
+        checkoutKind: "plan",
+        source: "pricing-console",
+        embedded: true,
+        plan: {
+          id: wizard.plan.id,
+          name: wizard.plan.name,
+          price: wizard.plan.price,
+          closeFee: wizard.plan.closeFee,
+        },
+        contact: {
+          fullName: wizard.fullName.trim(),
+          email: wizard.email.trim().toLowerCase(),
+          phone: wizard.phone.trim(),
+        },
+        property: {
+          address: wizard.propertyAddress.trim(),
+          unit: wizard.unit.trim(),
+          city: wizard.city.trim(),
+          state: wizard.state.trim(),
+          zip: wizard.zip.trim(),
+          county: wizard.county.trim(),
+          propertyType: wizard.propertyType.trim(),
+        },
+        upgrades: [],
+      }),
+    }).catch(() => null);
+    setPlanCheckoutLoading(false);
+    if (!res) {
+      setError("Could not create Stripe checkout. Please try again.");
+      return;
+    }
+    const data = (await res.json().catch(() => null)) as
+      | { ok?: boolean; checkoutUrl?: string | null; checkoutClientSecret?: string | null; error?: string }
+      | null;
+    if (!res.ok || !data?.ok || (!data.checkoutClientSecret && !data.checkoutUrl)) {
+      setError(data?.error || "Stripe checkout URL was not generated.");
+      return;
+    }
+    setPlanCheckoutUrl(data.checkoutUrl ?? null);
+    setPlanCheckoutClientSecret(data.checkoutClientSecret ?? null);
     setError("");
   }
 
@@ -615,7 +670,7 @@ export function PricingConsole() {
 
           {wizard.step === 2 ? (
             <div className="grid gap-4">
-              <h2 className="text-xl font-semibold text-white">Step 2: Plan checkout (GHL)</h2>
+              <h2 className="text-xl font-semibold text-white">Step 2: Plan checkout (Stripe)</h2>
               <div className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm text-white/85">
                 <p className="font-semibold text-white">Order summary</p>
                 <ul className="mt-3 grid gap-2">
@@ -635,15 +690,34 @@ export function PricingConsole() {
                   </li>
                 </ul>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
-                {planCheckoutUrl ? (
-                  <iframe
-                    title="Plan checkout"
-                    src={planCheckoutUrl}
-                    className="h-[84vh] min-h-[900px] w-full rounded-xl border border-white/10 bg-black/20"
-                    loading="lazy"
-                    allow="payment *"
-                  />
+              <div className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm text-white/85">
+                {planCheckoutClientSecret ? (
+                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                    <EmbeddedCheckoutProvider
+                      stripe={stripePromise}
+                      options={{
+                        clientSecret: planCheckoutClientSecret,
+                        onComplete: handleEmbeddedCheckoutComplete,
+                      }}
+                    >
+                      <EmbeddedCheckout />
+                    </EmbeddedCheckoutProvider>
+                  </div>
+                ) : planCheckoutUrl ? (
+                  <div className="space-y-3">
+                    <p>
+                      Stripe Checkout opens in a secure hosted page. Complete payment there, then
+                      return to continue.
+                    </p>
+                    <a
+                      href={planCheckoutUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-primary inline-flex"
+                    >
+                      Open Stripe checkout
+                    </a>
+                  </div>
                 ) : (
                   <div className="rounded-xl border border-white/10 bg-black/20 p-6 text-sm text-white/70">
                     {planCheckoutLoading
@@ -652,38 +726,13 @@ export function PricingConsole() {
                   </div>
                 )}
               </div>
-              <div className="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm text-white/85">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span>
-                    Payment status:{" "}
-                    <span className={planPaymentRecorded ? "text-emerald-300" : "text-amber-200"}>
-                      {planPaymentRecorded ? "Confirmed" : "Pending"}
-                    </span>
-                  </span>
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={() => {
-                        void checkPlanPaymentStatus(true);
-                    }}
-                    disabled={checkingPlanPayment || submitting || planPaymentRecorded}
-                  >
-                    {planPaymentRecorded
-                      ? "Payment confirmed"
-                      : checkingPlanPayment
-                        ? "Checking..."
-                        : "I paid - Check status"}
-                  </button>
-                </div>
-              </div>
-
               {error ? (
                 <div className="rounded-xl border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-300">
                   {error}
                 </div>
               ) : null}
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-start">
                 <button
                   type="button"
                   className="btn-secondary"
@@ -694,14 +743,6 @@ export function PricingConsole() {
                   disabled={submitting}
                 >
                   Back
-                </button>
-                <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={() => setWizard((s) => ({ ...s, step: 3 }))}
-                  disabled={submitting || checkingPlanPayment || planCheckoutLoading || !planPaymentRecorded}
-                >
-                  Continue: Success
                 </button>
               </div>
             </div>
