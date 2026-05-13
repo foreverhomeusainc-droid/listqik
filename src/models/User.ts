@@ -17,6 +17,11 @@ const userSchema = new Schema(
     /** Set when account is created from a paid order; cleared after password is chosen. */
     passwordSetupTokenSha256: { type: String, trim: true, sparse: true, index: true },
     passwordSetupExpiresAt: { type: Date },
+    /**
+     * Timestamp of the user's one-time acknowledgment of the ListQik User Agreement.
+     * Required before they can access /dashboard listing flows.
+     */
+    userAgreementAcknowledgedAt: { type: Date, default: null },
   },
   { timestamps: true },
 );

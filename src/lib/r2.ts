@@ -34,9 +34,31 @@ export function createR2Client() {
   return new S3Client({
     region: "auto",
     endpoint: cfg.endpoint,
+    // R2 supports both styles, but path-style is the documented default that
+    // avoids virtual-host DNS pitfalls (and works for signed URLs).
+    forcePathStyle: true,
     credentials: {
       accessKeyId: cfg.accessKeyId,
       secretAccessKey: cfg.secretAccessKey,
     },
   });
+}
+
+/**
+ * Build the URL we hand back to the browser for displaying a stored object.
+ *
+ * When R2_PUBLIC_BASE_URL is configured (custom domain or r2.dev), we use it
+ * directly. Otherwise we fall back to our same-origin proxy so `<img src>`
+ * works without exposing the R2 S3 endpoint (which requires auth).
+ */
+export function buildPublicImageUrl(key: string): string {
+  const cfg = getR2Config();
+  if (cfg.publicBaseUrl) {
+    return `${cfg.publicBaseUrl.replace(/\/$/, "")}/${key}`;
+  }
+  const encodedKey = key
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+  return `/api/listing-images/${encodedKey}`;
 }

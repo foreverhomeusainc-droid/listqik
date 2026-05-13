@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
 import { connectDb } from "@/lib/mongodb";
-import { createR2Client, getR2Config } from "@/lib/r2";
+import { buildPublicImageUrl, createR2Client, getR2Config } from "@/lib/r2";
 import { Listing } from "@/models/Listing";
 
 type Body = {
@@ -82,9 +82,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   });
 
   const uploadUrl = await getSignedUrl(client, command, { expiresIn: 300 });
-  const publicUrl = cfg.publicBaseUrl
-    ? `${cfg.publicBaseUrl.replace(/\/$/, "")}/${key}`
-    : `https://${cfg.bucketName}.${cfg.accountId}.r2.cloudflarestorage.com/${key}`;
+  const publicUrl = buildPublicImageUrl(key);
 
   return NextResponse.json({
     ok: true,

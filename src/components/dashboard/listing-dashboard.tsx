@@ -564,36 +564,21 @@ export function ListingDashboard() {
     setUploadingId(id);
     setError(null);
     try {
-      const signedRes = await fetch(`/api/dashboard/listings/${id}/hero-image/upload-url`, {
+      const formData = new FormData();
+      formData.append("file", file);
+      const uploadRes = await fetch(`/api/dashboard/listings/${id}/hero-image/upload`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          fileName: file.name,
-          contentType: file.type,
-        }),
+        body: formData,
       });
-      const signedData = (await signedRes.json()) as
-        | { ok?: boolean; uploadUrl?: string; publicUrl?: string; error?: string }
+      const uploadData = (await uploadRes.json().catch(() => null)) as
+        | { ok?: boolean; publicUrl?: string; error?: string }
         | null;
-      if (!signedRes.ok || !signedData?.ok || !signedData.uploadUrl || !signedData.publicUrl) {
-        setUploadError(signedData?.error ?? "Could not prepare image upload.");
+      if (!uploadRes.ok || !uploadData?.ok || !uploadData.publicUrl) {
+        setUploadError(uploadData?.error ?? "Upload failed while sending image to storage.");
         return;
       }
 
-      const uploadRes = await fetch(signedData.uploadUrl, {
-        method: "PUT",
-        headers: {
-          "content-type": file.type || "application/octet-stream",
-        },
-        body: file,
-      });
-
-      if (!uploadRes.ok) {
-        setUploadError("Upload failed while sending image to storage.");
-        return;
-      }
-
-      await patchListing(id, { heroImageUrl: signedData.publicUrl });
+      await patchListing(id, { heroImageUrl: uploadData.publicUrl });
     } catch {
       setUploadError("Network error while uploading image.");
     } finally {

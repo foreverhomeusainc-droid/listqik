@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
-  LISTING_PLATFORM_OPTIONS,
   type ListingPlatformId,
   normalizeListingPlatforms,
 } from "@/lib/listing-platforms";
@@ -516,12 +515,6 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
         complete: propertyDescComplete(listing),
       },
       {
-        id: "mls-profile",
-        title: "Listing destinations",
-        subtitle: "Where you want the property marketed",
-        complete: normalizeListingPlatforms(listing.listingPlatforms).length > 0,
-      },
-      {
         id: "photos-media",
         title: "Photos",
         subtitle: "Hero image & MLS photo confirmations",
@@ -571,7 +564,6 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
       steps.find((s) => s.id === "contact-ownership")?.complete &&
       steps.find((s) => s.id === "price-compensation")?.complete &&
       steps.find((s) => s.id === "property-description")?.complete &&
-      steps.find((s) => s.id === "mls-profile")?.complete &&
       steps.find((s) => s.id === "photos-media")?.complete &&
       disclosuresComplete(listing),
   );
@@ -636,10 +628,6 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
       ],
       "property-description": d,
       "photos-media": photos,
-      "mls-profile":
-        normalizeListingPlatforms(listing.listingPlatforms).length === 0
-          ? ["At least one listing destination"]
-          : [],
       "complete-listing-setup": fin,
     };
   }, [listing]);
@@ -755,28 +743,20 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
     setHeroUploadBusy(true);
     setFinalizeError(null);
     try {
-      const signedRes = await fetch(`/api/dashboard/listings/${listingId}/hero-image/upload-url`, {
+      const formData = new FormData();
+      formData.append("file", file);
+      const uploadRes = await fetch(`/api/dashboard/listings/${listingId}/hero-image/upload`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, contentType: file.type || "image/jpeg" }),
+        body: formData,
       });
-      const signedData = (await signedRes.json().catch(() => null)) as
-        | { ok?: boolean; uploadUrl?: string; publicUrl?: string; error?: string }
+      const uploadData = (await uploadRes.json().catch(() => null)) as
+        | { ok?: boolean; publicUrl?: string; error?: string }
         | null;
-      if (!signedRes.ok || !signedData?.ok || !signedData.uploadUrl || !signedData.publicUrl) {
-        setFinalizeError(signedData?.error ?? "Could not prepare image upload.");
+      if (!uploadRes.ok || !uploadData?.ok || !uploadData.publicUrl) {
+        setFinalizeError(uploadData?.error ?? "Image upload failed.");
         return;
       }
-      const uploadRes = await fetch(signedData.uploadUrl, {
-        method: "PUT",
-        body: file,
-        headers: { "content-type": file.type || "image/jpeg" },
-      });
-      if (!uploadRes.ok) {
-        setFinalizeError("Image upload failed.");
-        return;
-      }
-      await savePatch("photos-media", { heroImageUrl: signedData.publicUrl });
+      await savePatch("photos-media", { heroImageUrl: uploadData.publicUrl });
     } catch {
       setFinalizeError("Network error while uploading image.");
     } finally {
@@ -792,30 +772,22 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
     setGalleryUploadBusy(true);
     setFinalizeError(null);
     try {
-      const signedRes = await fetch(`/api/dashboard/listings/${listingId}/gallery/upload-url`, {
+      const formData = new FormData();
+      formData.append("file", file);
+      const uploadRes = await fetch(`/api/dashboard/listings/${listingId}/gallery/upload`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, contentType: file.type || "image/jpeg" }),
+        body: formData,
       });
-      const signedData = (await signedRes.json().catch(() => null)) as
-        | { ok?: boolean; uploadUrl?: string; publicUrl?: string; error?: string }
+      const uploadData = (await uploadRes.json().catch(() => null)) as
+        | { ok?: boolean; publicUrl?: string; error?: string }
         | null;
-      if (!signedRes.ok || !signedData?.ok || !signedData.uploadUrl || !signedData.publicUrl) {
-        setFinalizeError(signedData?.error ?? "Could not prepare image upload.");
-        return;
-      }
-      const uploadRes = await fetch(signedData.uploadUrl, {
-        method: "PUT",
-        body: file,
-        headers: { "content-type": file.type || "image/jpeg" },
-      });
-      if (!uploadRes.ok) {
-        setFinalizeError("Image upload failed.");
+      if (!uploadRes.ok || !uploadData?.ok || !uploadData.publicUrl) {
+        setFinalizeError(uploadData?.error ?? "Image upload failed.");
         return;
       }
       const current = activeListing.additionalPhotoUrls ?? [];
       await savePatch("photos-media", {
-        additionalPhotoUrls: [...current, signedData.publicUrl].slice(0, 40),
+        additionalPhotoUrls: [...current, uploadData.publicUrl].slice(0, 40),
       });
     } catch {
       setFinalizeError("Network error while uploading image.");
@@ -1335,59 +1307,8 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
           </InfoCard>
 
           <InfoCard
-            id="mls-profile"
-            title="Step 5 — Where to list"
-            complete={steps.find((s) => s.id === "mls-profile")?.complete ?? false}
-            missingItems={missingByStep["mls-profile"] ?? []}
-          >
-            <Hint>
-              MLS numbers and internal IDs are often assigned after setup. Choose every channel where you want this home
-              marketed; your coordinator will confirm details.
-            </Hint>
-            <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-white/55">
-              Where would you like to list your property? *
-            </p>
-            <div className="mt-2 grid gap-2">
-              {LISTING_PLATFORM_OPTIONS.map((opt) => (
-                <label
-                  key={opt.id}
-                  htmlFor={`platform-${opt.id}`}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-emerald-100"
-                >
-                  <input
-                    id={`platform-${opt.id}`}
-                    type="checkbox"
-                    defaultChecked={normalizeListingPlatforms(listing.listingPlatforms).includes(opt.id)}
-                    className="accent-emerald-400"
-                  />
-                  {opt.label}
-                </label>
-              ))}
-            </div>
-            <div className="mt-4 grid gap-3 border-t border-white/10 pt-4 sm:grid-cols-2">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Listed on (system)</p>
-                <p className="mt-1 text-sm text-emerald-100">{formatDate(listing.listedOn)}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Expires on (system)</p>
-                <p className="mt-1 text-sm text-emerald-100">{formatDate(listing.expiresOn)}</p>
-              </div>
-            </div>
-            <SaveBar
-              busy={savingSection === "mls-profile"}
-              onSave={() => {
-                const selected = LISTING_PLATFORM_OPTIONS.filter(
-                  (opt) => (document.getElementById(`platform-${opt.id}`) as HTMLInputElement)?.checked,
-                ).map((opt) => opt.id);
-                void savePatch("mls-profile", { listingPlatforms: selected });
-              }}
-            />
-          </InfoCard>
-
-          <InfoCard
             id="photos-media"
-            title="Step 6 — Photos"
+            title="Step 5 — Photos"
             complete={steps.find((s) => s.id === "photos-media")?.complete ?? false}
             missingItems={missingByStep["photos-media"] ?? []}
           >
@@ -1537,7 +1458,7 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
 
           <InfoCard
             id="complete-listing-setup"
-            title="Step 7 — Review & finalize"
+            title="Step 6 — Review & finalize"
             complete={steps.find((s) => s.id === "complete-listing-setup")?.complete ?? false}
             missingItems={missingByStep["complete-listing-setup"] ?? []}
           >
@@ -1721,7 +1642,7 @@ export function ListingSetupView({ listingId }: { listingId: string }) {
                 Close
               </button>
             </div>
-            <p className="mt-3 text-sm text-white/80">Confirm MLS-ready imagery before you edit Step 6:</p>
+            <p className="mt-3 text-sm text-white/80">Confirm MLS-ready imagery before you edit Step 5:</p>
             <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-white/85">
               <li>Use photos you created, licensed, or own.</li>
               <li>Lead with an exterior shot.</li>

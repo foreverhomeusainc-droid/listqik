@@ -204,7 +204,7 @@ export function PricingConsole() {
   const [checkingPlanPayment, setCheckingPlanPayment] = useState(false);
   const [planPaymentRecorded, setPlanPaymentRecorded] = useState(false);
   const [, setPlanAutoAdvanced] = useState(false);
-  const [handoffBusy, setHandoffBusy] = useState<"dashboard" | "upgrades" | null>(null);
+  const [handoffBusy, setHandoffBusy] = useState<"listing-setup" | "upgrades" | null>(null);
 
   const advanceToUpgradesIfReady = useCallback(() => {
     setPlanAutoAdvanced((alreadyAdvanced) => {
@@ -339,7 +339,7 @@ export function PricingConsole() {
     void checkPlanPaymentStatus(false);
   }, [advanceToUpgradesIfReady, checkPlanPaymentStatus]);
 
-  async function continueAfterPayment(destination: "dashboard" | "upgrades") {
+  async function continueAfterPayment(destination: "listing-setup" | "upgrades") {
     if (!checkoutSessionId) {
       setError("Could not find your checkout session. Please refresh and try again.");
       return;
@@ -804,8 +804,8 @@ export function PricingConsole() {
               <div className="rounded-2xl border border-emerald-400/35 bg-emerald-950/20 p-4 text-sm text-emerald-100/90">
                 <p className="font-semibold text-emerald-100">Your plan checkout is complete.</p>
                 <p className="mt-2">
-                  You can now add optional upgrades from the dedicated upgrades page, or continue
-                  straight to your dashboard.
+                  Next you&rsquo;ll acknowledge the ListQik User Agreement, then go straight into
+                  your listing setup wizard. You can also add optional marketing upgrades first.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm text-white/85">
@@ -845,12 +845,14 @@ export function PricingConsole() {
                   <button
                     type="button"
                     onClick={() => {
-                      void continueAfterPayment("dashboard");
+                      void continueAfterPayment("listing-setup");
                     }}
                     disabled={handoffBusy !== null}
                     className="btn-primary disabled:opacity-50"
                   >
-                    {handoffBusy === "dashboard" ? "Preparing..." : "Proceed to user dashboard"}
+                    {handoffBusy === "listing-setup"
+                      ? "Preparing..."
+                      : "Continue to listing setup"}
                   </button>
                 </div>
               </div>
