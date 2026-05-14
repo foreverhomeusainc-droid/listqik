@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Inter, Roboto_Mono } from "next/font/google";
+import Script from "next/script";
 import { AuthSessionProvider } from "@/components/auth/session-provider";
+
+/** Google Ads conversion tag — applied at the root layout so every route group inherits it. */
+const GOOGLE_ADS_TAG_ID = "AW-18163123085";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -88,6 +92,18 @@ export default function RootLayout({
             {children}
           </main>
         </AuthSessionProvider>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_TAG_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_TAG_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
