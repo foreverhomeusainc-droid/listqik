@@ -98,7 +98,7 @@ export function AdminTestEmailForm() {
           SMTP is not fully configured. Set <code className="font-mono">SMTP_HOST</code>,{" "}
           <code className="font-mono">SMTP_PORT</code>, <code className="font-mono">SMTP_FROM</code>,{" "}
           <code className="font-mono">SMTP_USER</code>, and <code className="font-mono">SMTP_PASS</code> in your
-          environment.
+          environment. For Gmail, use an App Password (16 characters) as <code className="font-mono">SMTP_PASS</code>.
         </p>
       )}
 

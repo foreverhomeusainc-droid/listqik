@@ -1,3 +1,4 @@
+import { AdminEmailTemplatesForm } from "@/components/admin/admin-email-templates-form";
 import { AdminTestEmailForm } from "@/components/admin/admin-test-email-form";
 
 export default function AdminSettingsPage() {
@@ -9,6 +10,8 @@ export default function AdminSettingsPage() {
       </header>
 
       <AdminTestEmailForm />
+
+      <AdminEmailTemplatesForm />
 
       <div className="space-y-3 rounded-2xl border border-white/15 bg-black/30 p-4 text-sm text-white/85">
         <h3 className="text-base font-semibold text-emerald-100">Admin access</h3>
