@@ -1,26 +1,27 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { HomeLocale } from "@/i18n/home-locale";
+import { getHomepageCopy } from "@/i18n/homepage-copy";
 
 type CalcInputs = {
   salePrice: number;
   mortgagePayoff: number;
-  closingCostsPct: number; // percent of sale price
+  closingCostsPct: number;
   traditionalAgentPct: number;
   listQikPct: number;
 };
 
-function formatMoney(n: number) {
-  return n.toLocaleString(undefined, {
+function formatMoney(n: number, locale: HomeLocale) {
+  return n.toLocaleString(locale === "es" ? "es-US" : "en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
   });
 }
 
-export function NetProceedsCalculator() {
-  // Phase 1: visually satisfying slider-driven widget.
-  // Numbers can be swapped later with "Vicky's" exact model without refactor.
+export function NetProceedsCalculator({ locale = "en" }: { locale?: HomeLocale }) {
+  const t = getHomepageCopy(locale).calculator;
   const [salePrice, setSalePrice] = useState(650_000);
 
   const inputs: CalcInputs = useMemo(
@@ -65,32 +66,25 @@ export function NetProceedsCalculator() {
       <div className="flex flex-col gap-5 sm:gap-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
           <div className="min-w-0">
-            <div className="text-xs font-semibold tracking-widest text-emerald-200/75">
-              NET PROCEEDS CALCULATOR
-            </div>
-            <h2 className="mt-2 text-lg font-semibold tracking-tight text-emerald-100 sm:text-2xl">
-              Simulate your equity retention.
-            </h2>
-            <p className="mt-2 text-sm text-muted">
-              Slide the sale price. Watch retained equity grow. Swap in your exact
-              cost model later without touching UI.
-            </p>
+            <div className="text-xs font-semibold tracking-widest text-emerald-200/75">{t.kicker}</div>
+            <h2 className="mt-2 text-lg font-semibold tracking-tight text-emerald-100 sm:text-2xl">{t.title}</h2>
+            <p className="mt-2 text-sm text-muted">{t.subtitle}</p>
           </div>
-            <div className="shrink-0 rounded-2xl border border-emerald-400/20 bg-black/30 px-4 py-3 text-left sm:border-0 sm:bg-transparent sm:p-0 sm:text-right">
-            <div className="text-xs font-mono text-emerald-100/60">Sale price</div>
+          <div className="shrink-0 rounded-2xl border border-emerald-400/20 bg-black/30 px-4 py-3 text-left sm:border-0 sm:bg-transparent sm:p-0 sm:text-right">
+            <div className="text-xs font-mono text-emerald-100/60">{t.salePrice}</div>
             <div className="mt-1 font-mono text-lg font-semibold tabular-nums text-emerald-100 sm:text-xl">
-              {formatMoney(inputs.salePrice)}
+              {formatMoney(inputs.salePrice, locale)}
             </div>
           </div>
         </div>
 
         <div className="grid gap-4">
           <label className="flex items-center justify-between text-xs font-semibold tracking-widest text-emerald-200/75">
-            <span>SALE PRICE</span>
-            <span className="font-mono text-emerald-100/90">{formatMoney(salePrice)}</span>
+            <span>{t.salePrice.toUpperCase()}</span>
+            <span className="font-mono text-emerald-100/90">{formatMoney(salePrice, locale)}</span>
           </label>
           <input
-            aria-label="Sale price slider"
+            aria-label={t.salePriceSlider}
             type="range"
             min={250_000}
             max={2_500_000}
@@ -104,16 +98,16 @@ export function NetProceedsCalculator() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div className="min-w-0">
                 <div className="text-xs font-semibold tracking-widest text-emerald-200/70">
-                  EQUITY RETAINED
+                  {t.equityRetained}
                 </div>
                 <div className="mt-1 text-xl font-semibold tracking-tight text-emerald-100 tabular-nums sm:text-2xl lg:text-3xl">
-                  <span className="text-glow">{formatMoney(result.equityRetained)}</span>
+                  <span className="text-glow">{formatMoney(result.equityRetained, locale)}</span>
                 </div>
               </div>
               <div className="text-left sm:max-w-[11rem] sm:text-right">
-                <div className="text-xs font-mono text-emerald-100/55">Model</div>
+                <div className="text-xs font-mono text-emerald-100/55">{t.model}</div>
                 <div className="mt-1 text-xs font-semibold leading-snug text-emerald-100/85 sm:text-sm">
-                  ListQik.com 1.0% vs Trad 3.0%
+                  {t.modelDetail}
                 </div>
               </div>
             </div>
@@ -130,9 +124,9 @@ export function NetProceedsCalculator() {
                 />
               </div>
               <div className="mt-2 flex flex-col gap-1 text-xs text-emerald-100/65 sm:flex-row sm:items-center sm:justify-between">
-                <span className="min-w-0">Traditional fee leakage</span>
+                <span className="min-w-0">{t.traditionalLeakage}</span>
                 <span className="shrink-0 font-mono tabular-nums">
-                  {Math.round(result.retainedRatio * 100)}% recaptured
+                  {Math.round(result.retainedRatio * 100)}% {t.recaptured}
                 </span>
               </div>
             </div>
@@ -140,41 +134,26 @@ export function NetProceedsCalculator() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="glass-surface min-w-0 border border-emerald-500/15 bg-black/35 p-3 sm:p-4">
-              <div className="text-xs font-semibold tracking-widest text-emerald-200/70">
-                TRADITIONAL PATH
-              </div>
+              <div className="text-xs font-semibold tracking-widest text-emerald-200/70">{t.traditionalPath}</div>
               <div className="mt-3 grid gap-1 text-sm">
-                <Row label="Agent fee" value={formatMoney(result.traditionalFee)} />
-                <Row label="Closing costs" value={formatMoney(result.closingCosts)} />
-                <Row label="Mortgage payoff" value={formatMoney(inputs.mortgagePayoff)} />
-                <Row
-                  label="Net proceeds"
-                  value={formatMoney(result.proceedsTraditional)}
-                  strong
-                />
+                <Row label={t.agentFee} value={formatMoney(result.traditionalFee, locale)} />
+                <Row label={t.closingCosts} value={formatMoney(result.closingCosts, locale)} />
+                <Row label={t.mortgagePayoff} value={formatMoney(inputs.mortgagePayoff, locale)} />
+                <Row label={t.netProceeds} value={formatMoney(result.proceedsTraditional, locale)} strong />
               </div>
             </div>
             <div className="glass-surface min-w-0 border border-emerald-500/15 bg-black/35 p-3 sm:p-4">
-              <div className="text-xs font-semibold tracking-widest text-emerald-200/70">
-                LISTQIK.COM PATH
-              </div>
+              <div className="text-xs font-semibold tracking-widest text-emerald-200/70">{t.listQikPath}</div>
               <div className="mt-3 grid gap-1 text-sm">
-                <Row label="Platform fee" value={formatMoney(result.listQikFee)} />
-                <Row label="Closing costs" value={formatMoney(result.closingCosts)} />
-                <Row label="Mortgage payoff" value={formatMoney(inputs.mortgagePayoff)} />
-                <Row
-                  label="Net proceeds"
-                  value={formatMoney(result.proceedsListQik)}
-                  strong
-                />
+                <Row label={t.platformFee} value={formatMoney(result.listQikFee, locale)} />
+                <Row label={t.closingCosts} value={formatMoney(result.closingCosts, locale)} />
+                <Row label={t.mortgagePayoff} value={formatMoney(inputs.mortgagePayoff, locale)} />
+                <Row label={t.netProceeds} value={formatMoney(result.proceedsListQik, locale)} strong />
               </div>
             </div>
           </div>
 
-          <p className="text-xs text-emerald-100/55">
-            Prototype calculator for UI/interaction. Replace percentages and payoff
-            assumptions later with your validated model.
-          </p>
+          <p className="text-xs text-emerald-100/55">{t.disclaimer}</p>
         </div>
       </div>
     </div>
@@ -206,4 +185,3 @@ function Row({
     </div>
   );
 }
-
