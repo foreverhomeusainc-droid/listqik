@@ -51,4 +51,11 @@ export async function dispatchUpgradePurchaseEmails(input: {
   if (!internal.sent) {
     console.error("[upgrade-purchase-email] internal notification not sent:", internal.error);
   }
+
+  return {
+    buyerSent: buyer.sent,
+    internalSent: internal.sent,
+    buyerError: buyer.error,
+    internalError: internal.error,
+  };
 }

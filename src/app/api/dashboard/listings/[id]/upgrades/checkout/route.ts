@@ -127,6 +127,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     metadata: {
       checkoutKind: "upgrades",
       checkoutSessionId,
+      externalUserId: String(userId),
       planId: effectivePlan.planId,
       planName: effectivePlan.planName || effectivePlan.planId,
       buyerName: fullName,

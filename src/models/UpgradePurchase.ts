@@ -27,6 +27,7 @@ const upgradePurchaseSchema = new Schema(
     amountTotal: { type: Number, default: null },
     purchasedAt: { type: Date, default: Date.now, index: true },
     upgradeSlugs: { type: [String], default: [] },
+    emailsSentAt: { type: Date, default: null },
     items: { type: [upgradePurchaseItemSchema], default: [] },
     rawPayload: { type: Schema.Types.Mixed, default: null },
   },

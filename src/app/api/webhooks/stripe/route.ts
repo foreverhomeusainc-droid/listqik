@@ -6,6 +6,7 @@ import { connectDb } from "@/lib/mongodb";
 import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
 import { extractStripeCheckoutCouponCode } from "@/lib/stripe-purchase-details";
 import { dispatchUpgradePurchaseEmails } from "@/lib/dispatch-upgrade-purchase-emails";
+import { resolveUpgradeSlugs } from "@/lib/stripe-upgrade-slugs";
 import { dispatchPostPurchaseAccountEmail } from "@/lib/dispatch-post-purchase-account-email";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
@@ -157,10 +158,7 @@ export async function POST(req: Request) {
     reverse.set(priceId, slug);
   }
 
-  const upgradeSlugs = lineItems.data
-    .map((row) => row.price?.id || "")
-    .map((priceId) => reverse.get(priceId) || "")
-    .filter(Boolean);
+  const upgradeSlugs = resolveUpgradeSlugs(metadata, lineItems.data, reverse);
 
   if (upgradeSlugs.length > 0) {
     const externalUserId = (metadata.externalUserId || "").trim();
@@ -178,10 +176,21 @@ export async function POST(req: Request) {
     }
   }
 
-  const existing = await UpgradePurchase.findOne({ externalOrderId }).select("_id").lean();
+  const purchaserEmail = (
+    metadata.buyerEmail ||
+    session.customer_details?.email ||
+    ""
+  )
+    .trim()
+    .toLowerCase();
+
+  const existing = await UpgradePurchase.findOne({ externalOrderId })
+    .select("_id emailsSentAt")
+    .lean();
+
   if (!existing?._id) {
     await UpgradePurchase.create({
-      purchaserEmail: metadata.buyerEmail || session.customer_details?.email || null,
+      purchaserEmail: purchaserEmail || null,
       externalUserId: metadata.externalUserId || null,
       checkoutSessionId,
       externalOrderId,
@@ -201,42 +210,54 @@ export async function POST(req: Request) {
       })),
       rawPayload: session,
     });
+  }
 
-    void (async () => {
-      try {
-        const purchaserEmail = (
-          metadata.buyerEmail ||
-          session.customer_details?.email ||
-          ""
-        )
-          .trim()
-          .toLowerCase();
-        if (!purchaserEmail || upgradeSlugs.length === 0) return;
+  let upgradeEmailsSent = false;
+  let upgradeEmailError: string | undefined;
 
-        let purchaserName = metadata.buyerName || session.customer_details?.name || null;
-        const externalUserId = (metadata.externalUserId || "").trim();
-        if (externalUserId && Types.ObjectId.isValid(externalUserId)) {
-          const user = await User.findById(externalUserId).select("name").lean();
-          if (user?.name) purchaserName = user.name;
-        } else if (purchaserEmail) {
-          const user = await User.findOne({ email: purchaserEmail }).select("name").lean();
-          if (user?.name) purchaserName = user.name;
-        }
+  const shouldSendUpgradeEmails =
+    purchaserEmail.length > 0 && upgradeSlugs.length > 0 && !existing?.emailsSentAt;
 
-        await dispatchUpgradePurchaseEmails({
-          purchaserEmail,
-          purchaserName,
-          upgradeSlugs,
-          amountTotal: toNumCentsToDollars(session.amount_total),
-          orderRef: externalOrderId,
-        });
-      } catch (err) {
-        console.error(
-          "[stripe-webhook] upgrade purchase email failed:",
-          err instanceof Error ? err.message : err,
+  if (shouldSendUpgradeEmails) {
+    try {
+      let purchaserName = metadata.buyerName || session.customer_details?.name || null;
+      const externalUserId = (metadata.externalUserId || "").trim();
+      if (externalUserId && Types.ObjectId.isValid(externalUserId)) {
+        const user = await User.findById(externalUserId).select("name").lean();
+        if (user?.name) purchaserName = user.name;
+      } else {
+        const user = await User.findOne({ email: purchaserEmail }).select("name").lean();
+        if (user?.name) purchaserName = user.name;
+      }
+
+      const emailResult = await dispatchUpgradePurchaseEmails({
+        purchaserEmail,
+        purchaserName,
+        upgradeSlugs,
+        amountTotal: toNumCentsToDollars(session.amount_total),
+        orderRef: externalOrderId,
+      });
+
+      upgradeEmailsSent = Boolean(emailResult?.buyerSent || emailResult?.internalSent);
+      if (!emailResult?.buyerSent || !emailResult?.internalSent) {
+        upgradeEmailError = [
+          !emailResult?.buyerSent ? emailResult?.buyerError : null,
+          !emailResult?.internalSent ? emailResult?.internalError : null,
+        ]
+          .filter(Boolean)
+          .join("; ");
+      }
+
+      if (upgradeEmailsSent) {
+        await UpgradePurchase.updateOne(
+          { externalOrderId },
+          { $set: { emailsSentAt: new Date() } },
         );
       }
-    })();
+    } catch (err) {
+      upgradeEmailError = err instanceof Error ? err.message : "Upgrade email dispatch failed.";
+      console.error("[stripe-webhook] upgrade purchase email failed:", upgradeEmailError);
+    }
   }
 
   return NextResponse.json({
@@ -247,5 +268,7 @@ export async function POST(req: Request) {
     externalOrderId,
     upgradesCount: upgradeSlugs.length,
     upgrades: upgradeSlugs,
+    upgradeEmailsSent,
+    upgradeEmailError: upgradeEmailError ?? null,
   });
 }
