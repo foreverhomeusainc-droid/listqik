@@ -8,6 +8,7 @@ export type SiteChromeCopy = {
     listings: string;
     portfolio: string;
     resources: string;
+    university: string;
     dashboard: string;
     logIn: string;
     viewListings: string;
@@ -25,6 +26,7 @@ export type SiteChromeCopy = {
     portfolio: string;
     blogs: string;
     videos: string;
+    university: string;
     iabs: string;
     consumerProtection: string;
     mlsFines: string;
@@ -48,6 +50,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       listings: "Listings",
       portfolio: "Portfolio",
       resources: "Resources",
+      university: "University",
       dashboard: "Dashboard",
       logIn: "Log in",
       viewListings: "View Listings",
@@ -66,6 +69,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       portfolio: "Portfolio",
       blogs: "Blogs",
       videos: "Videos",
+      university: "ListQik University",
       iabs: "Information About Brokerage Services (IABS)",
       consumerProtection: "Consumer Protection Notice",
       mlsFines: "MLS Rule Schedule of Fines",
@@ -87,6 +91,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       listings: "Propiedades",
       portfolio: "Portafolio",
       resources: "Recursos",
+      university: "Universidad",
       dashboard: "Panel",
       logIn: "Iniciar sesión",
       viewListings: "Ver propiedades",
@@ -106,6 +111,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       portfolio: "Portafolio",
       blogs: "Blogs",
       videos: "Videos",
+      university: "Universidad ListQik",
       iabs: "Información sobre servicios de corretaje (IABS)",
       consumerProtection: "Aviso de protección al consumidor",
       mlsFines: "Calendario de multas de reglas MLS",

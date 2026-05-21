@@ -28,15 +28,37 @@ export default function ResourcesPage() {
             </p>
           </header>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link href="/resources/blogs" className="glass-surface p-6 hover:border-white/20 transition">
-              <div className="text-lg font-semibold text-white">Blogs</div>
-              <div className="mt-2 text-sm text-muted">Playbooks, pricing, compliance, marketing.</div>
-            </Link>
-            <Link href="/resources/videos" className="glass-surface p-6 hover:border-white/20 transition">
-              <div className="text-lg font-semibold text-white">Videos</div>
-              <div className="mt-2 text-sm text-muted">YouTube embeds now; GHL video element later.</div>
-            </Link>
+          <div className="space-y-3">
+            <div className="text-xs font-semibold tracking-widest text-white/60">
+              LEARNING &amp; MEDIA
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Link href="/resources/blogs" className="glass-surface p-6 hover:border-white/20 transition">
+                <div className="text-lg font-semibold text-white">Blogs</div>
+                <div className="mt-2 text-sm text-muted">Playbooks, pricing, compliance, marketing.</div>
+              </Link>
+              <Link href="/resources/videos" className="glass-surface p-6 hover:border-white/20 transition">
+                <div className="text-lg font-semibold text-white">Videos</div>
+                <div className="mt-2 text-sm text-muted">Curated clips and strategy topics.</div>
+              </Link>
+              <Link
+                href="/listqik-university"
+                className="glass-surface p-6 hover:border-white/20 transition sm:col-span-2"
+              >
+                <div className="text-lg font-semibold text-white">ListQik University</div>
+                <div className="mt-2 text-sm text-muted">
+                  Free video lessons from the List Quick YouTube channel — auto-updated when new
+                  episodes publish.
+                </div>
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="text-xs font-semibold tracking-widest text-white/60">
+              LEGAL &amp; COMPLIANCE
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
             <Link href="/resources/legal/privacy" className="glass-surface p-6 hover:border-white/20 transition">
               <div className="text-lg font-semibold text-white">Privacy</div>
               <div className="mt-2 text-sm text-muted">Policy and data handling disclosures.</div>
@@ -119,6 +141,7 @@ export default function ResourcesPage() {
                 Central Metro Realty attribution, MLS Public Remarks restrictions, and compliance review.
               </div>
             </Link>
+            </div>
           </div>
         </div>
       </Container>

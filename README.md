@@ -93,6 +93,20 @@ NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your-key"
 
 Without this variable, the field still works as a normal address input (with `autocomplete="street-address"`).
 
+## ListQik University (YouTube)
+
+The `/listqik-university` page auto-syncs videos from the [List Quick YouTube channel](https://www.youtube.com/@ListQuick).
+
+**Default (no API key):** uses YouTube’s public RSS feed (`feeds/videos.xml`) with the channel ID baked in. New uploads appear on the site within about an hour (ISR revalidate).
+
+**Optional API mode:** set `YOUTUBE_API_KEY` from [Google Cloud Console](https://console.cloud.google.com/) (enable **YouTube Data API v3**) for richer titles, descriptions, and thumbnails. See `env.youtube.example`.
+
+```bash
+YOUTUBE_CHANNEL_URL="https://www.youtube.com/@ListQuick"
+YOUTUBE_CHANNEL_ID="UCijYyspf6u9RSR2vg82A__A"
+# YOUTUBE_API_KEY="..."
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

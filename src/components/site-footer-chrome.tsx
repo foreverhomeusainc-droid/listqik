@@ -85,6 +85,14 @@ export function SiteFooterChrome() {
                     {ready ? t.videos : "Videos"}
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href="/listqik-university"
+                  >
+                    {ready ? t.university : "ListQik University"}
+                  </Link>
+                </li>
               </ul>
             </div>
 

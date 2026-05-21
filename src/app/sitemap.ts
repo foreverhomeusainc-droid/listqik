@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources",
     "/resources/blogs",
     "/resources/videos",
+    "/listqik-university",
   ];
 
   const listingRoutes = listings.map((l) => `/listings/${l.slug}`);
