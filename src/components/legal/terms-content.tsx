@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import type { HomeLocale } from "@/i18n/home-locale";
+import { TermsContentEs } from "@/components/legal/terms-content-es";
 
 /** Website Terms and Conditions of Use for ListQik.com */
-export function TermsContent() {
+export function TermsContent({ locale = "en" }: { locale?: HomeLocale }) {
+  if (locale === "es") return <TermsContentEs />;
   return (
     <div className="space-y-6 text-sm leading-relaxed text-white/85">
       <p className="text-muted">

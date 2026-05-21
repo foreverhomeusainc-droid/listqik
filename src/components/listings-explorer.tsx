@@ -3,10 +3,14 @@
 import { useMemo, useState } from "react";
 import type { Listing } from "@/data/types";
 import { ListingCard } from "@/components/listing-card";
+import { useSiteLocale } from "@/components/site-locale-provider";
+import { getListingsCopy } from "@/i18n/listings-copy";
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "city";
 
 export function ListingsExplorer({ listings }: { listings: Listing[] }) {
+  const { locale } = useSiteLocale();
+  const copy = getListingsCopy(locale);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"all" | Listing["status"]>("all");
   const [city, setCity] = useState<"all" | string>("all");
@@ -58,35 +62,35 @@ export function ListingsExplorer({ listings }: { listings: Listing[] }) {
         <div className="grid gap-3 md:grid-cols-4">
           <div className="md:col-span-2">
             <label className="text-xs font-semibold tracking-widest text-white/60">
-              SEARCH
+              {copy.search}
             </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Austin, 78704, condo, walkable…"
+              placeholder={copy.searchPlaceholder}
               className="mt-2 w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none focus:border-white/20"
             />
           </div>
 
           <div>
             <label className="text-xs font-semibold tracking-widest text-white/60">
-              STATUS
+              {copy.status}
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as typeof status)}
               className="mt-2 w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none focus:border-white/20"
             >
-              <option value="all">All</option>
-              <option value="active">Active</option>
-              <option value="pending">Pending</option>
-              <option value="sold">Sold</option>
+              <option value="all">{copy.statusAll}</option>
+              <option value="active">{copy.statusActive}</option>
+              <option value="pending">{copy.statusPending}</option>
+              <option value="sold">{copy.statusSold}</option>
             </select>
           </div>
 
           <div>
             <label className="text-xs font-semibold tracking-widest text-white/60">
-              CITY
+              {copy.city}
             </label>
             <select
               value={city}
@@ -95,7 +99,7 @@ export function ListingsExplorer({ listings }: { listings: Listing[] }) {
             >
               {cities.map((c) => (
                 <option key={c} value={c}>
-                  {c === "all" ? "All" : c}
+                  {c === "all" ? copy.cityAll : c}
                 </option>
               ))}
             </select>
@@ -104,21 +108,21 @@ export function ListingsExplorer({ listings }: { listings: Listing[] }) {
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-xs text-white/60 font-mono">
-            Results: <span className="text-white/80">{filtered.length}</span>
+            {copy.results} <span className="text-white/80">{filtered.length}</span>
           </div>
           <div className="flex items-center gap-2">
             <label className="text-xs font-semibold tracking-widest text-white/60">
-              SORT
+              {copy.sort}
             </label>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortKey)}
               className="rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-sm text-white outline-none focus:border-white/20"
             >
-              <option value="featured">Featured</option>
-              <option value="price-asc">Price ↑</option>
-              <option value="price-desc">Price ↓</option>
-              <option value="city">City</option>
+              <option value="featured">{copy.sortFeatured}</option>
+              <option value="price-asc">{copy.sortPriceAsc}</option>
+              <option value="price-desc">{copy.sortPriceDesc}</option>
+              <option value="city">{copy.sortCity}</option>
             </select>
           </div>
         </div>
@@ -126,15 +130,13 @@ export function ListingsExplorer({ listings }: { listings: Listing[] }) {
 
       {filtered.length === 0 ? (
         <div className="glass-surface p-8 text-center">
-          <div className="text-lg font-semibold text-white">No matches.</div>
-          <div className="mt-2 text-sm text-muted">
-            Try clearing filters or broadening your search terms.
-          </div>
+          <div className="text-lg font-semibold text-white">{copy.noMatchesTitle}</div>
+          <div className="mt-2 text-sm text-muted">{copy.noMatchesBody}</div>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((l) => (
-            <ListingCard key={l.slug} listing={l} />
+            <ListingCard key={l.slug} listing={l} locale={locale} />
           ))}
         </div>
       )}

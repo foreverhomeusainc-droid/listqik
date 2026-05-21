@@ -1,17 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/container";
-import { BrokerBrandingContent } from "@/components/legal/broker-branding-content";
-import { ConsumerProtectionNoticeContent } from "@/components/legal/consumer-protection-notice-content";
-import { FairHousingContent } from "@/components/legal/fair-housing-content";
-import { IabsContent } from "@/components/legal/iabs-content";
-import { MlsRulesAndRegulationsContent } from "@/components/legal/mls-rules-and-regulations-content";
-import { MlsRuleScheduleOfFinesContent } from "@/components/legal/mls-rule-schedule-of-fines-content";
-import { SecuritySurveillanceContent } from "@/components/legal/security-surveillance-content";
-import { SellersDisclosureContent } from "@/components/legal/sellers-disclosure-content";
-import { PrivacyContent } from "@/components/legal/privacy-content";
-import { TermsContent } from "@/components/legal/terms-content";
-import { ValuablesMedicationsContent } from "@/components/legal/valuables-medications-content";
+import { LegalPageBody } from "@/components/legal/legal-page-body";
 import { legalPages } from "@/data/resources";
 
 export function generateStaticParams() {
@@ -72,52 +61,6 @@ export default async function LegalPage({
   if (!page) return notFound();
 
   return (
-    <div className="py-10 sm:py-14">
-      <Container>
-        <div className="mx-auto max-w-3xl space-y-8">
-          <header className="space-y-3">
-            <div className="text-xs font-semibold tracking-widest text-white/60">
-              RESOURCES · LEGAL
-            </div>
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              {page.title}
-            </h1>
-            <p className="text-sm text-muted">
-              Updated: <span className="font-mono text-white/70">{page.updatedAt}</span>
-            </p>
-          </header>
-
-          <article className="glass-surface space-y-4 p-6 sm:p-8">
-            {slug === "iabs" ? (
-              <IabsContent />
-            ) : slug === "consumer-protection-notice" ? (
-              <ConsumerProtectionNoticeContent />
-            ) : slug === "mls-rules-and-regulations" ? (
-              <MlsRulesAndRegulationsContent />
-            ) : slug === "mls-rule-schedule-of-fines" ? (
-              <MlsRuleScheduleOfFinesContent />
-            ) : slug === "fair-housing" ? (
-              <FairHousingContent />
-            ) : slug === "valuables-medications" ? (
-              <ValuablesMedicationsContent />
-            ) : slug === "security-surveillance" ? (
-              <SecuritySurveillanceContent />
-            ) : slug === "sellers-disclosure" ? (
-              <SellersDisclosureContent />
-            ) : slug === "broker-branding" ? (
-              <BrokerBrandingContent />
-            ) : slug === "terms" ? (
-              <TermsContent />
-            ) : slug === "privacy" ? (
-              <PrivacyContent />
-            ) : (
-              <div className="space-y-4 text-sm text-white/80">
-                <p>Legal content for this page is not available.</p>
-              </div>
-            )}
-          </article>
-        </div>
-      </Container>
-    </div>
+    <LegalPageBody slug={slug} updatedAt={page.updatedAt} fallbackTitle={page.title} />
   );
 }

@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import type { HomeLocale } from "@/i18n/home-locale";
+import { PrivacyContentEs } from "@/components/legal/privacy-content-es";
 
 /** Privacy Policy for ListQik.com */
-export function PrivacyContent() {
+export function PrivacyContent({ locale = "en" }: { locale?: HomeLocale }) {
+  if (locale === "es") return <PrivacyContentEs />;
   return (
     <div className="space-y-6 text-sm leading-relaxed text-white/85">
       <p className="text-muted">

@@ -61,14 +61,6 @@ export function SiteFooterChrome() {
                     {ready ? t.listings : "Listings"}
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    className="text-white/70 hover:text-white"
-                    href="/portfolio/launch-systems"
-                  >
-                    {ready ? t.portfolio : "Portfolio"}
-                  </Link>
-                </li>
               </ul>
             </div>
 
