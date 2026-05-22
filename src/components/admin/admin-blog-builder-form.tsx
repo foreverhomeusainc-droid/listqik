@@ -1,6 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  AdminBlogPostsTable,
+  postKey,
+} from "@/components/admin/admin-blog-posts-table";
 import { slugifyBlogTitle } from "@/lib/blog-slug";
 import type { BlogLocale } from "@/lib/blog-locale";
 
@@ -34,8 +38,6 @@ type Draft = {
   readingMinutes: string;
 };
 
-type AdminFilter = "all" | BlogLocale;
-
 const CATEGORIES: { value: BlogCategory; label: string }[] = [
   { value: "playbooks", label: "Playbooks" },
   { value: "compliance", label: "Compliance" },
@@ -47,10 +49,6 @@ const LOCALE_LABELS: Record<BlogLocale, string> = {
   en: "English (EN)",
   es: "Spanish (ES)",
 };
-
-function postKey(post: { slug: string; locale: BlogLocale }) {
-  return `${post.locale}:${post.slug}`;
-}
 
 function parsePostKey(key: string): { locale: BlogLocale; slug: string } | null {
   const idx = key.indexOf(":");
@@ -92,22 +90,18 @@ function recordToDraft(post: BlogRecord): Draft {
 export function AdminBlogBuilderForm() {
   const [posts, setPosts] = useState<BlogRecord[]>([]);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
-  const [listFilter, setListFilter] = useState<AdminFilter>("all");
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(() => new Set());
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
   const [isNew, setIsNew] = useState(false);
   const [slugTouched, setSlugTouched] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [bulkBusy, setBulkBusy] = useState(false);
   const [uploadBusy, setUploadBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const filteredPosts = useMemo(() => {
-    if (listFilter === "all") return posts;
-    return posts.filter((p) => p.locale === listFilter);
-  }, [posts, listFilter]);
 
   const selected = useMemo(() => {
     if (!selectedKey) return null;
@@ -164,7 +158,7 @@ export function AdminBlogBuilderForm() {
       : `/resources/blogs/${draft.slug}`;
   }, [draft.slug, draft.status, draft.locale]);
 
-  function startNewPost(locale: BlogLocale = listFilter === "all" ? "en" : listFilter) {
+  function startNewPost(locale: BlogLocale = "en") {
     setIsNew(true);
     setSelectedKey(null);
     setDraft({ ...EMPTY_DRAFT, locale });
@@ -177,6 +171,75 @@ export function AdminBlogBuilderForm() {
     setIsNew(false);
     setSelectedKey(key);
     setSlugTouched(true);
+    setSuccess(null);
+    setError(null);
+  }
+
+  function toggleSelect(key: string) {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
+
+  function toggleSelectAll(keys: string[]) {
+    setSelectedKeys((prev) => {
+      const allOn = keys.length > 0 && keys.every((k) => prev.has(k));
+      if (allOn) {
+        const next = new Set(prev);
+        for (const k of keys) next.delete(k);
+        return next;
+      }
+      return new Set([...prev, ...keys]);
+    });
+  }
+
+  async function onBulkAction(action: "publish" | "draft" | "delete") {
+    if (selectedKeys.size === 0 || bulkBusy) return;
+    if (action === "delete") {
+      if (!window.confirm(`Delete ${selectedKeys.size} post(s)? This cannot be undone.`)) return;
+    }
+    setBulkBusy(true);
+    setError(null);
+    setSuccess(null);
+    const items = [...selectedKeys].map((key) => parsePostKey(key)).filter(Boolean) as {
+      slug: string;
+      locale: BlogLocale;
+    }[];
+    try {
+      const res = await fetch("/api/admin/blogs/bulk", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action, items }),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { ok?: boolean; count?: number; error?: string }
+        | null;
+      if (!res.ok || !data?.ok) {
+        setError(data?.error ?? `Bulk action failed (${res.status}).`);
+        return;
+      }
+      setSelectedKeys(new Set());
+      if (selectedKey && items.some((i) => postKey(i) === selectedKey) && action === "delete") {
+        setSelectedKey(null);
+        setIsNew(false);
+        setDraft(EMPTY_DRAFT);
+      }
+      setSuccess(
+        action === "publish"
+          ? `Published ${data.count ?? 0} post(s).`
+          : action === "draft"
+            ? `Moved ${data.count ?? 0} post(s) to draft.`
+            : `Deleted ${data.count ?? 0} post(s).`,
+      );
+      await loadPosts();
+    } catch {
+      setError("Network error during bulk action.");
+    } finally {
+      setBulkBusy(false);
+    }
   }
 
   function onTitleChange(title: string) {
@@ -380,63 +443,36 @@ export function AdminBlogBuilderForm() {
         </div>
       </header>
 
-      {loading ? (
-        <p className="text-sm text-white/55">Loading posts…</p>
-      ) : error && posts.length === 0 && !isNew ? (
+      {error && posts.length === 0 && !isNew ? (
         <p className="rounded-lg border border-rose-500/35 bg-rose-950/25 px-3 py-2 text-sm text-rose-100">
           {error}
         </p>
-      ) : (
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,240px)_1fr]">
-          <nav className="space-y-2">
-            <div className="flex gap-1 rounded-lg border border-white/10 bg-black/25 p-1">
-              {(["all", "en", "es"] as AdminFilter[]).map((f) => (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setListFilter(f)}
-                  className={`flex-1 rounded-md px-2 py-1 text-xs font-semibold transition ${
-                    listFilter === f
-                      ? "bg-emerald-600/80 text-white"
-                      : "text-white/55 hover:text-white/80"
-                  }`}
-                >
-                  {f === "all" ? "All" : f.toUpperCase()}
-                </button>
-              ))}
-            </div>
-            {filteredPosts.length === 0 ? (
-              <p className="rounded-lg border border-white/10 bg-black/25 px-3 py-2 text-xs text-white/55">
-                No posts in this filter. Create a new EN or ES post.
-              </p>
-            ) : (
-              filteredPosts.map((p) => {
-                const key = postKey(p);
-                const active = !isNew && key === selectedKey;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => selectPost(key)}
-                    className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition ${
-                      active
-                        ? "border-emerald-400/45 bg-emerald-950/30 text-emerald-50"
-                        : "border-white/10 bg-black/20 text-white/80 hover:border-white/20"
-                    }`}
-                  >
-                    <span className="block font-medium line-clamp-2">{p.title}</span>
-                    <span className="mt-0.5 block text-xs text-white/45">
-                      {p.locale.toUpperCase()} · {p.status === "published" ? "Published" : "Draft"} ·{" "}
-                      {p.slug}
-                    </span>
-                  </button>
-                );
-              })
-            )}
-          </nav>
+      ) : null}
 
-          {(isNew || selected || posts.length === 0) && (
-            <form onSubmit={onSave} className="space-y-4">
+      <AdminBlogPostsTable
+        posts={posts}
+        loading={loading}
+        selectedKey={selectedKey}
+        selectedKeys={selectedKeys}
+        bulkBusy={bulkBusy}
+        onToggleSelect={toggleSelect}
+        onToggleSelectAll={toggleSelectAll}
+        onSelectPost={selectPost}
+        onBulkAction={onBulkAction}
+      />
+
+      <div className="rounded-2xl border border-white/10 bg-black/25 p-4 sm:p-5">
+        <h3 className="text-sm font-semibold text-emerald-100">
+          {isNew ? "New post" : selected ? "Edit post" : "Select a post to edit"}
+        </h3>
+        {!isNew && !selected && posts.length > 0 ? (
+          <p className="mt-1 text-xs text-white/50">
+            Click a title or Edit in the table above, or create a new EN/ES post.
+          </p>
+        ) : null}
+
+        {(isNew || selected || posts.length === 0) && (
+          <form onSubmit={onSave} className="mt-4 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block space-y-1.5 text-sm sm:col-span-2">
                   <span className="text-white/70">Title</span>
@@ -648,9 +684,8 @@ export function AdminBlogBuilderForm() {
                 ) : null}
               </div>
             </form>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

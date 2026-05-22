@@ -425,4 +425,43 @@ export async function deleteBlogPost(slug: string, locale: BlogLocale): Promise<
   revalidateBlogPaths(slug, locale);
 }
 
+export type BlogPostRef = { slug: string; locale: BlogLocale };
+
+export async function bulkSetBlogStatus(
+  items: BlogPostRef[],
+  status: BlogStatus,
+  updatedByEmail?: string | null,
+): Promise<number> {
+  if (items.length === 0) return 0;
+  await connectDb();
+  let modified = 0;
+  const now = new Date();
+  for (const item of items) {
+    const result = await BlogPostModel.updateOne(slugLocaleQuery(item.slug, item.locale), {
+      $set: {
+        status,
+        ...(status === "published" ? { publishedAt: now } : {}),
+        updatedByEmail: updatedByEmail ?? undefined,
+      },
+    });
+    modified += result.modifiedCount;
+    revalidateBlogPaths(item.slug, item.locale);
+  }
+  revalidateBlogPaths();
+  return modified;
+}
+
+export async function bulkDeleteBlogPosts(items: BlogPostRef[]): Promise<number> {
+  if (items.length === 0) return 0;
+  await connectDb();
+  let deleted = 0;
+  for (const item of items) {
+    const result = await BlogPostModel.deleteOne(slugLocaleQuery(item.slug, item.locale));
+    deleted += result.deletedCount;
+    revalidateBlogPaths(item.slug, item.locale);
+  }
+  revalidateBlogPaths();
+  return deleted;
+}
+
 export { BLOG_CATEGORIES, blogPublicPath };
