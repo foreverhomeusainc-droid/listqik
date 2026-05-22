@@ -51,7 +51,12 @@ export async function PUT(
     return NextResponse.json({ ok: true, post });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Could not save post.";
-    const status = message === "Post not found." ? 404 : 400;
+    const status =
+      message === "Post not found."
+        ? 404
+        : message.includes("required") || message.includes("Invalid") || message.includes("already exists")
+          ? 400
+          : 500;
     return NextResponse.json({ ok: false, error: message }, { status });
   }
 }

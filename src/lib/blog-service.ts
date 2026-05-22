@@ -256,7 +256,7 @@ export async function getAdminBlogBySlug(
   locale: BlogLocale,
 ): Promise<AdminBlogPost | null> {
   await connectDb();
-  const doc = await BlogPostModel.findOne({ slug, locale }).lean();
+  const doc = await findPostBySlugLocale(slug, locale);
   if (!doc) return null;
   return docToAdmin(doc as Parameters<typeof docToAdmin>[0]);
 }
@@ -319,8 +319,30 @@ export function validateBlogPayload(body: unknown, opts?: { requireSlug?: boolea
   };
 }
 
+function slugLocaleQuery(slug: string, locale: BlogLocale) {
+  if (locale === "en") {
+    return {
+      slug,
+      $or: [{ locale: "en" }, { locale: { $exists: false } }, { locale: null }],
+    };
+  }
+  return { slug, locale: "es" };
+}
+
+async function findPostBySlugLocale(slug: string, locale: BlogLocale) {
+  return BlogPostModel.findOne(slugLocaleQuery(slug, locale)).lean();
+}
+
+function formatBlogWriteError(err: unknown): string {
+  if (err && typeof err === "object" && "code" in err && err.code === 11000) {
+    return "A post with this slug already exists. Use a different slug or run npm run db:migrate-blogs if you upgraded from an older blog setup.";
+  }
+  if (err instanceof Error) return err.message;
+  return "Could not save post.";
+}
+
 async function assertSlugLocaleAvailable(slug: string, locale: BlogLocale, excludeId?: string) {
-  const existing = await BlogPostModel.findOne({ slug, locale }).lean();
+  const existing = await findPostBySlugLocale(slug, locale);
   if (existing && String(existing._id) !== excludeId) {
     throw new Error(
       locale === "es"
@@ -337,13 +359,17 @@ export async function createBlogPost(
   await connectDb();
   await assertSlugLocaleAvailable(input.slug, input.locale);
 
-  const doc = await BlogPostModel.create({
-    ...input,
-    updatedByEmail: updatedByEmail ?? undefined,
-  });
+  try {
+    const doc = await BlogPostModel.create({
+      ...input,
+      updatedByEmail: updatedByEmail ?? undefined,
+    });
 
-  if (input.status === "published") revalidateBlogPaths(input.slug, input.locale);
-  return docToAdmin(doc.toObject());
+    if (input.status === "published") revalidateBlogPaths(input.slug, input.locale);
+    return docToAdmin(doc.toObject());
+  } catch (err) {
+    throw new Error(formatBlogWriteError(err));
+  }
 }
 
 export async function updateBlogPost(
@@ -354,7 +380,7 @@ export async function updateBlogPost(
 ): Promise<AdminBlogPost> {
   await connectDb();
 
-  const existing = await BlogPostModel.findOne({ slug, locale }).lean();
+  const existing = await findPostBySlugLocale(slug, locale);
   if (!existing) throw new Error("Post not found.");
 
   if (input.slug !== slug || input.locale !== locale) {
@@ -369,15 +395,20 @@ export async function updateBlogPost(
     throw new Error("Language cannot be changed after creation.");
   }
 
-  const doc = await BlogPostModel.findOneAndUpdate(
-    { slug, locale },
-    {
-      ...input,
-      locale,
-      updatedByEmail: updatedByEmail ?? undefined,
-    },
-    { new: true },
-  ).lean();
+  let doc;
+  try {
+    doc = await BlogPostModel.findOneAndUpdate(
+      slugLocaleQuery(slug, locale),
+      {
+        ...input,
+        locale,
+        updatedByEmail: updatedByEmail ?? undefined,
+      },
+      { new: true },
+    ).lean();
+  } catch (err) {
+    throw new Error(formatBlogWriteError(err));
+  }
 
   if (!doc) throw new Error("Post not found.");
   revalidateBlogPaths(slug, locale);
@@ -389,7 +420,7 @@ export async function updateBlogPost(
 
 export async function deleteBlogPost(slug: string, locale: BlogLocale): Promise<void> {
   await connectDb();
-  const result = await BlogPostModel.deleteOne({ slug, locale });
+  const result = await BlogPostModel.deleteOne(slugLocaleQuery(slug, locale));
   if (result.deletedCount === 0) throw new Error("Post not found.");
   revalidateBlogPaths(slug, locale);
 }

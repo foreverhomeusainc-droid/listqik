@@ -17,7 +17,8 @@
     "stripe:startnow-subsonic-promo": "node scripts/create-stripe-startnow-subsonic-promo.mjs",
     "db:purge-test-users": "node scripts/purge-test-users.mjs --confirm",
     "db:seed-blogs": "node scripts/seed-blogs-from-static.mjs",
-    "db:create-admin": "node scripts/create-admin-user.mjs"
+    "db:create-admin": "node scripts/create-admin-user.mjs",
+    "db:migrate-blogs": "node scripts/migrate-blog-posts.mjs --confirm"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1037.0",

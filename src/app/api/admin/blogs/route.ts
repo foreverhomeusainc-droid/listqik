@@ -31,6 +31,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, post });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Could not create post.";
-    return NextResponse.json({ ok: false, error: message }, { status: 400 });
+    const status = message.includes("required") || message.includes("Invalid") || message.includes("already exists")
+      ? 400
+      : 500;
+    return NextResponse.json({ ok: false, error: message }, { status });
   }
 }

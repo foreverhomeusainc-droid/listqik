@@ -284,7 +284,12 @@ export function AdminBlogBuilderForm() {
         | { ok?: boolean; post?: BlogRecord; error?: string }
         | null;
       if (!res.ok || !data?.ok || !data.post) {
-        setError(data?.error ?? "Save failed.");
+        const fallback = res.status === 401
+          ? "Not signed in. Refresh and log in again."
+          : res.status === 403
+            ? "Admin access required (check ADMIN_EMAILS)."
+            : `Save failed (${res.status}).`;
+        setError(data?.error ?? fallback);
         return;
       }
 
