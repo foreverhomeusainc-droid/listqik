@@ -150,7 +150,7 @@ function languageDisplayLabel(
 export function ListqikUniversityPageContent({ feed }: ListqikUniversityPageContentProps) {
   const { locale, ready } = useSiteLocale();
   const copy = getListqikUniversityCopy(locale);
-  const [languageFilter, setLanguageFilter] = useState<string>(ALL_LANGUAGES);
+  const [languageFilter, setLanguageFilter] = useState<string>("en");
 
   const languageByVideoId = useMemo(() => {
     return new Map(feed.videos.map((video) => [video.id, detectVideoLanguage(video)]));
