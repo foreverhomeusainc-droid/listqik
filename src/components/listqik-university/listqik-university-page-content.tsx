@@ -14,8 +14,10 @@ const ALL_LANGUAGES = "all";
 const OTHER_LANGUAGE = "other";
 
 const SPANISH_CHAR_RE = /[¿¡ñáéíóúü]/i;
+// Keep this limited to Vietnamese-specific letters so Spanish accents do not
+// get misclassified as Vietnamese.
 const VIETNAMESE_CHAR_RE =
-  /[ăâđêôơưáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ]/i;
+  /[ăâđêôơưạảãấầẩẫậắằẳẵặẹẻẽếềểễệịỉĩọỏõốồổỗộớờởỡợụủũứừửữựỵỷỹ]/i;
 const PORTUGUESE_CHAR_RE = /[ãõç]/i;
 const FRENCH_CHAR_RE = /[àâæçéèêëîïôœùûüÿ]/i;
 const ARABIC_RE = /[\u0600-\u06FF]/;
@@ -79,8 +81,8 @@ function detectLanguageByScript(text: string): string | null {
 }
 
 function detectLanguageByLatinHints(text: string): string | null {
-  if (VIETNAMESE_CHAR_RE.test(text)) return "vi";
   if (SPANISH_CHAR_RE.test(text)) return "es";
+  if (VIETNAMESE_CHAR_RE.test(text)) return "vi";
   if (PORTUGUESE_CHAR_RE.test(text)) return "pt";
   if (FRENCH_CHAR_RE.test(text)) return "fr";
 
