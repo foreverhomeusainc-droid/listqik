@@ -117,7 +117,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const stripeSession = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items: lineItems,
-    success_url: `${base}/upgrades?checkout=success`,
+    success_url: `${base}/upgrades?checkout=success&session_id=${encodeURIComponent(checkoutSessionId)}`,
     cancel_url: `${base}/upgrades?checkout=cancelled`,
     allow_promotion_codes: true,
     customer_email: email,

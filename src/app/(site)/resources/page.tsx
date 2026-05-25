@@ -51,6 +51,16 @@ export default function ResourcesPage() {
                   episodes publish.
                 </div>
               </Link>
+              <Link
+                href="/service-area"
+                className="glass-surface p-6 hover:border-white/20 transition sm:col-span-2"
+              >
+                <div className="text-lg font-semibold text-white">Service Area</div>
+                <div className="mt-2 text-sm text-muted">
+                  View primary DFW counties, extended Texas county coverage, and a county-level map
+                  of where ListQik currently serves sellers.
+                </div>
+              </Link>
             </div>
           </div>
 

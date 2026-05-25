@@ -1,13 +1,51 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { Container } from "@/components/container";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import { getListqikUniversityCopy } from "@/i18n/listqik-university-copy";
-import type { YouTubeChannelFeed } from "@/lib/youtube-channel";
+import type { YouTubeChannelFeed, YouTubeChannelVideo } from "@/lib/youtube-channel";
 
 type ListqikUniversityPageContentProps = {
   feed: YouTubeChannelFeed;
 };
+
+const ALL_LANGUAGES = "all";
+const OTHER_LANGUAGE = "other";
+
+const SPANISH_CHAR_RE = /[¿¡ñáéíóúü]/i;
+const VIETNAMESE_CHAR_RE =
+  /[ăâđêôơưáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ]/i;
+const PORTUGUESE_CHAR_RE = /[ãõç]/i;
+const FRENCH_CHAR_RE = /[àâæçéèêëîïôœùûüÿ]/i;
+const ARABIC_RE = /[\u0600-\u06FF]/;
+const CYRILLIC_RE = /[\u0400-\u04FF]/;
+const HANGUL_RE = /[\uAC00-\uD7AF]/;
+const HIRAGANA_KATAKANA_RE = /[\u3040-\u30FF]/;
+const CJK_RE = /[\u4E00-\u9FFF]/;
+
+const LANGUAGE_HINTS: Array<{ code: string; words: string[] }> = [
+  {
+    code: "en",
+    words: ["how", "what", "your", "home", "sell", "fast", "why", "the", "and", "listqik"],
+  },
+  {
+    code: "es",
+    words: ["como", "para", "tu", "casa", "vender", "rapido", "precio", "anuncio", "mas", "sabias"],
+  },
+  {
+    code: "vi",
+    words: ["tai", "sao", "ban", "nha", "nhung", "thay", "doi", "cho", "mot", "khi"],
+  },
+  {
+    code: "pt",
+    words: ["como", "casa", "vender", "rapido", "preco", "para", "mais", "voce", "seu", "imovel"],
+  },
+  {
+    code: "fr",
+    words: ["comment", "maison", "vendre", "prix", "pour", "votre", "plus", "avec", "est", "vous"],
+  },
+];
 
 function formatPublished(iso: string, locale: "en" | "es") {
   if (!iso) return "";
@@ -22,9 +60,111 @@ function formatPublished(iso: string, locale: "en" | "es") {
   }
 }
 
+function normalizeTokens(text: string): string[] {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .split(/[^a-z]+/)
+    .filter((token) => token.length > 1);
+}
+
+function detectLanguageByScript(text: string): string | null {
+  if (ARABIC_RE.test(text)) return "ar";
+  if (CYRILLIC_RE.test(text)) return "ru";
+  if (HANGUL_RE.test(text)) return "ko";
+  if (HIRAGANA_KATAKANA_RE.test(text)) return "ja";
+  if (CJK_RE.test(text)) return "zh";
+  return null;
+}
+
+function detectLanguageByLatinHints(text: string): string | null {
+  if (VIETNAMESE_CHAR_RE.test(text)) return "vi";
+  if (SPANISH_CHAR_RE.test(text)) return "es";
+  if (PORTUGUESE_CHAR_RE.test(text)) return "pt";
+  if (FRENCH_CHAR_RE.test(text)) return "fr";
+
+  const tokenSet = new Set(normalizeTokens(text));
+  let bestCode: string | null = null;
+  let bestScore = 0;
+
+  for (const hint of LANGUAGE_HINTS) {
+    const score = hint.words.reduce((sum, word) => sum + (tokenSet.has(word) ? 1 : 0), 0);
+    if (score > bestScore) {
+      bestCode = hint.code;
+      bestScore = score;
+    }
+  }
+
+  return bestScore >= 2 ? bestCode : null;
+}
+
+function detectVideoLanguage(video: YouTubeChannelVideo): string {
+  const text = `${video.title}\n${video.description}`.trim();
+  if (!text) return OTHER_LANGUAGE;
+  return detectLanguageByScript(text) ?? detectLanguageByLatinHints(text) ?? OTHER_LANGUAGE;
+}
+
+function sortLanguageCodes(codes: string[], locale: "en" | "es") {
+  const priority = new Map<string, number>([
+    [locale, 0],
+    [locale === "en" ? "es" : "en", 1],
+    ["vi", 2],
+    [OTHER_LANGUAGE, 99],
+  ]);
+
+  return [...codes].sort((a, b) => {
+    const rankA = priority.get(a) ?? 10;
+    const rankB = priority.get(b) ?? 10;
+    if (rankA !== rankB) return rankA - rankB;
+    return a.localeCompare(b);
+  });
+}
+
+function buttonCodeLabel(code: string) {
+  if (code === ALL_LANGUAGES) return "ALL";
+  if (code === OTHER_LANGUAGE) return "OTHER";
+  return code.toUpperCase();
+}
+
+function languageDisplayLabel(
+  code: string,
+  locale: "en" | "es",
+  fallbackOther: string,
+  fallbackAll: string,
+) {
+  if (code === ALL_LANGUAGES) return fallbackAll;
+  if (code === OTHER_LANGUAGE) return fallbackOther;
+  try {
+    const displayNames = new Intl.DisplayNames([locale === "es" ? "es" : "en"], {
+      type: "language",
+    });
+    return displayNames.of(code) ?? code.toUpperCase();
+  } catch {
+    return code.toUpperCase();
+  }
+}
+
 export function ListqikUniversityPageContent({ feed }: ListqikUniversityPageContentProps) {
   const { locale, ready } = useSiteLocale();
   const copy = getListqikUniversityCopy(locale);
+  const [languageFilter, setLanguageFilter] = useState<string>(ALL_LANGUAGES);
+
+  const languageByVideoId = useMemo(() => {
+    return new Map(feed.videos.map((video) => [video.id, detectVideoLanguage(video)]));
+  }, [feed.videos]);
+
+  const availableLanguages = useMemo(() => {
+    return sortLanguageCodes(
+      Array.from(new Set(feed.videos.map((video) => languageByVideoId.get(video.id) ?? OTHER_LANGUAGE))),
+      locale,
+    );
+  }, [feed.videos, languageByVideoId, locale]);
+
+  const filteredVideos = useMemo(() => {
+    if (languageFilter === ALL_LANGUAGES) return feed.videos;
+    return feed.videos.filter((video) => (languageByVideoId.get(video.id) ?? OTHER_LANGUAGE) === languageFilter);
+  }, [feed.videos, languageByVideoId, languageFilter]);
 
   return (
     <div
@@ -85,18 +225,72 @@ export function ListqikUniversityPageContent({ feed }: ListqikUniversityPageCont
             <div>
               <h2 className="text-xl font-semibold text-white">{copy.latestTitle}</h2>
               <p className="mt-1 text-sm text-muted">{copy.latestHint}</p>
+              {availableLanguages.length > 1 ? (
+                <div className="mt-4 space-y-2">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                    {copy.languageFilterLabel}
+                  </div>
+                  <div
+                    className="inline-flex flex-wrap rounded-full border border-emerald-500/35 bg-black/50 p-0.5 font-mono text-[10px] font-bold tracking-wider"
+                    role="group"
+                    aria-label={copy.languageFilterLabel}
+                  >
+                    {[ALL_LANGUAGES, ...availableLanguages].map((code) => {
+                      const active = languageFilter === code;
+                      const fullLabel = languageDisplayLabel(
+                        code,
+                        locale,
+                        copy.otherLanguagesLabel,
+                        copy.allLanguagesLabel,
+                      );
+
+                      return (
+                        <button
+                          key={code}
+                          type="button"
+                          onClick={() => setLanguageFilter(code)}
+                          className={[
+                            "min-w-[2.5rem] rounded-full px-2.5 py-1 transition",
+                            active
+                              ? "bg-emerald-500/30 text-emerald-100"
+                              : "text-emerald-200/55 hover:text-emerald-100/90",
+                          ].join(" ")}
+                          aria-pressed={active}
+                          title={fullLabel}
+                        >
+                          {buttonCodeLabel(code)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
             </div>
 
-            {feed.videos.length > 0 ? (
+            {filteredVideos.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2">
-                {feed.videos.map((video, index) => (
+                {filteredVideos.map((video, index) => {
+                  const videoLanguage = languageByVideoId.get(video.id) ?? OTHER_LANGUAGE;
+                  const videoLanguageLabel = languageDisplayLabel(
+                    videoLanguage,
+                    locale,
+                    copy.otherLanguagesLabel,
+                    copy.allLanguagesLabel,
+                  );
+
+                  return (
                   <article key={video.id} className="glass-surface overflow-hidden">
                     <div className="p-5">
-                      {index === 0 ? <span className="chip">{copy.featuredLabel}</span> : null}
+                      <div className="flex flex-wrap gap-2">
+                        {index === 0 ? <span className="chip">{copy.featuredLabel}</span> : null}
+                        <span className="chip" title={videoLanguageLabel}>
+                          {buttonCodeLabel(videoLanguage)}
+                        </span>
+                      </div>
                       <h3
                         className={[
                           "font-semibold text-white",
-                          index === 0 ? "mt-3 text-lg" : "text-base",
+                          index === 0 ? "mt-3 text-lg" : "mt-3 text-base",
                         ].join(" ")}
                       >
                         {video.title}
@@ -128,7 +322,8 @@ export function ListqikUniversityPageContent({ feed }: ListqikUniversityPageCont
                       />
                     </div>
                   </article>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="glass-surface p-8 text-center">

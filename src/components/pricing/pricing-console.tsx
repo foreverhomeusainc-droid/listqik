@@ -12,6 +12,7 @@ import {
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { GoogleAdsPurchaseConversion } from "@/components/analytics/google-ads-purchase-conversion";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import {
@@ -57,6 +58,14 @@ const initialState: WizardState = {
   propertyType: "",
   acceptedUserAgreement: false,
 };
+
+function parseDisplayedUsdAmount(raw: string | null | undefined): number | null {
+  if (!raw) return null;
+  const match = raw.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+  if (!match) return null;
+  const value = Number(match[0]);
+  return Number.isFinite(value) ? value : null;
+}
 
 export function PricingConsole() {
   const searchParams = useSearchParams();
@@ -352,6 +361,10 @@ export function PricingConsole() {
   }, [isWizardOpen]);
 
   const landingIntakeActive = isWizardOpen && landingPromoSource === START_NOW_SUBSONIC_PROMO;
+  const planPurchaseValue = useMemo(
+    () => parseDisplayedUsdAmount(wizard.plan?.price),
+    [wizard.plan?.price],
+  );
 
   return (
     <div
@@ -753,6 +766,13 @@ export function PricingConsole() {
           ) : null}
           {wizard.step === 3 ? (
             <div className="grid gap-4">
+              {planPaymentRecorded && checkoutSessionId && planPurchaseValue ? (
+                <GoogleAdsPurchaseConversion
+                  transactionId={checkoutSessionId}
+                  value={planPurchaseValue}
+                  currency="USD"
+                />
+              ) : null}
               <h2 className="text-xl font-semibold text-white">{copy.wizard.step3Title}</h2>
               <div className="rounded-2xl border border-emerald-400/35 bg-emerald-950/20 p-4 text-sm text-emerald-100/90">
                 <p className="font-semibold text-emerald-100">{copy.wizard.successTitle}</p>

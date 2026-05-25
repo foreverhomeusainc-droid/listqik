@@ -15,6 +15,9 @@ export type ListqikUniversityCopy = {
   watchOnYoutube: string;
   updatedNote: string;
   featuredLabel: string;
+  languageFilterLabel: string;
+  allLanguagesLabel: string;
+  otherLanguagesLabel: string;
 };
 
 const COPY: Record<HomeLocale, ListqikUniversityCopy> = {
@@ -52,6 +55,9 @@ const COPY: Record<HomeLocale, ListqikUniversityCopy> = {
     watchOnYoutube: "Watch on YouTube",
     updatedNote: "Auto-updated from YouTube",
     featuredLabel: "Latest episode",
+    languageFilterLabel: "Filter by video language",
+    allLanguagesLabel: "All languages",
+    otherLanguagesLabel: "Other",
   },
   es: {
     eyebrow: "UNIVERSIDAD LISTQIK",
@@ -87,6 +93,9 @@ const COPY: Record<HomeLocale, ListqikUniversityCopy> = {
     watchOnYoutube: "Ver en YouTube",
     updatedNote: "Actualizado automáticamente desde YouTube",
     featuredLabel: "Episodio más reciente",
+    languageFilterLabel: "Filtrar por idioma del video",
+    allLanguagesLabel: "Todos los idiomas",
+    otherLanguagesLabel: "Otros",
   },
 };
 

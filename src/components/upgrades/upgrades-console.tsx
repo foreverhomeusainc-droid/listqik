@@ -1,6 +1,8 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { GoogleAdsPurchaseConversion } from "@/components/analytics/google-ads-purchase-conversion";
 import { staticWizardUpgrades } from "@/data/pricing-static-upgrades";
 
 type ListingItem = {
@@ -10,6 +12,17 @@ type ListingItem = {
   state: string;
   zip: string;
   status: string;
+};
+
+type UpgradeCheckoutStatus = {
+  loading: boolean;
+  sessionId: string | null;
+  paid: boolean;
+  transactionId: string | null;
+  amountTotal: number | null;
+  currency: string;
+  upgradeSlugs: string[];
+  error: string | null;
 };
 
 function formatMoney(value: number) {
@@ -27,12 +40,25 @@ function addressLine(listing: ListingItem) {
 }
 
 export function UpgradesConsole() {
+  const searchParams = useSearchParams();
+  const checkoutState = searchParams.get("checkout")?.trim() || "";
+  const querySessionId = searchParams.get("session_id")?.trim() || "";
   const [listings, setListings] = useState<ListingItem[]>([]);
   const [selectedListingId, setSelectedListingId] = useState("");
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [checkoutStatus, setCheckoutStatus] = useState<UpgradeCheckoutStatus>({
+    loading: false,
+    sessionId: null,
+    paid: false,
+    transactionId: null,
+    amountTotal: null,
+    currency: "USD",
+    upgradeSlugs: [],
+    error: null,
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -73,6 +99,142 @@ export function UpgradesConsole() {
     [selectedSlugs],
   );
 
+  const purchasedUpgradeNames = useMemo(() => {
+    return checkoutStatus.upgradeSlugs
+      .map((slug) => staticWizardUpgrades.find((upgrade) => upgrade.slug === slug)?.name)
+      .filter((name): name is string => Boolean(name));
+  }, [checkoutStatus.upgradeSlugs]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (querySessionId) {
+      try {
+        window.sessionStorage.setItem("latestUpgradeCheckoutSessionId", querySessionId);
+      } catch {
+        /* ignore storage access issues */
+      }
+    }
+  }, [querySessionId]);
+
+  useEffect(() => {
+    if (checkoutState !== "success") {
+      setCheckoutStatus((prev) => ({
+        ...prev,
+        loading: false,
+        error: null,
+      }));
+      return;
+    }
+
+    const sessionId =
+      querySessionId ||
+      (() => {
+        try {
+          return window.sessionStorage.getItem("latestUpgradeCheckoutSessionId") || "";
+        } catch {
+          return "";
+        }
+      })();
+
+    if (!sessionId) {
+      setCheckoutStatus({
+        loading: false,
+        sessionId: null,
+        paid: false,
+        transactionId: null,
+        amountTotal: null,
+        currency: "USD",
+        upgradeSlugs: [],
+        error: "Checkout succeeded, but the session reference is missing. Refresh and try again.",
+      });
+      return;
+    }
+
+    let cancelled = false;
+    let attempts = 0;
+
+    const pollStatus = async () => {
+      if (cancelled) return;
+      setCheckoutStatus((prev) => ({
+        ...prev,
+        loading: true,
+        sessionId,
+        error: null,
+      }));
+
+      try {
+        const res = await fetch(
+          `/api/pricing/checkout/status?sessionId=${encodeURIComponent(sessionId)}`,
+          { cache: "no-store" },
+        );
+        const data = (await res.json().catch(() => null)) as
+          | {
+              ok?: boolean;
+              upgradesPaid?: boolean;
+              error?: string;
+              upgradesPurchase?: {
+                transactionId?: string | null;
+                amountTotal?: number | null;
+                currency?: string | null;
+                upgradeSlugs?: string[];
+              } | null;
+            }
+          | null;
+
+        if (!res.ok || !data?.ok) {
+          throw new Error(data?.error || "Could not verify upgrade payment status.");
+        }
+
+        const paid = Boolean(data.upgradesPaid);
+        const purchase = data.upgradesPurchase;
+        const hasPurchaseData =
+          Boolean(purchase?.transactionId) &&
+          typeof purchase?.amountTotal === "number" &&
+          purchase.amountTotal > 0;
+
+        if (!cancelled) {
+          setCheckoutStatus({
+            loading: !hasPurchaseData && attempts < 14,
+            sessionId,
+            paid,
+            transactionId: purchase?.transactionId?.trim() || sessionId,
+            amountTotal: typeof purchase?.amountTotal === "number" ? purchase.amountTotal : null,
+            currency: purchase?.currency?.trim() || "USD",
+            upgradeSlugs: Array.isArray(purchase?.upgradeSlugs) ? purchase.upgradeSlugs : [],
+            error: null,
+          });
+        }
+
+        if ((!paid || !hasPurchaseData) && attempts < 14) {
+          attempts += 1;
+          window.setTimeout(() => {
+            void pollStatus();
+          }, 1500);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setCheckoutStatus({
+            loading: false,
+            sessionId,
+            paid: false,
+            transactionId: null,
+            amountTotal: null,
+            currency: "USD",
+            upgradeSlugs: [],
+            error:
+              err instanceof Error ? err.message : "Could not verify upgrade payment status.",
+          });
+        }
+      }
+    };
+
+    void pollStatus();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [checkoutState, querySessionId]);
+
   function toggleSlug(slug: string) {
     setSelectedSlugs((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
   }
@@ -99,6 +261,16 @@ export function UpgradesConsole() {
         setError(data?.error || "Could not start Stripe checkout.");
         return;
       }
+      try {
+        if ((data as { checkoutSessionId?: string | null }).checkoutSessionId) {
+          window.sessionStorage.setItem(
+            "latestUpgradeCheckoutSessionId",
+            String((data as { checkoutSessionId?: string | null }).checkoutSessionId),
+          );
+        }
+      } catch {
+        /* ignore storage access issues */
+      }
       window.location.href = data.checkoutUrl;
     } catch {
       setError("Network error while starting checkout.");
@@ -109,12 +281,59 @@ export function UpgradesConsole() {
 
   return (
     <div className="space-y-5">
+      {checkoutState === "success" && checkoutStatus.paid && checkoutStatus.transactionId && checkoutStatus.amountTotal ? (
+        <GoogleAdsPurchaseConversion
+          transactionId={checkoutStatus.transactionId}
+          value={checkoutStatus.amountTotal}
+          currency={checkoutStatus.currency}
+        />
+      ) : null}
+
       <header className="rounded-2xl border border-emerald-500/25 bg-black/40 p-5">
         <h1 className="text-2xl font-semibold text-white">Listing Upgrades</h1>
         <p className="mt-2 text-sm text-white/75">
           Choose a listing, select add-ons, and pay with Stripe Checkout.
         </p>
       </header>
+
+      {checkoutState === "success" ? (
+        <div className="rounded-2xl border border-emerald-400/35 bg-emerald-950/20 p-5 text-sm text-emerald-100/90">
+          <p className="font-semibold text-emerald-100">
+            {checkoutStatus.paid ? "Upgrade checkout complete." : "Verifying upgrade payment..."}
+          </p>
+          {checkoutStatus.loading ? (
+            <p className="mt-2 text-emerald-100/80">
+              We are confirming your Stripe payment and loading the purchase details.
+            </p>
+          ) : checkoutStatus.error ? (
+            <p className="mt-2 text-rose-200">{checkoutStatus.error}</p>
+          ) : (
+            <>
+              {purchasedUpgradeNames.length > 0 ? (
+                <p className="mt-2">
+                  Purchased upgrades:{" "}
+                  <span className="font-semibold text-white">{purchasedUpgradeNames.join(", ")}</span>
+                </p>
+              ) : null}
+              {checkoutStatus.amountTotal ? (
+                <p className="mt-1">
+                  Total paid:{" "}
+                  <span className="font-semibold text-white">
+                    {formatMoney(checkoutStatus.amountTotal)}
+                  </span>
+                </p>
+              ) : null}
+            </>
+          )}
+        </div>
+      ) : null}
+
+      {checkoutState === "cancelled" ? (
+        <div className="rounded-2xl border border-amber-300/35 bg-amber-950/20 p-5 text-sm text-amber-100">
+          Upgrade checkout was cancelled. Your selected add-ons are still here if you want to try
+          again.
+        </div>
+      ) : null}
 
       {loading ? (
         <div className="rounded-2xl border border-white/15 bg-black/30 p-5 text-sm text-white/75">Loading your listings...</div>
