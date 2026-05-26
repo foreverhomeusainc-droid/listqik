@@ -216,7 +216,7 @@ export default function ServiceAreaPage() {
               Texas service coverage plus Houston HAR market context.
             </h1>
             <p className="max-w-4xl text-base text-muted">
-              The Texas map and county lists below still represent ListQik's active coverage,
+              The Texas map and county lists below still represent ListQik&apos;s active coverage,
               led by Collin, Denton, Dallas, and Tarrant counties. The Houston HAR section is
               a separate market-reference guide, so it complements the existing map rather than
               replacing it.
@@ -382,7 +382,7 @@ export default function ServiceAreaPage() {
                 </h2>
                 <p className="max-w-4xl text-sm text-white/70 sm:text-base">
                   These 9 core counties make up the immediate Houston-The Woodlands-Sugar Land
-                  metropolitan area. They are the primary focus of HAR's monthly market update
+                  metropolitan area. They are the primary focus of HAR&apos;s monthly market update
                   reports and represent the densest concentration of MLS activity.
                 </p>
                 <div className="rounded-2xl border border-sky-400/15 bg-sky-950/10 p-4 text-sm text-white/72">
@@ -445,7 +445,7 @@ export default function ServiceAreaPage() {
                     Galveston Area Council (H-GAC).
                   </p>
                   <p className="mt-3 text-sm text-white/65">
-                    Agents frequently use HAR's MLS to list and search properties in these
+                    Agents frequently use HAR&apos;s MLS to list and search properties in these
                     surrounding areas:
                   </p>
                   <MarketCountyList counties={HAR_EXTENDED_MARKET_COUNTIES} itemTone="dark" />
