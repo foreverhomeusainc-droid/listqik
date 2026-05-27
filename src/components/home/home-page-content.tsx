@@ -4,8 +4,9 @@ import Link from "next/link";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import { ComparisonTable } from "@/components/comparison-table";
-import { useHomeLocale } from "@/components/home/home-locale-provider";
 import { HomeLanguageToggle } from "@/components/home/home-language-toggle";
+import { useSiteLocale } from "@/components/site-locale-provider";
+import { getHomepageCopy } from "@/i18n/homepage-copy";
 import { ListingCard } from "@/components/listing-card";
 import { NetProceedsCalculator } from "@/components/net-proceeds-calculator";
 import { listings } from "@/data/listings";
@@ -13,7 +14,8 @@ import { listings } from "@/data/listings";
 const MISSION_HREFS = ["/pricing", "/pricing", "/listings"] as const;
 
 export function HomePageContent() {
-  const { locale, copy, ready } = useHomeLocale();
+  const { locale, ready } = useSiteLocale();
+  const copy = getHomepageCopy(locale);
   const featured = listings.filter((l) => l.featured).slice(0, 3);
 
   if (!ready) {

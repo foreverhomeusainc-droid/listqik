@@ -1,10 +1,12 @@
 "use client";
 
-import { useHomeLocale } from "@/components/home/home-locale-provider";
+import { useSiteLocale } from "@/components/site-locale-provider";
 import type { HomeLocale } from "@/i18n/home-locale";
+import { getHomepageCopy } from "@/i18n/homepage-copy";
 
 export function HomeLanguageToggle() {
-  const { locale, copy, setLocale } = useHomeLocale();
+  const { locale, setLocale } = useSiteLocale();
+  const copy = getHomepageCopy(locale);
 
   return (
     <div
