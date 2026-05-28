@@ -1,15 +1,29 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PricingConsole } from "@/components/pricing/pricing-console";
+import { getPricingCopy } from "@/i18n/pricing-copy";
+import { getRequestHomeLocale, homeOpenGraphLocale } from "@/lib/site-locale-server";
 
-export const metadata: Metadata = {
-  title: "Pricing",
-  description:
-    "Compare ListQik.com pricing tiers for Texas broker-assisted listing services, including marketing support and licensed brokerage submission.",
-  alternates: {
-    canonical: "/pricing",
-  },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const locale = await getRequestHomeLocale(params.lang);
+  const copy = getPricingCopy(locale);
+
+  return {
+    title: copy.meta.title,
+    description: copy.meta.description,
+    alternates: { canonical: "/pricing" },
+    openGraph: {
+      title: copy.meta.title,
+      description: copy.meta.description,
+      locale: homeOpenGraphLocale(locale),
+    },
+  };
+}
 
 function PricingFallback() {
   return (

@@ -67,7 +67,7 @@ export type HomepageCopy = {
 const COPY: Record<HomeLocale, HomepageCopy> = {
   en: {
     meta: {
-      title: "ListQik.com | Texas Home Listing Platform",
+      title: "ListQik | Texas Home Listing Platform",
       description:
         "List your Texas home with a guided workflow, broker-backed support, and tools built to help you keep more equity.",
     },
@@ -195,7 +195,7 @@ const COPY: Record<HomeLocale, HomepageCopy> = {
   },
   es: {
     meta: {
-      title: "ListQik.com | Plataforma de listados en Texas",
+      title: "ListQik | Plataforma de listados en Texas",
       description:
         "Publique su casa en Texas con un proceso guiado, respaldo de un corredor con licencia y herramientas para conservar más capital.",
     },

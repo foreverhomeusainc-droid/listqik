@@ -30,6 +30,7 @@ export type PricingPropertyTypeCopy = {
 };
 
 export type PricingCopy = {
+  meta: { title: string; description: string };
   languageToggle: { en: string; es: string };
   languageGroupLabel: string;
   subsonicPromoPrice: string;
@@ -108,6 +109,11 @@ export type PricingCopy = {
 
 const COPY: Record<HomeLocale, PricingCopy> = {
   en: {
+    meta: {
+      title: "Pricing | ListQik",
+      description:
+        "Compare ListQik pricing tiers for Texas broker-assisted listing services, including marketing support and licensed brokerage submission.",
+    },
     languageToggle: { en: "EN", es: "ES" },
     languageGroupLabel: "Language",
     subsonicPromoPrice: "$79",
@@ -312,6 +318,11 @@ const COPY: Record<HomeLocale, PricingCopy> = {
     ],
   },
   es: {
+    meta: {
+      title: "Precios | ListQik",
+      description:
+        "Compare precios de ListQik para servicios de listado con corretaje en Texas, apoyo de marketing y envío con correduría con licencia.",
+    },
     languageToggle: { en: "EN", es: "ES" },
     languageGroupLabel: "Idioma",
     subsonicPromoPrice: "$79",

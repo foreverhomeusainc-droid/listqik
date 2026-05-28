@@ -5,6 +5,9 @@ import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import { ComparisonTable } from "@/components/comparison-table";
 import { HomeLanguageToggle } from "@/components/home/home-language-toggle";
+import { CockpitBackdropPanel } from "@/components/marketing/cockpit-backdrop-panel";
+import { CockpitHudFrame } from "@/components/marketing/cockpit-hud-frame";
+import { MarketingPageScrim } from "@/components/marketing/marketing-page-scrim";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import { getHomepageCopy } from "@/i18n/homepage-copy";
 import { ListingCard } from "@/components/listing-card";
@@ -27,13 +30,11 @@ export function HomePageContent() {
   }
 
   return (
-    <div className="relative min-w-0 overflow-x-hidden pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <div aria-hidden className="pointer-events-none absolute inset-0 grid-bg" />
-
+    <MarketingPageScrim>
       <section className="cockpit-hero bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.18),rgba(2,6,3,0.92)_55%)] pt-6 sm:pt-10 lg:pt-14">
         <div aria-hidden className="cockpit-scanlines absolute inset-0 z-[1]" />
         <Container className="relative z-[2]">
-          <div className="cockpit-hud-frame border-emerald-500/20 bg-black/55 p-3 sm:p-5 lg:p-8">
+          <CockpitHudFrame>
             <div className="mb-4 flex flex-col items-center justify-center gap-3 border-b border-emerald-500/25 pb-3 sm:mb-6 sm:flex-row sm:justify-between sm:gap-3 sm:pb-4">
               <div className="flex flex-wrap items-center justify-center gap-2 font-mono text-[9px] tracking-[0.18em] text-emerald-300/80 sm:text-[11px] sm:tracking-[0.25em]">
                 <span className="text-emerald-300/90">{copy.hud.left}</span>
@@ -91,17 +92,8 @@ export function HomePageContent() {
               </div>
             </div>
 
-            <div className="relative mt-6 grid min-w-0 gap-4 overflow-hidden rounded-2xl border border-emerald-500/25 p-3 sm:gap-5 sm:p-4 lg:gap-6 lg:p-5">
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-[url('/cockpit-homepage.webp')] bg-cover bg-center opacity-60"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black/25"
-              />
-
-              <div className="relative w-full min-w-0 overflow-hidden rounded-xl border border-emerald-500/20 bg-black/45">
+            <CockpitBackdropPanel className="mt-6">
+              <div className="w-full min-w-0 overflow-hidden rounded-xl border border-emerald-500/20 bg-black/45">
                 <div
                   aria-hidden
                   className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent"
@@ -143,8 +135,8 @@ export function HomePageContent() {
                   <NetProceedsCalculator locale={locale} />
                 </div>
               </div>
-            </div>
-          </div>
+            </CockpitBackdropPanel>
+          </CockpitHudFrame>
         </Container>
       </section>
 
@@ -230,6 +222,6 @@ export function HomePageContent() {
           </div>
         </Container>
       </section>
-    </div>
+    </MarketingPageScrim>
   );
 }

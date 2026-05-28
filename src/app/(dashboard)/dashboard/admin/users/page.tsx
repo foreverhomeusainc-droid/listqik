@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminInviteUserPanel } from "@/components/admin/admin-invite-user-panel";
 import { connectDb } from "@/lib/mongodb";
 import { formatAdminDay, userAccountStatus } from "@/lib/admin-insights";
 import { Listing } from "@/models/Listing";
@@ -54,6 +55,7 @@ export default async function AdminUsersPage() {
         <h2 className="text-lg font-semibold text-emerald-50">Users</h2>
         <p className="mt-1 text-sm text-white/65">Accounts, listing status, and onboarding state.</p>
       </header>
+      <AdminInviteUserPanel />
       <div className="overflow-x-auto rounded-2xl border border-white/15 bg-black/30">
         <table className="min-w-full text-left text-sm text-white/90">
           <thead className="bg-white/5 text-xs uppercase tracking-wider text-white/70">

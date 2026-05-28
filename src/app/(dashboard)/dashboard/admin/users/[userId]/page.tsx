@@ -8,8 +8,12 @@ import { ListingUpgradeRequest } from "@/models/ListingUpgradeRequest";
 import { PlanPurchase } from "@/models/PlanPurchase";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
 import { User } from "@/models/User";
+import Link from "next/link";
 import { AdminListingDetailsCard } from "@/components/admin/listing-details-card";
+import { AdminPurchaseHistoryTable } from "@/components/admin/admin-purchase-history-table";
+import { AdminUserProfileActions } from "@/components/admin/admin-user-profile-actions";
 import { UserActivityTimeline } from "@/components/admin/user-activity-timeline";
+import { buildAdminPurchaseRows } from "@/lib/admin-purchase-rows";
 import { buildUserActivityTimeline, userAccountStatus } from "@/lib/admin-insights";
 
 export default async function AdminUserProfilePage({
@@ -97,6 +101,12 @@ export default async function AdminUserProfilePage({
     })),
   });
 
+  const purchaseRows = buildAdminPurchaseRows({
+    plans,
+    upgrades: upgradePurchases,
+    users: [{ _id: user._id, email: user.email, name: user.name }],
+  });
+
   return (
     <div className="space-y-4">
       <section className="rounded-2xl border border-white/15 bg-black/30 p-4 text-sm text-white/90">
@@ -134,6 +144,29 @@ export default async function AdminUserProfilePage({
             <span className="font-semibold">{listings.length}</span>
           </p>
         </div>
+      </section>
+
+      <AdminUserProfileActions
+        userId={userId}
+        initialName={user.name}
+        initialPhone={user.phone ?? ""}
+        accountStatusLabel={account.label}
+      />
+
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-emerald-100/80">
+            Purchase history ({purchaseRows.length})
+          </h4>
+          <Link className="text-xs text-emerald-300 underline" href="/dashboard/admin/purchases">
+            All platform purchases
+          </Link>
+        </div>
+        <AdminPurchaseHistoryTable
+          rows={purchaseRows}
+          showBuyerColumn={false}
+          showProfileLink={false}
+        />
       </section>
 
       <section className="space-y-3">

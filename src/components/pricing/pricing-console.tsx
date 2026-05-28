@@ -19,6 +19,8 @@ import {
   AddressAutocompleteInput,
   type ParsedPlace,
 } from "@/components/pricing/address-autocomplete-input";
+import { CockpitBackdropPanel } from "@/components/marketing/cockpit-backdrop-panel";
+import { CockpitHudFrame } from "@/components/marketing/cockpit-hud-frame";
 import { PricingLanguageToggle } from "@/components/pricing/pricing-language-toggle";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import {
@@ -387,7 +389,7 @@ export function PricingConsole() {
           </div>
         ) : null}
         <div className={landingIntakeActive ? "sr-only" : undefined} aria-hidden={landingIntakeActive}>
-        <header className="cockpit-hud-frame p-4 sm:p-6">
+        <CockpitHudFrame padding="compact" className="border-emerald-500/25">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-500/20 pb-4">
             <div className="font-mono text-xs tracking-[0.22em] text-emerald-300/80">
               {copy.hud.console}
@@ -433,18 +435,10 @@ export function PricingConsole() {
               />
             </div>
           </div>
-        </header>
+        </CockpitHudFrame>
 
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/25 p-3 sm:p-4 lg:p-5">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[url('/cockpit-homepage.webp')] bg-cover bg-center opacity-60"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black/25"
-          />
-          <section className="relative z-[1] grid gap-5 lg:grid-cols-3">
+        <CockpitBackdropPanel>
+          <section className="grid gap-5 lg:grid-cols-3">
             {plans.map((plan) => {
               const displayPrice =
                 plan.id === "subsonic" && autoOpenSubsonicIntake
@@ -525,7 +519,7 @@ export function PricingConsole() {
               );
             })}
           </section>
-        </div>
+        </CockpitBackdropPanel>
 
         <section className="rounded-2xl border border-emerald-500/25 bg-emerald-950/20 p-4 text-sm text-emerald-100/90">
           {copy.disclaimer}
