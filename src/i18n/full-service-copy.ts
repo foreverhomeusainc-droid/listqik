@@ -1,9 +1,11 @@
+import { FULL_SERVICE_STRIPE_CATALOG } from "@/data/full-service-stripe-catalog";
 import type { HomeLocale } from "@/i18n/home-locale";
 
 export type FullServiceTierId = "market-expert" | "local-expert";
 
 export type FullServiceTierCopy = {
   id: FullServiceTierId;
+  onboardingLabel: string;
   commission: string;
   commissionLabel: string;
   name: string;
@@ -65,8 +67,9 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
     tiers: [
       {
         id: "market-expert",
+        onboardingLabel: "one-time onboarding",
         commission: "1%",
-        commissionLabel: "listing commission",
+        commissionLabel: "listing commission at closing",
         name: "Market Expert",
         badge: "Most popular",
         highlight: true,
@@ -81,14 +84,15 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
           "Full transaction management through closing",
           "Comprehensive pricing and market strategy",
         ],
-        cta: "Get started at 1%",
+        cta: "Get started for $199",
         footnote:
           "Best for most sellers—strong savings versus a traditional ~3% listing commission with full professional representation.",
       },
       {
         id: "local-expert",
+        onboardingLabel: "one-time onboarding",
         commission: "2%",
-        commissionLabel: "listing commission",
+        commissionLabel: "listing commission at closing",
         name: "Local Expert",
         description:
           "Everything in Market Expert, plus a local Realtor physically present for key moments—walk-throughs, staging guidance, showings, inspections, and closing coordination.",
@@ -99,7 +103,7 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
           "Realtor present at showings and inspections",
           "Hands-on closing coordination",
         ],
-        cta: "Get started at 2%",
+        cta: "Get started for $299",
         footnote:
           "Best when you want a local Realtor on-site at every major step—still well below a traditional full commission listing.",
       },
@@ -133,8 +137,9 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
     tiers: [
       {
         id: "market-expert",
+        onboardingLabel: "incorporación única",
         commission: "1%",
-        commissionLabel: "comisión de listado",
+        commissionLabel: "comisión de listado al cierre",
         name: "Market Expert",
         badge: "Más popular",
         highlight: true,
@@ -149,14 +154,15 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
           "Gestión completa de la transacción hasta el cierre",
           "Estrategia integral de precios y mercado",
         ],
-        cta: "Comenzar al 1%",
+        cta: "Comenzar por $199",
         footnote:
           "Ideal para la mayoría de vendedores—ahorro frente a una comisión tradicional de ~3% con representación profesional.",
       },
       {
         id: "local-expert",
+        onboardingLabel: "incorporación única",
         commission: "2%",
-        commissionLabel: "comisión de listado",
+        commissionLabel: "comisión de listado al cierre",
         name: "Local Expert",
         description:
           "Todo lo de Market Expert, más un Realtor local presente en persona en momentos clave—recorridos, staging, showings, inspecciones y coordinación de cierre.",
@@ -167,13 +173,26 @@ const COPY: Record<HomeLocale, FullServiceCopy> = {
           "Realtor presente en showings e inspecciones",
           "Coordinación presencial del cierre",
         ],
-        cta: "Comenzar al 2%",
+        cta: "Comenzar por $299",
         footnote:
           "Ideal si desea un Realtor local en cada paso importante—aún por debajo de una comisión tradicional completa.",
       },
     ],
   },
 };
+
+export function formatFullServiceOnboardingPrice(amountUsd: number, locale: HomeLocale): string {
+  return new Intl.NumberFormat(locale === "es" ? "es-US" : "en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(amountUsd);
+}
+
+export function getFullServiceOnboardingUsd(tierId: FullServiceTierId): number {
+  const row = FULL_SERVICE_STRIPE_CATALOG.find((r) => r.slug === tierId);
+  return row?.intakeFeeUsd ?? 0;
+}
 
 export function getFullServiceCopy(locale: HomeLocale): FullServiceCopy {
   return COPY[locale];

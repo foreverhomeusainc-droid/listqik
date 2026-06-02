@@ -8,7 +8,13 @@ import { MarketingPageScrim } from "@/components/marketing/marketing-page-scrim"
 import { PricingLanguageToggle } from "@/components/pricing/pricing-language-toggle";
 import { Container } from "@/components/container";
 import { useSiteLocale } from "@/components/site-locale-provider";
-import { getFullServiceCopy, type FullServiceCopy, type FullServiceTierCopy } from "@/i18n/full-service-copy";
+import {
+  formatFullServiceOnboardingPrice,
+  getFullServiceCopy,
+  getFullServiceOnboardingUsd,
+  type FullServiceCopy,
+  type FullServiceTierCopy,
+} from "@/i18n/full-service-copy";
 import { localeSitePath } from "@/lib/locale-site-path";
 
 function tierMailtoSubject(tier: FullServiceTierCopy): string {
@@ -70,13 +76,17 @@ function FullServiceTierCard({
       )}
 
       <div className="text-center">
-        <p className="font-mono text-5xl font-bold tracking-tight text-white sm:text-6xl">
-          {tier.commission}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-300/75">
+          {tier.onboardingLabel}
         </p>
-        <p className="mt-1 text-sm font-medium uppercase tracking-widest text-white/55">
+        <p className="mt-2 bg-gradient-to-b from-white via-emerald-50 to-emerald-200/90 bg-clip-text font-mono text-5xl font-bold leading-none tracking-tight text-transparent sm:text-6xl">
+          {formatFullServiceOnboardingPrice(getFullServiceOnboardingUsd(tier.id), locale)}
+        </p>
+        <p className="mt-3 text-sm font-medium uppercase tracking-[0.18em] text-white/50">
+          <span className="font-semibold text-emerald-200/95">{tier.commission}</span>{" "}
           {tier.commissionLabel}
         </p>
-        <h2 className="mt-4 text-2xl font-semibold text-emerald-100">{tier.name}</h2>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-emerald-100">{tier.name}</h2>
       </div>
 
       <p className="mt-5 text-center text-sm leading-relaxed text-white/75">{tier.description}</p>
