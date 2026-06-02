@@ -7,7 +7,7 @@ import { SiteLocaleProvider } from "@/components/site-locale-provider";
 export default function EsSiteLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense fallback={null}>
-      <SiteLocaleProvider>
+      <SiteLocaleProvider initialLocale="es">
         <SiteHeader />
         {children}
         <SiteFooter />

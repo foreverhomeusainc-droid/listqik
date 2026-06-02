@@ -52,11 +52,19 @@ function stripEsPrefix(pathname: string): string {
   return pathname;
 }
 
-export function SiteLocaleProvider({ children }: { children: ReactNode }) {
+export function SiteLocaleProvider({
+  children,
+  initialLocale = "en",
+}: {
+  children: ReactNode;
+  initialLocale?: HomeLocale;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [locale, setLocaleState] = useState<HomeLocale>("en");
+  const [locale, setLocaleState] = useState<HomeLocale>(
+    () => localeFromPathname(pathname) ?? initialLocale,
+  );
   const [ready, setReady] = useState(false);
 
   const applyLocale = useCallback((next: HomeLocale) => {

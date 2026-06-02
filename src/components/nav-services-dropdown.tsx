@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSiteLocale } from "@/components/site-locale-provider";
 import { localeSitePath } from "@/lib/locale-site-path";
-import type { HomeLocale } from "@/i18n/home-locale";
 
 function isServicesPath(pathname: string | null): boolean {
   if (!pathname) return false;
@@ -16,19 +16,9 @@ function isServicesPath(pathname: string | null): boolean {
   return paths.some((base) => pathname === base || pathname.startsWith(`${base}/`));
 }
 
-type NavServicesDropdownProps = {
-  locale: HomeLocale;
-  label: string;
-  fullServiceLabel: string;
-  serviceAreaLabel: string;
-};
-
-export function NavServicesDropdown({
-  locale,
-  label,
-  fullServiceLabel,
-  serviceAreaLabel,
-}: NavServicesDropdownProps) {
+export function NavServicesDropdown() {
+  const { locale, chrome, ready } = useSiteLocale();
+  const t = chrome.header;
   const pathname = usePathname();
   const active = isServicesPath(pathname);
   const fullServiceHref = localeSitePath("/full-service", locale);
@@ -41,6 +31,10 @@ export function NavServicesDropdown({
       : "border-transparent text-emerald-100/85 hover:border-emerald-400/35 hover:bg-emerald-900/25 hover:text-emerald-100",
   ].join(" ");
 
+  const servicesLabel = ready ? t.services : locale === "es" ? "Servicios" : "Services";
+  const fullServiceLabel = ready ? t.fullService : locale === "es" ? "Servicio completo" : "Full Service";
+  const serviceAreaLabel = ready ? t.serviceArea : locale === "es" ? "Zona de servicio" : "Service Area";
+
   return (
     <div className="group relative">
       <button
@@ -49,7 +43,7 @@ export function NavServicesDropdown({
         aria-expanded="false"
         aria-haspopup="true"
       >
-        {label}
+        {servicesLabel}
         <span aria-hidden className="text-[10px] opacity-70">
           ▾
         </span>
@@ -64,7 +58,7 @@ export function NavServicesDropdown({
             href={fullServiceHref}
             role="menuitem"
             className={[
-              "block px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
+              "block whitespace-nowrap px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
               pathname === fullServiceHref || pathname?.startsWith(`${fullServiceHref}/`)
                 ? "bg-emerald-400/15 text-emerald-100"
                 : "text-emerald-100/90",
@@ -76,7 +70,7 @@ export function NavServicesDropdown({
             href={serviceAreaHref}
             role="menuitem"
             className={[
-              "block px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
+              "block whitespace-nowrap px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
               pathname === serviceAreaHref || pathname?.startsWith(`${serviceAreaHref}/`)
                 ? "bg-emerald-400/15 text-emerald-100"
                 : "text-emerald-100/90",
