@@ -4,6 +4,7 @@ export type SiteChromeCopy = {
   header: {
     navLabel: string;
     pricing: string;
+    services: string;
     fullService: string;
     about: string;
     serviceArea: string;
@@ -48,6 +49,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
     header: {
       navLabel: "Primary",
       pricing: "Pricing",
+      services: "Services",
       fullService: "Full Service",
       about: "About",
       serviceArea: "Service Area",
@@ -91,6 +93,7 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
     header: {
       navLabel: "Principal",
       pricing: "Precios",
+      services: "Servicios",
       fullService: "Servicio completo",
       about: "Nosotros",
       serviceArea: "Zona de servicio",
