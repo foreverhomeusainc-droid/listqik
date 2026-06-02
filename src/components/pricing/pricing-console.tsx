@@ -23,6 +23,7 @@ import { CockpitBackdropPanel } from "@/components/marketing/cockpit-backdrop-pa
 import { CockpitHudFrame } from "@/components/marketing/cockpit-hud-frame";
 import { PricingLanguageToggle } from "@/components/pricing/pricing-language-toggle";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { localeSitePath } from "@/lib/locale-site-path";
 import {
   getPricingCopy,
   type PricingPlan,
@@ -436,6 +437,17 @@ export function PricingConsole() {
             </div>
           </div>
         </CockpitHudFrame>
+
+        <section className="rounded-2xl border border-sky-400/20 bg-sky-950/15 p-5 sm:p-6">
+          <h2 className="text-lg font-semibold text-white">{copy.fullServicePromo.title}</h2>
+          <p className="mt-2 max-w-3xl text-sm text-white/70">{copy.fullServicePromo.body}</p>
+          <Link
+            href={localeSitePath("/full-service", locale)}
+            className="mt-4 inline-flex text-sm font-semibold text-emerald-300 underline underline-offset-2 hover:text-emerald-200"
+          >
+            {copy.fullServicePromo.cta}
+          </Link>
+        </section>
 
         <CockpitBackdropPanel>
           <section className="grid gap-5 lg:grid-cols-3">

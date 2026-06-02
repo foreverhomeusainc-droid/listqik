@@ -5,13 +5,14 @@ import { HeaderSignOutButton } from "@/components/auth/header-sign-out-button";
 import { Container } from "@/components/container";
 import { NavLink } from "@/components/nav-link";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { localeSitePath } from "@/lib/locale-site-path";
 
 type SiteHeaderChromeProps = {
   isAuthenticated: boolean;
 };
 
 export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
-  const { chrome, ready } = useSiteLocale();
+  const { locale, chrome, ready } = useSiteLocale();
   const t = chrome.header;
 
   return (
@@ -39,7 +40,12 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
           aria-label={ready ? t.navLabel : "Primary"}
           className="hidden items-center gap-1 md:flex"
         >
-          <NavLink href="/pricing">{ready ? t.pricing : "Pricing"}</NavLink>
+          <NavLink href={localeSitePath("/pricing", locale)}>
+            {ready ? t.pricing : "Pricing"}
+          </NavLink>
+          <NavLink href={localeSitePath("/full-service", locale)}>
+            {ready ? t.fullService : "Full Service"}
+          </NavLink>
           <NavLink href="/about">{ready ? t.about : "About"}</NavLink>
           <NavLink href="/service-area">
             {ready ? t.serviceArea : "Service Area"}

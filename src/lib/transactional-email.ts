@@ -356,6 +356,81 @@ export async function sendInternalUpgradePurchaseEmail(
   return sendSmtpMessage({ to: recipients, ...rendered });
 }
 
+export type FullServiceCheckoutEmailInput = {
+  purchaserEmail: string;
+  purchaserName?: string | null;
+  tierName: string;
+  listingCommissionPercent: number;
+  amountTotal?: number | null;
+  orderRef?: string | null;
+};
+
+export async function sendFullServiceCheckoutConfirmationEmail(
+  input: FullServiceCheckoutEmailInput,
+): Promise<SendResult> {
+  if (!smtpConfig()) {
+    return { sent: false, error: "SMTP is not fully configured." };
+  }
+
+  const email = input.purchaserEmail.trim().toLowerCase();
+  if (!email) return { sent: false, error: "Purchaser email is required." };
+
+  const greetingName = input.purchaserName?.trim() || "there";
+  const amountLabel =
+    typeof input.amountTotal === "number" ? fmtMoneyForEmail(input.amountTotal) : "—";
+  const text = [
+    `Hi ${greetingName},`,
+    "",
+    `Thank you for starting ListQik Full Service (${input.tierName}).`,
+    "",
+    `Tier: ${input.tierName}`,
+    `Listing commission: ${input.listingCommissionPercent}% (at closing, per your listing agreement)`,
+    `Onboarding payment received: ${amountLabel}`,
+    `Reference: ${input.orderRef?.trim() ?? "—"}`,
+    "",
+    "A ListQik concierge will contact you shortly to complete your listing agreement and next steps.",
+    "",
+    "— ListQik",
+  ].join("\n");
+
+  return sendSmtpMessage({
+    to: email,
+    subject: `ListQik Full Service — ${input.tierName} received`,
+    text,
+  });
+}
+
+export async function sendInternalFullServiceCheckoutEmail(
+  input: FullServiceCheckoutEmailInput,
+): Promise<SendResult> {
+  if (!smtpConfig()) {
+    return { sent: false, error: "SMTP is not fully configured." };
+  }
+
+  const recipients = resolveInternalNotificationRecipients();
+  if (recipients.length === 0) {
+    return { sent: false, error: "No internal notification recipients configured." };
+  }
+
+  const amountLabel =
+    typeof input.amountTotal === "number" ? fmtMoneyForEmail(input.amountTotal) : "—";
+  const text = [
+    "New full-service Stripe checkout completed.",
+    "",
+    `Tier: ${input.tierName}`,
+    `Buyer: ${input.purchaserName?.trim() ?? "—"} <${input.purchaserEmail}>`,
+    `Listing commission: ${input.listingCommissionPercent}%`,
+    `Paid today: ${amountLabel}`,
+    `Stripe session: ${input.orderRef?.trim() ?? "—"}`,
+  ].join("\n");
+
+  return sendSmtpMessage({
+    to: recipients,
+    subject: `Full Service checkout: ${input.tierName} — ${input.purchaserEmail}`,
+    text,
+  });
+}
+
 export type SmtpMailerStatus = {
   configured: boolean;
   from: string | null;

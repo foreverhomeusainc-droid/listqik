@@ -46,6 +46,11 @@ export type PricingCopy = {
     selectPlan: string;
   };
   disclaimer: string;
+  fullServicePromo: {
+    title: string;
+    body: string;
+    cta: string;
+  };
   wizard: {
     dialogLabel: string;
     intakeLabel: string;
@@ -133,6 +138,11 @@ const COPY: Record<HomeLocale, PricingCopy> = {
     },
     disclaimer:
       "Brokerage-regulated services, including listing submission and compliance approval, are provided through a licensed brokerage. ListQik.com provides marketing, technology, and administrative support.",
+    fullServicePromo: {
+      title: "Want a full-service local Realtor?",
+      body: "Compare commission-based Market Expert (1%) and Local Expert (2% minimum) packages with in-person support options.",
+      cta: "View full service commissions →",
+    },
     wizard: {
       dialogLabel: "Pricing intake wizard",
       intakeLabel: "PRICING INTAKE",
@@ -342,6 +352,11 @@ const COPY: Record<HomeLocale, PricingCopy> = {
     },
     disclaimer:
       "Los servicios regulados por corretaje, incluida la presentación del listado y la aprobación de cumplimiento, se proporcionan a través de un corretaje con licencia. ListQik.com ofrece marketing, tecnología y soporte administrativo.",
+    fullServicePromo: {
+      title: "¿Desea un Realtor local de servicio completo?",
+      body: "Compare paquetes por comisión: Market Expert (1%) y Local Expert (2% mínimo) con opciones de apoyo presencial.",
+      cta: "Ver comisiones de servicio completo →",
+    },
     wizard: {
       dialogLabel: "Asistente de registro de precios",
       intakeLabel: "REGISTRO DE PRECIOS",

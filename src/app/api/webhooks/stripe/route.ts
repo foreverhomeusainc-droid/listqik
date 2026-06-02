@@ -5,6 +5,8 @@ import { Types } from "mongoose";
 import { connectDb } from "@/lib/mongodb";
 import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
 import { extractStripeCheckoutCouponCode } from "@/lib/stripe-purchase-details";
+import { FULL_SERVICE_STRIPE_CATALOG } from "@/data/full-service-stripe-catalog";
+import { dispatchFullServiceCheckoutEmails } from "@/lib/dispatch-full-service-checkout-email";
 import { dispatchUpgradePurchaseEmails } from "@/lib/dispatch-upgrade-purchase-emails";
 import { resolveUpgradeSlugs } from "@/lib/stripe-upgrade-slugs";
 import { dispatchPostPurchaseAccountEmail } from "@/lib/dispatch-post-purchase-account-email";
@@ -85,15 +87,54 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   const metadata = session.metadata ?? {};
-  const checkoutKind: "plan" | "upgrades" = metadata.checkoutKind === "upgrades" ? "upgrades" : "plan";
+  const checkoutKindRaw = (metadata.checkoutKind || "plan").trim();
   const checkoutSessionId = (metadata.checkoutSessionId || session.client_reference_id || "").trim();
-  if (!checkoutSessionId) {
-    return NextResponse.json({ ok: false, error: "Missing checkoutSessionId metadata." }, { status: 400 });
-  }
 
   await connectDb();
 
   const externalOrderId = session.id;
+
+  if (checkoutKindRaw === "full-service") {
+    const tierId = (metadata.fullServiceTierId || "").trim();
+    const catalogRow = FULL_SERVICE_STRIPE_CATALOG.find((row) => row.slug === tierId);
+    const tierName =
+      metadata.fullServiceTierName?.trim() || catalogRow?.name || tierId || "Full Service";
+    const commissionRaw = metadata.listingCommissionPercent || "";
+    const listingCommissionPercent = Number(commissionRaw) || catalogRow?.listingCommissionPercent || 0;
+
+    const buyerEmail = (session.customer_details?.email || "").trim().toLowerCase();
+    const buyerName = session.customer_details?.name || undefined;
+
+    let emailResult = { buyerSent: false, internalSent: false, buyerError: undefined as string | undefined, internalError: undefined as string | undefined };
+    if (buyerEmail) {
+      emailResult = await dispatchFullServiceCheckoutEmails({
+        tierName,
+        listingCommissionPercent,
+        buyerEmail,
+        buyerName,
+        amountTotalUsd: toNumCentsToDollars(session.amount_total),
+        stripeSessionId: externalOrderId,
+      });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      event: event.type,
+      checkoutKind: "full-service",
+      checkoutSessionId: checkoutSessionId || null,
+      externalOrderId,
+      tierId,
+      fullServiceEmailsSent: Boolean(emailResult.buyerSent && emailResult.internalSent),
+      fullServiceEmailError:
+        [emailResult.buyerError, emailResult.internalError].filter(Boolean).join("; ") || null,
+    });
+  }
+
+  if (!checkoutSessionId) {
+    return NextResponse.json({ ok: false, error: "Missing checkoutSessionId metadata." }, { status: 400 });
+  }
+
+  const checkoutKind: "plan" | "upgrades" = checkoutKindRaw === "upgrades" ? "upgrades" : "plan";
   await markSessionPaid(checkoutSessionId, checkoutKind, externalOrderId);
 
   if (checkoutKind === "plan") {

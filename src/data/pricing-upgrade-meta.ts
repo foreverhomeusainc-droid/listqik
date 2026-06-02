@@ -29,6 +29,51 @@ export const pricingUpgradeMeta: UpgradeMeta[] = [
     recommendedFor: ["subsonic", "supersonic", "hypersonic"],
   },
   {
+    slug: "comparative-market-analysis",
+    name: "Comparative Market Analysis (CMA)",
+    description:
+      "Pricing estimate from recent comparable sales nearby, with feature adjustments—supports appraisal-ready pricing and data-backed negotiations.",
+    toggleAddLabel: "Add CMA",
+    toggleRemoveLabel: "Remove CMA",
+    recommendedFor: ["subsonic", "supersonic", "hypersonic"],
+  },
+  {
+    slug: "supply-and-demand-audit",
+    name: "Supply and Demand Audit",
+    description:
+      "Local inventory vs buyer demand: absorption rate, list-to-sale ratio, and crowded price brackets—sets your Day 1 pricing and negotiation strategy.",
+    toggleAddLabel: "Add supply & demand audit",
+    toggleRemoveLabel: "Remove supply & demand audit",
+    recommendedFor: ["subsonic", "supersonic", "hypersonic"],
+  },
+  {
+    slug: "property-positioning-inspection-virtual",
+    name: "Property Positioning Inspection (Virtual)",
+    description:
+      "Pre-listing marketing audit: curb appeal, visual flow, staging priorities, and feature-to-price positioning—so photos and showings compete at the top of your bracket.",
+    toggleAddLabel: "Add positioning inspection",
+    toggleRemoveLabel: "Remove positioning inspection",
+    recommendedFor: ["subsonic", "supersonic", "hypersonic"],
+  },
+  {
+    slug: "active-competition-analysis-virtual",
+    name: "Active Competition Analysis (Virtual)",
+    description:
+      "Analysis of 3–5 rival active listings: first impressions, value gaps, days on market, and seller incentives—stay priced and marketed against today's competition.",
+    toggleAddLabel: "Add active competition analysis",
+    toggleRemoveLabel: "Remove active competition analysis",
+    recommendedFor: ["subsonic", "supersonic", "hypersonic"],
+  },
+  {
+    slug: "comprehensive-analysis-bundle",
+    name: "Comprehensive Analysis (All 4 Packages)",
+    description:
+      "Bundle includes Comparative Market Analysis, Supply and Demand Audit, Property Positioning Inspection (Virtual), and Active Competition Analysis (Virtual).",
+    toggleAddLabel: "Add comprehensive analysis bundle",
+    toggleRemoveLabel: "Remove comprehensive analysis bundle",
+    recommendedFor: ["subsonic", "supersonic", "hypersonic"],
+  },
+  {
     slug: "real-time-showing-management",
     name: "Real-Time Showing Management",
     description: "Instant showing request alerts with approve, decline, and reschedule controls.",

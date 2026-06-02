@@ -5,6 +5,11 @@ function staticPriceBySlug(slug: string): number {
   const map: Record<string, number> = {
     "premium-photography-spotlight-listing": 495,
     "smart-market-analysis": 195,
+    "comparative-market-analysis": 195,
+    "supply-and-demand-audit": 195,
+    "property-positioning-inspection-virtual": 195,
+    "active-competition-analysis-virtual": 195,
+    "comprehensive-analysis-bundle": 495,
     "real-time-showing-management": 59,
     "open-house-directional-signs-set-of-5": 49,
     "professional-yard-sign": 49,
