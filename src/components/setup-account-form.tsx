@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { ListQikLogo } from "@/components/listqik-logo";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -89,6 +91,9 @@ export function SetupAccountForm() {
 
   return (
     <div className="glass-surface-strong p-8">
+      <Link href="/" className="mb-6 block">
+        <ListQikLogo variant="auth" />
+      </Link>
       <h1 className="text-2xl font-semibold text-emerald-50">Finish your account</h1>
       <p className="mt-2 text-sm text-muted">
         Choose a password for your seller dashboard. Use the same email you used at checkout when you

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/container";
+import { ListQikLogo } from "@/components/listqik-logo";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import { localeSitePath } from "@/lib/locale-site-path";
 
@@ -16,9 +17,9 @@ export function SiteFooterChrome() {
       <Container className="py-10">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="space-y-2">
-            <div className="text-sm font-semibold tracking-wide text-white">
-              ListQik.com
-            </div>
+            <Link href={localeSitePath("/", locale)} className="inline-block">
+              <ListQikLogo variant="footer" />
+            </Link>
             <p className="text-sm text-muted">
               {ready
                 ? t.tagline

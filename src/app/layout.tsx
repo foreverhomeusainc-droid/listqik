@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter, Roboto_Mono } from "next/font/google";
 import Script from "next/script";
 import { AuthSessionProvider } from "@/components/auth/session-provider";
+import { LISTQIK_LOGO_ALT, LISTQIK_LOGO_PATH } from "@/lib/brand-assets";
 
 /** Google Ads conversion tag — applied at the root layout so every route group inherits it. */
 const GOOGLE_ADS_TAG_ID = "AW-18163123085";
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [{ url: LISTQIK_LOGO_PATH, type: "image/webp" }],
+    apple: LISTQIK_LOGO_PATH,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -44,6 +49,7 @@ export const metadata: Metadata = {
     title: "ListQik.com",
     description:
       "Texas listing platform with licensed brokerage support, clear compliance guidance, and marketing workflow tools.",
+    images: [{ url: LISTQIK_LOGO_PATH, alt: LISTQIK_LOGO_ALT }],
   },
   twitter: {
     card: "summary_large_image",

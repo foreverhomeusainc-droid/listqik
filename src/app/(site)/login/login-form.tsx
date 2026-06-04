@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { getSession, signIn } from "next-auth/react";
+import { ListQikLogo } from "@/components/listqik-logo";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -40,6 +42,9 @@ export function LoginForm() {
 
   return (
     <div className="mx-auto max-w-md glass-surface-strong p-8">
+      <Link href="/" className="mb-6 block">
+        <ListQikLogo variant="auth" />
+      </Link>
       <h1 className="text-2xl font-semibold text-emerald-50">Sign in</h1>
       <p className="mt-2 text-sm text-muted">
         Use the email and password for your seller account. After checkout, new sellers finish setup

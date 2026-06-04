@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { DashboardTitleBlock } from "@/components/dashboard/dashboard-title-block";
+import { ListQikLogo } from "@/components/listqik-logo";
 import { SignOutButton } from "@/components/dashboard/sign-out-button";
 
 export function DashboardShell({
@@ -14,8 +15,8 @@ export function DashboardShell({
     <>
       <header className="sticky top-0 z-30 border-b border-emerald-500/25 bg-black/55 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link href="/" className="text-sm font-bold tracking-wide text-emerald-100">
-            ListQik.com
+          <Link href="/" className="inline-flex items-center">
+            <ListQikLogo variant="dashboard" />
           </Link>
           <div className="hidden items-center gap-6 text-sm font-medium text-emerald-200/80 sm:flex">
             <Link href="/resources/blogs" className="text-emerald-300/70 transition hover:text-emerald-200">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { HeaderSignOutButton } from "@/components/auth/header-sign-out-button";
 import { Container } from "@/components/container";
+import { ListQikLogo } from "@/components/listqik-logo";
 import { NavLink } from "@/components/nav-link";
 import { NavServicesDropdown } from "@/components/nav-services-dropdown";
 import { useSiteLocale } from "@/components/site-locale-provider";
@@ -30,16 +31,8 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
       />
       <Container className="flex h-16 items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Link href={homeHref} className="group inline-flex items-center gap-2">
-            <span
-              aria-hidden
-              className="grid h-9 w-9 place-items-center rounded-xl border border-emerald-400/35 bg-emerald-950/35 shadow-[0_0_14px_rgba(16,185,129,0.2)]"
-            >
-              <span className="font-mono text-xs font-bold tracking-widest text-emerald-200">
-                LQ
-              </span>
-            </span>
-            <span className="text-sm font-semibold tracking-wide text-emerald-100">ListQik</span>
+          <Link href={homeHref} className="group inline-flex items-center">
+            <ListQikLogo variant="header" priority />
           </Link>
         </div>
 
