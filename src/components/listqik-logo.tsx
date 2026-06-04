@@ -2,10 +2,10 @@ import Image from "next/image";
 import { LISTQIK_LOGO_ALT, LISTQIK_LOGO_PATH } from "@/lib/brand-assets";
 
 const VARIANTS = {
-  header: { width: 200, height: 40, className: "h-9 w-auto max-w-[13rem]" },
-  footer: { width: 220, height: 44, className: "h-10 w-auto max-w-[14.5rem]" },
-  dashboard: { width: 180, height: 32, className: "h-8 w-auto max-w-[11rem]" },
-  auth: { width: 260, height: 48, className: "mx-auto h-12 w-auto max-w-[16.5rem]" },
+  header: { width: 280, height: 56, className: "h-12 w-auto max-w-[18rem] sm:max-w-[20rem]" },
+  footer: { width: 280, height: 56, className: "h-12 w-auto max-w-[18rem] sm:max-w-[20rem]" },
+  dashboard: { width: 220, height: 44, className: "h-10 w-auto max-w-[14rem]" },
+  auth: { width: 300, height: 60, className: "mx-auto h-14 w-auto max-w-[20rem] sm:max-w-[22rem]" },
 } as const;
 
 export type ListQikLogoVariant = keyof typeof VARIANTS;
