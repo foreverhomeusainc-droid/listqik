@@ -13,13 +13,13 @@ export function generateMetadata({
 }: {
   params: Promise<{ countySlug: string }>;
 }) {
-  return generateTexasCountyMetadata("en", params);
+  return generateTexasCountyMetadata("es", params);
 }
 
-export default function TexasCountySeoPage({
+export default function EsTexasCountySeoPage({
   params,
 }: {
   params: Promise<{ countySlug: string }>;
 }) {
-  return <TexasCountyLocationPage locale="en" params={params} />;
+  return <TexasCountyLocationPage locale="es" params={params} />;
 }

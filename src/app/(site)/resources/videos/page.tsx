@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/container";
 import { videos } from "@/data/resources";
+import { getSitePageMeta } from "@/i18n/site-page-meta";
+import { localeAlternates } from "@/lib/locale-metadata";
+
+const meta = getSitePageMeta("videos", "en");
 
 export const metadata: Metadata = {
-  title: "Videos",
-  description:
-    "Watch Texas real estate strategy and compliance videos from ListQik.com.",
-  alternates: {
-    canonical: "/resources/videos",
-  },
+  title: meta.title,
+  description: meta.description,
+  alternates: localeAlternates("/resources/videos"),
 };
 
 export default function VideosPage() {

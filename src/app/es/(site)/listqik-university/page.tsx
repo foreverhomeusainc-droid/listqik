@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import UniversityPage from "../../../(site)/listqik-university/page";
+import { ListqikUniversityPageContent } from "@/components/listqik-university/listqik-university-page-content";
+import { getSitePageMeta } from "@/i18n/site-page-meta";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
+import { fetchListQikYouTubeFeed } from "@/lib/youtube-channel";
 
-export const metadata: Metadata = {
-  title: "ListQik University",
-  description: "Guided videos and learning resources for listing successfully in Texas.",
-  alternates: {
-    canonical: "/es/listqik-university",
-  },
-};
+export const revalidate = 3600;
 
-export default function EsListQikUniversityPage() {
-  return <UniversityPage />;
+export const metadata: Metadata = buildLocalizedMetadata(
+  "es",
+  "/listqik-university",
+  getSitePageMeta("university", "es"),
+);
+
+export default async function EsListqikUniversityPage() {
+  const feed = await fetchListQikYouTubeFeed();
+  return <ListqikUniversityPageContent feed={feed} />;
 }
-

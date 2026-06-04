@@ -13,8 +13,9 @@ export function isStartNowSubsonicPromo(value: string | undefined | null): boole
 }
 
 export function startNowSubsonicPricingHref(locale?: "en" | "es"): string {
-  const base = `/pricing?plan=subsonic&promo=${START_NOW_SUBSONIC_PROMO}`;
-  return locale === "es" ? `${base}&lang=es` : base;
+  const query = `?plan=subsonic&promo=${START_NOW_SUBSONIC_PROMO}`;
+  if (locale === "es") return `/es/pricing${query}`;
+  return `/pricing${query}`;
 }
 
 /** True when URL should auto-select Subsonic and open step 1 (property address) intake. */

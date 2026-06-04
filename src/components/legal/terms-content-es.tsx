@@ -232,7 +232,7 @@ export function TermsContentEs() {
         <p>
           Nuestra recopilación y uso de información personal se describe en nuestra{" "}
           <Link
-            href="/resources/legal/privacy?lang=es"
+            href="/es/resources/legal/privacy"
             className="text-emerald-300 underline underline-offset-2"
           >
             Política de privacidad

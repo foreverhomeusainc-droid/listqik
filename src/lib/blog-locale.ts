@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { HOME_LOCALE_COOKIE_KEY, isHomeLocale } from "@/i18n/home-locale";
+import { localeSitePath } from "@/lib/locale-site-path";
 
 export { HOME_LOCALE_COOKIE_KEY };
 
@@ -24,10 +25,14 @@ export async function getRequestBlogLocale(langParam?: string | null): Promise<B
   return "en";
 }
 
-/** Public blog URL; Spanish uses ?lang=es for SSR + SEO parity with site locale. */
+/** Public blog index URL. */
+export function blogIndexPath(locale: BlogLocale): string {
+  return localeSitePath("/resources/blogs", locale);
+}
+
+/** Public blog article URL (`/resources/blogs/[slug]` or `/es/resources/blogs/[slug]`). */
 export function blogPublicPath(slug: string, locale: BlogLocale): string {
-  const base = `/resources/blogs/${slug}`;
-  return locale === "es" ? `${base}?lang=es` : base;
+  return localeSitePath(`/resources/blogs/${slug}`, locale);
 }
 
 export function blogOpenGraphLocale(locale: BlogLocale): string {

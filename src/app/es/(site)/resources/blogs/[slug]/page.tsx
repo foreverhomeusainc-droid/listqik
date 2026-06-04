@@ -3,20 +3,16 @@ import { notFound } from "next/navigation";
 import { BlogBody } from "@/components/blog/blog-body";
 import { BlogStaticFallbackBody } from "@/components/blog/blog-static-fallback-body";
 import { Container } from "@/components/container";
-import { blogOpenGraphLocale } from "@/lib/blog-locale";
+import {
+  blogOpenGraphLocale,
+  blogPublicPath,
+  buildBlogHreflangLanguages,
+} from "@/lib/blog-locale";
 import { getBlogHreflangEntries, getPublishedBlogBySlug } from "@/lib/blog-service";
 
 export const revalidate = 60;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://listqik.com";
-
-function esBlogPath(slug: string): string {
-  return `/es/resources/blogs/${slug}`;
-}
-
-function localizedBlogPath(slug: string, locale: "en" | "es"): string {
-  return locale === "es" ? esBlogPath(slug) : `/resources/blogs/${slug}`;
-}
 
 export async function generateMetadata({
   params,
@@ -28,17 +24,9 @@ export async function generateMetadata({
   const post = await getPublishedBlogBySlug(slug, locale);
   if (!post) return {};
 
-  const canonical = esBlogPath(post.slug);
+  const canonical = blogPublicPath(post.slug, post.locale);
   const hreflangEntries = await getBlogHreflangEntries(post);
-  const languages: Record<string, string> = {};
-  for (const entry of hreflangEntries) {
-    const hreflang = entry.locale === "es" ? "es-US" : "en-US";
-    languages[hreflang] = `${siteUrl}${localizedBlogPath(entry.slug, entry.locale)}`;
-  }
-  const en = hreflangEntries.find((e) => e.locale === "en");
-  if (en) {
-    languages["x-default"] = `${siteUrl}${localizedBlogPath(en.slug, "en")}`;
-  }
+  const languages = buildBlogHreflangLanguages(siteUrl, hreflangEntries);
 
   return {
     title: post.title,

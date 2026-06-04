@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
 import { getBlogsCopy } from "@/i18n/blogs-copy";
+import { blogIndexPath } from "@/lib/blog-locale";
 import { listPublishedBlogs } from "@/lib/blog-service";
 
 export const revalidate = 60;
@@ -17,9 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical,
       languages: {
-        "en-US": "/resources/blogs",
-        "es-US": "/es/resources/blogs",
-        "x-default": "/resources/blogs",
+        "en-US": blogIndexPath("en"),
+        "es-US": blogIndexPath("es"),
+        "x-default": blogIndexPath("en"),
       },
     },
     openGraph: {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PricingConsole } from "@/components/pricing/pricing-console";
 import { getPricingCopy } from "@/i18n/pricing-copy";
+import { localeAlternates } from "@/lib/locale-metadata";
 import { getRequestHomeLocale, homeOpenGraphLocale } from "@/lib/site-locale-server";
 
 export async function generateMetadata({
@@ -16,7 +17,7 @@ export async function generateMetadata({
   return {
     title: copy.meta.title,
     description: copy.meta.description,
-    alternates: { canonical: "/pricing" },
+    alternates: localeAlternates("/pricing"),
     openGraph: {
       title: copy.meta.title,
       description: copy.meta.description,

@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Container } from "@/components/container";
 import { UpgradesConsole } from "@/components/upgrades/upgrades-console";
+import { getSitePageMeta } from "@/i18n/site-page-meta";
+import { localeAlternates } from "@/lib/locale-metadata";
+
+const meta = getSitePageMeta("upgrades", "en");
 
 export const metadata: Metadata = {
-  title: "Listing Upgrades",
-  description: "Browse and purchase optional listing upgrades.",
-  alternates: {
-    canonical: "/upgrades",
-  },
+  title: meta.title,
+  description: meta.description,
+  alternates: localeAlternates("/upgrades"),
 };
 
 function UpgradesFallback() {

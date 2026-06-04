@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
 import { getBlogsCopy } from "@/i18n/blogs-copy";
-import { getRequestBlogLocale } from "@/lib/blog-locale";
+import { blogIndexPath, blogPublicPath, getRequestBlogLocale } from "@/lib/blog-locale";
 import { listPublishedBlogs } from "@/lib/blog-service";
 
 export const revalidate = 60;
@@ -15,7 +15,7 @@ export async function generateMetadata({
   const { lang } = await searchParams;
   const locale = await getRequestBlogLocale(lang);
   const copy = getBlogsCopy(locale);
-  const canonical = locale === "es" ? "/resources/blogs?lang=es" : "/resources/blogs";
+  const canonical = blogIndexPath(locale);
 
   return {
     title: copy.metaTitle,
@@ -23,9 +23,9 @@ export async function generateMetadata({
     alternates: {
       canonical,
       languages: {
-        "en-US": "/resources/blogs",
-        "es-US": "/resources/blogs?lang=es",
-        "x-default": "/resources/blogs",
+        "en-US": blogIndexPath("en"),
+        "es-US": blogIndexPath("es"),
+        "x-default": blogIndexPath("en"),
       },
     },
     openGraph: {
@@ -70,11 +70,7 @@ export default async function BlogsPage({
               {blogs.map((b) => (
                 <Link
                   key={`${b.locale}-${b.slug}`}
-                  href={
-                    b.locale === "es"
-                      ? `/resources/blogs/${b.slug}?lang=es`
-                      : `/resources/blogs/${b.slug}`
-                  }
+                  href={blogPublicPath(b.slug, b.locale)}
                   className="glass-surface p-6 transition hover:border-white/20"
                 >
                   <div className="flex flex-wrap items-center gap-2">

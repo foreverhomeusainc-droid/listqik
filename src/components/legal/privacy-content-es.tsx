@@ -159,7 +159,7 @@ export function PrivacyContentEs() {
         <p>
           Su uso del sitio también se rige por nuestros{" "}
           <Link
-            href="/resources/legal/terms?lang=es"
+            href="/es/resources/legal/terms"
             className="text-emerald-300 underline underline-offset-2"
           >
             Términos de servicio

@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import AboutPage from "../../../(site)/about/page";
+import { AboutPageContent } from "@/components/about/about-page-content";
+import { getAboutCopy } from "@/i18n/about-copy";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Learn how ListQik.com and Resolution Realty Group help Texas sellers list through a licensed brokerage with broker-backed guidance.",
-  alternates: {
-    canonical: "/es/about",
-  },
-};
+export const metadata: Metadata = buildLocalizedMetadata("es", "/about", getAboutCopy("es").meta);
 
 export default function EsAboutPage() {
-  return <AboutPage />;
+  return <AboutPageContent />;
 }
-

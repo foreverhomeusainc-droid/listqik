@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FullServiceConsole } from "@/components/full-service/full-service-console";
+import { getFullServiceCopy } from "@/i18n/full-service-copy";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
-export const metadata: Metadata = {
-  title: "Comisión de servicio completo | ListQik",
-  description:
-    "Representación completa de listado en Texas con Realtors locales con licencia. Market Expert desde 1%; Local Expert desde 2% de comisión de listado.",
-  alternates: { canonical: "/es/full-service" },
-};
+export const metadata: Metadata = buildLocalizedMetadata(
+  "es",
+  "/full-service",
+  getFullServiceCopy("es").meta,
+);
 
 function FullServiceFallback() {
   return (

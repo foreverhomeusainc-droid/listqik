@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
+import { getSitePageMeta } from "@/i18n/site-page-meta";
+import { localeAlternates } from "@/lib/locale-metadata";
+
+const meta = getSitePageMeta("resources", "en");
 
 export const metadata: Metadata = {
-  title: "Resources",
-  description:
-    "Browse ListQik.com resources: blogs, videos, legal disclosures, and consumer notices for Texas sellers.",
-  alternates: {
-    canonical: "/resources",
-  },
+  title: meta.title,
+  description: meta.description,
+  alternates: localeAlternates("/resources"),
 };
 
 export default function ResourcesPage() {

@@ -189,7 +189,7 @@ export function AdminBlogPostsTable({
                 const publicPath =
                   p.status === "published"
                     ? p.locale === "es"
-                      ? `/resources/blogs/${p.slug}?lang=es`
+                      ? `/es/resources/blogs/${p.slug}`
                       : `/resources/blogs/${p.slug}`
                     : null;
                 return (

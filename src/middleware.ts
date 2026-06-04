@@ -1,9 +1,23 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { withAuth } from "next-auth/middleware";
 import { HOME_LOCALE_COOKIE_KEY } from "@/i18n/home-locale";
 
+function redirectLangEsToNamespace(req: NextRequest): NextResponse | null {
+  const { pathname, searchParams } = req.nextUrl;
+  if (searchParams.get("lang") !== "es") return null;
+  if (pathname === "/es" || pathname.startsWith("/es/")) return null;
+
+  const url = req.nextUrl.clone();
+  url.searchParams.delete("lang");
+  url.pathname = pathname === "/" ? "/es" : `/es${pathname}`;
+  return NextResponse.redirect(url, 308);
+}
+
 export default withAuth(
   function middleware(req) {
+    const langRedirect = redirectLangEsToNamespace(req);
+    if (langRedirect) return langRedirect;
+
     const { pathname } = req.nextUrl;
 
     if (pathname === "/es" || pathname.startsWith("/es/")) {
@@ -37,5 +51,11 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/dashboard/:path*", "/es", "/es/:path*"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/dashboard/:path*",
+    "/api/dashboard/:path*",
+    "/es",
+    "/es/:path*",
+  ],
 };

@@ -1,6 +1,7 @@
 import type { HomeLocale } from "@/i18n/home-locale";
 
 export type AboutCopy = {
+  meta: { title: string; description: string };
   eyebrow: string;
   title: string;
   intro: string;
@@ -12,6 +13,11 @@ export type AboutCopy = {
 
 const COPY: Record<HomeLocale, AboutCopy> = {
   en: {
+    meta: {
+      title: "About | ListQik",
+      description:
+        "Learn how ListQik.com and Resolution Realty Group help Texas sellers list through a licensed brokerage with broker-backed guidance.",
+    },
     eyebrow: "ABOUT LISTQIK",
     title: "A simpler way to list your Texas home.",
     intro:
@@ -36,6 +42,11 @@ const COPY: Record<HomeLocale, AboutCopy> = {
       "We use simple, direct wording so homeowners can quickly understand what to do next.",
   },
   es: {
+    meta: {
+      title: "Nosotros | ListQik",
+      description:
+        "Conozca cómo ListQik.com y Resolution Realty Group ayudan a vendedores en Texas con un corretaje con licencia y orientación profesional.",
+    },
     eyebrow: "ACERCA DE LISTQIK",
     title: "Una forma más simple de publicar su casa en Texas.",
     intro:

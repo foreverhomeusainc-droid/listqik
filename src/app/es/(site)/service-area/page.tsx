@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import ServiceAreaPage from "../../../(site)/service-area/page";
+import { ServiceAreaPageContent } from "@/components/service-area/service-area-page-content";
+import { getServiceAreaCopy } from "@/i18n/service-area-copy";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
-export const metadata: Metadata = {
-  title: "Service Area",
-  description:
-    "See ListQik's current Texas service coverage, including primary DFW counties, extended Texas county support, and Houston HAR market reference counties.",
-  alternates: {
-    canonical: "/es/service-area",
-  },
-};
+export const metadata: Metadata = buildLocalizedMetadata(
+  "es",
+  "/service-area",
+  getServiceAreaCopy("es").meta,
+);
 
 export default function EsServiceAreaPage() {
-  return <ServiceAreaPage />;
+  return <ServiceAreaPageContent />;
 }
-

@@ -13,13 +13,13 @@ export function generateMetadata({
 }: {
   params: Promise<{ countySlug: string; citySlug: string }>;
 }) {
-  return generateTexasCityMetadata("en", params);
+  return generateTexasCityMetadata("es", params);
 }
 
-export default function TexasCitySeoPage({
+export default function EsTexasCitySeoPage({
   params,
 }: {
   params: Promise<{ countySlug: string; citySlug: string }>;
 }) {
-  return <TexasCityLocationPage locale="en" params={params} />;
+  return <TexasCityLocationPage locale="es" params={params} />;
 }

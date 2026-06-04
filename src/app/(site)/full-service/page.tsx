@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FullServiceConsole } from "@/components/full-service/full-service-console";
 import { getFullServiceCopy } from "@/i18n/full-service-copy";
+import { localeAlternates } from "@/lib/locale-metadata";
 import { getRequestHomeLocale, homeOpenGraphLocale } from "@/lib/site-locale-server";
 
 export async function generateMetadata({
@@ -16,7 +17,7 @@ export async function generateMetadata({
   return {
     title: copy.meta.title,
     description: copy.meta.description,
-    alternates: { canonical: "/full-service" },
+    alternates: localeAlternates("/full-service"),
     openGraph: {
       title: copy.meta.title,
       description: copy.meta.description,

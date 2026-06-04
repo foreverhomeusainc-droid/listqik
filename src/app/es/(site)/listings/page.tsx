@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import ListingsPage from "../../../(site)/listings/page";
+import { ListingsPageContent } from "@/components/listings/listings-page-content";
+import { listings } from "@/data/listings";
+import { getSitePageMeta } from "@/i18n/site-page-meta";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
-export const metadata: Metadata = {
-  title: "Listings",
-  description: "Browse active ListQik listings across Texas markets.",
-  alternates: {
-    canonical: "/es/listings",
-  },
-};
+export const metadata: Metadata = buildLocalizedMetadata("es", "/listings", getSitePageMeta("listings", "es"));
 
 export default function EsListingsPage() {
-  return <ListingsPage />;
+  return <ListingsPageContent listings={listings} />;
 }
-

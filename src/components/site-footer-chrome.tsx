@@ -4,9 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/container";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { localeSitePath } from "@/lib/locale-site-path";
 
 export function SiteFooterChrome() {
-  const { chrome, ready } = useSiteLocale();
+  const { locale, chrome, ready } = useSiteLocale();
   const t = chrome.footer;
   const year = new Date().getFullYear();
 
@@ -52,12 +53,18 @@ export function SiteFooterChrome() {
               </div>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link className="text-white/70 hover:text-white" href="/pricing">
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href={localeSitePath("/pricing", locale)}
+                  >
                     {ready ? t.pricing : "Pricing"}
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-white/70 hover:text-white" href="/listings">
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href={localeSitePath("/listings", locale)}
+                  >
                     {ready ? t.listings : "Listings"}
                   </Link>
                 </li>
@@ -72,7 +79,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/blogs"
+                    href={localeSitePath("/resources/blogs", locale)}
                   >
                     {ready ? t.blogs : "Blogs"}
                   </Link>
@@ -80,7 +87,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/videos"
+                    href={localeSitePath("/resources/videos", locale)}
                   >
                     {ready ? t.videos : "Videos"}
                   </Link>
@@ -88,7 +95,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/listqik-university"
+                    href={localeSitePath("/listqik-university", locale)}
                   >
                     {ready ? t.university : "ListQik University"}
                   </Link>
@@ -104,7 +111,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/iabs"
+                    href={localeSitePath("/resources/legal/iabs", locale)}
                   >
                     {ready ? t.iabs : "Information About Brokerage Services (IABS)"}
                   </Link>
@@ -112,7 +119,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/consumer-protection-notice"
+                    href={localeSitePath("/resources/legal/consumer-protection-notice", locale)}
                   >
                     {ready ? t.consumerProtection : "Consumer Protection Notice"}
                   </Link>
@@ -120,7 +127,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/mls-rule-schedule-of-fines"
+                    href={localeSitePath("/resources/legal/mls-rule-schedule-of-fines", locale)}
                   >
                     {ready ? t.mlsFines : "MLS Rule Schedule of Fines"}
                   </Link>
@@ -128,7 +135,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/mls-rules-and-regulations"
+                    href={localeSitePath("/resources/legal/mls-rules-and-regulations", locale)}
                   >
                     {ready ? t.mlsRules : "MLS Rules and Regulations"}
                   </Link>
@@ -136,7 +143,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/fair-housing"
+                    href={localeSitePath("/resources/legal/fair-housing", locale)}
                   >
                     {ready ? t.fairHousing : "Fair Housing"}
                   </Link>
@@ -144,7 +151,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/privacy"
+                    href={localeSitePath("/resources/legal/privacy", locale)}
                   >
                     {ready ? t.privacy : "Privacy"}
                   </Link>
@@ -152,7 +159,7 @@ export function SiteFooterChrome() {
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href="/resources/legal/terms"
+                    href={localeSitePath("/resources/legal/terms", locale)}
                   >
                     {ready ? t.terms : "Terms"}
                   </Link>

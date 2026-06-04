@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PricingConsole } from "@/components/pricing/pricing-console";
+import { getPricingCopy } from "@/i18n/pricing-copy";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
-export const metadata: Metadata = {
-  title: "Pricing",
-  description:
-    "Compare ListQik.com pricing tiers for Texas broker-assisted listing services, including marketing support and licensed brokerage submission.",
-  alternates: {
-    canonical: "/es/pricing",
-  },
-};
+export const metadata: Metadata = buildLocalizedMetadata(
+  "es",
+  "/pricing",
+  getPricingCopy("es").meta,
+);
 
 function PricingFallback() {
   return (
@@ -26,4 +25,3 @@ export default function EsPricingPage() {
     </Suspense>
   );
 }
-

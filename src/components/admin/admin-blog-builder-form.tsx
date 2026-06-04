@@ -154,7 +154,7 @@ export function AdminBlogBuilderForm() {
   const previewUrl = useMemo(() => {
     if (!draft.slug || draft.status !== "published") return null;
     return draft.locale === "es"
-      ? `/resources/blogs/${draft.slug}?lang=es`
+      ? `/es/resources/blogs/${draft.slug}`
       : `/resources/blogs/${draft.slug}`;
   }, [draft.slug, draft.status, draft.locale]);
 

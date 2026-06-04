@@ -4,6 +4,7 @@ import { listAllBlogSlugsForSitemap } from "@/lib/blog-service";
 import { listings } from "@/data/listings";
 import { portfolioItems } from "@/data/portfolio";
 import { legalPages } from "@/data/resources";
+import { ES_MARKETING_SITEMAP_PATHS } from "@/lib/locale-metadata";
 import { allLocationSitemapPaths } from "@/lib/texas-location-seo";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://listqik.com";
@@ -17,15 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/about",
     "/pricing",
     "/full-service",
-    "/es/full-service",
     "/start-now",
     "/listings",
     "/service-area",
     "/resources",
     "/resources/blogs",
-    "/resources/blogs?lang=es",
     "/resources/videos",
     "/listqik-university",
+    "/upgrades",
   ];
 
   const listingRoutes = listings.map((l) => `/listings/${l.slug}`);
@@ -38,6 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
+    ...ES_MARKETING_SITEMAP_PATHS,
     ...listingRoutes,
     ...blogRoutes,
     ...legalRoutes,
@@ -52,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ? 1
         : path === "/listings"
           ? 0.9
-          : path.startsWith("/service-area/texas/")
+          : path.startsWith("/service-area/texas/") || path.startsWith("/es/service-area/texas/")
             ? 0.55
             : path === "/service-area"
               ? 0.75
