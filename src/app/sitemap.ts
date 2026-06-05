@@ -53,10 +53,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ? 1
         : path === "/listings"
           ? 0.9
-          : path.startsWith("/service-area/texas/") || path.startsWith("/es/service-area/texas/")
-            ? 0.55
-            : path === "/service-area"
-              ? 0.75
-              : 0.7,
+          : path === "/service-area" || path === "/es/service-area"
+            ? 0.75
+            : /\/service-area\/texas\/[^/]+-county$/.test(path) ||
+                /\/es\/service-area\/texas\/[^/]+-county$/.test(path)
+              ? 0.65
+              : path.includes("/service-area/texas/")
+                ? 0.55
+                : 0.7,
   }));
 }

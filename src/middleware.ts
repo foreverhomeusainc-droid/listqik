@@ -13,8 +13,34 @@ function redirectLangEsToNamespace(req: NextRequest): NextResponse | null {
   return NextResponse.redirect(url, 308);
 }
 
+function redirectShorthandServiceAreaPaths(req: NextRequest): NextResponse | null {
+  const { pathname } = req.nextUrl;
+  const es = pathname.startsWith("/es/");
+  const base = es ? pathname.slice(3) : pathname;
+  const prefix = es ? "/es" : "";
+
+  const countyMatch = base.match(/^\/service-area\/([^/]+-county)$/);
+  if (countyMatch?.[1] && countyMatch[1] !== "texas") {
+    const url = req.nextUrl.clone();
+    url.pathname = `${prefix}/service-area/texas/${countyMatch[1]}`;
+    return NextResponse.redirect(url, 308);
+  }
+
+  const cityMatch = base.match(/^\/service-area\/([^/]+-county)\/([^/]+)$/);
+  if (cityMatch?.[1] && cityMatch[2]) {
+    const url = req.nextUrl.clone();
+    url.pathname = `${prefix}/service-area/texas/${cityMatch[1]}/${cityMatch[2]}`;
+    return NextResponse.redirect(url, 308);
+  }
+
+  return null;
+}
+
 export default withAuth(
   function middleware(req) {
+    const shorthandRedirect = redirectShorthandServiceAreaPaths(req);
+    if (shorthandRedirect) return shorthandRedirect;
+
     const langRedirect = redirectLangEsToNamespace(req);
     if (langRedirect) return langRedirect;
 

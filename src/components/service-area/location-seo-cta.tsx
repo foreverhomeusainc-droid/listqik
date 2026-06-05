@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { startNowSubsonicPricingHref } from "@/lib/stripe-subsonic-landing-promo";
 import { localeSitePath } from "@/lib/locale-site-path";
 
 const COPY = {
   en: {
-    startListing: "Start Listing",
+    getListedNow: "Get Listed Now",
     serviceArea: "Service area overview",
     contact: "Contact Concierge",
   },
   es: {
-    startListing: "Publicar ahora",
+    getListedNow: "Publicar ahora",
     serviceArea: "Resumen de zona de servicio",
     contact: "Contactar concierge",
   },
@@ -24,10 +25,10 @@ export function LocationSeoCta() {
   return (
     <div className="flex flex-wrap gap-3">
       <Link
-        href={localeSitePath("/pricing", locale)}
+        href={startNowSubsonicPricingHref(locale)}
         className="inline-flex min-h-[44px] items-center rounded-full border border-emerald-400/70 bg-emerald-500/20 px-5 text-sm font-semibold tracking-wide text-emerald-100 transition hover:bg-emerald-400/30"
       >
-        {t.startListing}
+        {t.getListedNow}
       </Link>
       <Link
         href={localeSitePath("/service-area", locale)}

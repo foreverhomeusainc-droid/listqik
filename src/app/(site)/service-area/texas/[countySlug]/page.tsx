@@ -1,7 +1,7 @@
 import {
   generateTexasCountyMetadata,
   TexasCountyLocationPage,
-} from "@/components/service-area/texas-county-location-page";
+} from "@/components/service-area/county-service-area-page";
 import { allCountyStaticParams } from "@/lib/texas-location-seo";
 
 export function generateStaticParams() {
