@@ -16,6 +16,7 @@ import {
   countyPagePath,
   countySeoDescription,
   countySeoTitle,
+  formatTexasLocationDisplayName,
   getCountyBySlug,
   isActiveListQikCounty,
   texasIndexPath,
@@ -275,7 +276,7 @@ export async function TexasCountyLocationPage({
                       href={cityPagePath(county.countySlug, city.slug, locale)}
                       className="inline-flex rounded-full border border-emerald-500/25 bg-emerald-950/20 px-4 py-2 text-sm text-emerald-100 transition hover:border-emerald-400/40 hover:bg-emerald-900/30"
                     >
-                      {city.name}
+                      {formatTexasLocationDisplayName(city.name)}
                     </Link>
                   </li>
                 ))}

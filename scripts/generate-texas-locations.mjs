@@ -20,6 +20,10 @@ const outPath = path.join(root, "src/data/texas-locations.json");
 const US_CITIES_CSV =
   "https://raw.githubusercontent.com/scpike/us-state-county-zip/master/geo-data.csv";
 
+function formatCityDisplayName(name) {
+  return name.replace(/^Zcta\s+/i, "ZIP ");
+}
+
 function slugify(value) {
   return value
     .trim()
@@ -93,7 +97,7 @@ const citiesByCounty = await fetchTexasCities();
 const locations = counties.map((county) => {
   const citySet = citiesByCounty.get(county) ?? citiesByCounty.get(`${county} County`) ?? new Set();
   const cities = [...citySet].sort((a, b) => a.localeCompare(b)).map((name) => ({
-    name,
+    name: formatCityDisplayName(name),
     slug: slugify(name),
   }));
   return {

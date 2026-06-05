@@ -14,6 +14,7 @@ import {
   citySeoTitle,
   countyCoverageTier,
   countyPagePath,
+  formatTexasLocationDisplayName,
   getCityBySlugs,
   isActiveListQikCounty,
   texasIndexPath,
@@ -59,6 +60,7 @@ export async function TexasCityLocationPage({
   const copy = getTexasLocationCopy(locale);
   const tier = countyCoverageTier(county.county);
   const active = isActiveListQikCounty(county.county);
+  const displayName = formatTexasLocationDisplayName(city.name);
   const title = citySeoTitle(city.name, county.county, locale);
   const description = citySeoDescription(city.name, county.county, tier, locale);
   const path = cityPagePath(countySlug, citySlug, locale);
@@ -70,13 +72,13 @@ export async function TexasCityLocationPage({
         pageDescription={description}
         canonicalPath={path}
         countyName={county.county}
-        cityName={city.name}
+        cityName={displayName}
         breadcrumbs={[
           { name: copy.breadcrumbHome, path: localeSitePath("/", locale) },
           { name: copy.breadcrumbServiceArea, path: localeSitePath("/service-area", locale) },
           { name: copy.breadcrumbTexas, path: texasIndexPath(locale) },
           { name: copy.countyLinkLabel(county.county), path: countyPagePath(countySlug, locale) },
-          { name: city.name, path },
+          { name: displayName, path },
         ]}
       />
       <Container>
@@ -85,13 +87,13 @@ export async function TexasCityLocationPage({
             <p className="text-xs font-semibold tracking-widest text-emerald-200/80">
               {localizedCoverageLabel(tier, locale).toUpperCase()} · {copy.countyLinkLabel(county.county)}
             </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{copy.cityH1(city.name)}</h1>
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{copy.cityH1(displayName)}</h1>
             <p className="text-base text-muted">{description}</p>
           </header>
 
           <section className="glass-surface space-y-3 rounded-2xl border border-white/10 p-5 text-sm text-white/75">
-            <h2 className="text-base font-semibold text-white">{copy.citySectionTitle(city.name, county.county)}</h2>
-            {active ? <p>{copy.cityActiveBody(city.name)}</p> : <p>{copy.cityInactiveBody(city.name)}</p>}
+            <h2 className="text-base font-semibold text-white">{copy.citySectionTitle(displayName, county.county)}</h2>
+            {active ? <p>{copy.cityActiveBody(displayName)}</p> : <p>{copy.cityInactiveBody(displayName)}</p>}
             <p>
               {copy.cityCountyLinkIntro}{" "}
               <Link href={countyPagePath(countySlug, locale)} className="text-emerald-300 underline">

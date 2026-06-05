@@ -127,11 +127,16 @@ export function countySeoDescription(
   return `ListQik helps Texas sellers in ${countyName} County with broker-backed MLS listing support. ${coverage}. Explore ${cityCount} cities and towns in ${countyName} County and start your listing online.`;
 }
 
+export function formatTexasLocationDisplayName(name: string): string {
+  return name.replace(/^Zcta\s+/i, "ZIP ");
+}
+
 export function citySeoTitle(cityName: string, countyName: string, locale: HomeLocale = "en"): string {
+  const city = formatTexasLocationDisplayName(cityName);
   if (locale === "es") {
-    return `Publique su casa en ${cityName}, condado de ${countyName} TX | ListQik`;
+    return `Publique su casa en ${city}, condado de ${countyName} TX | ListQik`;
   }
-  return `List Your Home in ${cityName}, ${countyName} County TX | ListQik`;
+  return `List Your Home in ${city}, ${countyName} County TX | ListQik`;
 }
 
 export function citySeoDescription(
@@ -140,11 +145,12 @@ export function citySeoDescription(
   tier: ServiceCoverageTier,
   locale: HomeLocale = "en",
 ): string {
+  const city = formatTexasLocationDisplayName(cityName);
   const coverage = localizedCoverageLabel(tier, locale).toLowerCase();
   if (locale === "es") {
-    return `Venda o liste una casa en ${cityName}, condado de ${countyName}, Texas con ListQik. ${coverage}. Compare precios, complete el intake del vendedor y trabaje con correduría con licencia.`;
+    return `Venda o liste una casa en ${city}, condado de ${countyName}, Texas con ListQik. ${coverage}. Compare precios, complete el intake del vendedor y trabaje con correduría con licencia.`;
   }
-  return `Sell or list a home in ${cityName}, ${countyName} County, Texas with ListQik. ${coverage}. Compare pricing, complete seller intake, and work with licensed brokerage support.`;
+  return `Sell or list a home in ${city}, ${countyName} County, Texas with ListQik. ${coverage}. Compare pricing, complete seller intake, and work with licensed brokerage support.`;
 }
 
 export function allCountyStaticParams(): { countySlug: string }[] {
