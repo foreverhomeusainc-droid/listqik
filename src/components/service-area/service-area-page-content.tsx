@@ -6,8 +6,9 @@ import { useSiteLocale } from "@/components/site-locale-provider";
 import { ServiceAreaHubJsonLd } from "@/components/service-area/service-area-hub-json-ld";
 import { TexasServiceAreaMap } from "@/components/service-area/texas-service-area-map";
 import { getServiceAreaCopy } from "@/i18n/service-area-copy";
+import type { HomeLocale } from "@/i18n/home-locale";
 import { localeSitePath } from "@/lib/locale-site-path";
-import { TEXAS_LOCATION_STATS } from "@/lib/texas-location-seo";
+import { countyPagePathForCountyName, TEXAS_LOCATION_STATS } from "@/lib/texas-location-seo";
 import {
   buildTexasCountyMap,
   EXTENDED_SERVICE_COUNT,
@@ -99,23 +100,34 @@ function CountyChip({
   name,
   tone = "secondary",
   className = "",
+  locale,
 }: {
   name: string;
   tone?: "primary" | "secondary";
   className?: string;
+  locale: HomeLocale;
 }) {
+  const href = countyPagePathForCountyName(name, locale);
+  const chipClass = [
+    "inline-flex rounded-full border px-3 py-1 text-xs font-semibold tracking-wide transition",
+    tone === "primary"
+      ? "border-emerald-400/45 bg-emerald-500/15 text-emerald-100 hover:border-emerald-400/70 hover:bg-emerald-500/25"
+      : "border-white/10 bg-white/5 text-white/75 hover:border-white/25 hover:bg-white/10 hover:text-white",
+    className,
+  ].join(" ");
+
+  if (!href) {
+    return (
+      <span className={chipClass}>
+        {name} County
+      </span>
+    );
+  }
+
   return (
-    <span
-      className={[
-        "inline-flex rounded-full border px-3 py-1 text-xs font-semibold tracking-wide",
-        tone === "primary"
-          ? "border-emerald-400/45 bg-emerald-500/15 text-emerald-100"
-          : "border-white/10 bg-white/5 text-white/75",
-        className,
-      ].join(" ")}
-    >
+    <Link href={href} className={chipClass}>
       {name} County
-    </span>
+    </Link>
   );
 }
 
@@ -123,10 +135,12 @@ function CountyChipGrid({
   counties,
   tone = "secondary",
   className = "",
+  locale,
 }: {
   counties: readonly string[];
   tone?: "primary" | "secondary";
   className?: string;
+  locale: HomeLocale;
 }) {
   return (
     <ul className={["mt-4 grid gap-2 sm:grid-cols-2", className].join(" ")}>
@@ -135,6 +149,7 @@ function CountyChipGrid({
           <CountyChip
             name={county}
             tone={tone}
+            locale={locale}
             className="w-full justify-center text-center sm:justify-start sm:text-left"
           />
         </li>
@@ -146,24 +161,38 @@ function CountyChipGrid({
 function MarketCountyList({
   counties,
   itemTone = "glass",
+  locale,
 }: {
   counties: readonly { name: string; note: string }[];
   itemTone?: "glass" | "dark";
+  locale: HomeLocale;
 }) {
   return (
     <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-      {counties.map((county) => (
-        <li
-          key={county.name}
-          className={[
-            "rounded-2xl border border-white/10 p-3",
-            itemTone === "dark" ? "bg-black/20" : "bg-white/5",
-          ].join(" ")}
-        >
-          <span className="font-semibold text-white">{county.name} County</span>
-          <span className="text-white/60"> ({county.note})</span>
-        </li>
-      ))}
+      {counties.map((county) => {
+        const href = countyPagePathForCountyName(county.name, locale);
+        return (
+          <li
+            key={county.name}
+            className={[
+              "rounded-2xl border border-white/10 p-3",
+              itemTone === "dark" ? "bg-black/20" : "bg-white/5",
+            ].join(" ")}
+          >
+            {href ? (
+              <Link
+                href={href}
+                className="font-semibold text-emerald-100 underline-offset-2 transition hover:text-emerald-50 hover:underline"
+              >
+                {county.name} County
+              </Link>
+            ) : (
+              <span className="font-semibold text-white">{county.name} County</span>
+            )}
+            <span className="text-white/60"> ({county.note})</span>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -303,7 +332,7 @@ export function ServiceAreaPageContent() {
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-white/65">{t.primaryCountiesBody}</p>
-                  <CountyChipGrid counties={PRIMARY_SERVICE_COUNTIES} tone="primary" />
+                  <CountyChipGrid counties={PRIMARY_SERVICE_COUNTIES} tone="primary" locale={locale} />
                 </section>
 
                 <section className="rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -314,7 +343,7 @@ export function ServiceAreaPageContent() {
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-white/65">{t.extendedCountiesBody}</p>
-                  <CountyChipGrid counties={visibleExtendedCounties} />
+                  <CountyChipGrid counties={visibleExtendedCounties} locale={locale} />
                   {hiddenExtendedCounties.length > 0 ? (
                     <div className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-white/45">
                       {t.fullListBelow}
@@ -340,6 +369,7 @@ export function ServiceAreaPageContent() {
                     <CountyChipGrid
                       counties={hiddenExtendedCounties}
                       className="mt-4 lg:grid-cols-3 xl:grid-cols-4"
+                      locale={locale}
                     />
                   </div>
                 </details>
@@ -416,7 +446,7 @@ export function ServiceAreaPageContent() {
                       {HAR_CORE_COUNTIES.length} {t.countiesWord}
                     </span>
                   </div>
-                  <MarketCountyList counties={HAR_CORE_COUNTIES} />
+                  <MarketCountyList counties={HAR_CORE_COUNTIES} locale={locale} />
                 </section>
 
                 <section className="rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -428,7 +458,7 @@ export function ServiceAreaPageContent() {
                   </div>
                   <p className="mt-2 text-sm text-white/65">{t.harExtendedBody1}</p>
                   <p className="mt-3 text-sm text-white/65">{t.harExtendedBody2}</p>
-                  <MarketCountyList counties={HAR_EXTENDED_MARKET_COUNTIES} itemTone="dark" />
+                  <MarketCountyList counties={HAR_EXTENDED_MARKET_COUNTIES} itemTone="dark" locale={locale} />
                 </section>
               </div>
             </div>

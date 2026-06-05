@@ -67,6 +67,18 @@ export function getCountyBySlug(countySlug: string): TexasLocationCounty | undef
   return TEXAS_COUNTIES.find((c) => c.countySlug === countySlug);
 }
 
+export function getCountyByName(countyName: string): TexasLocationCounty | undefined {
+  return TEXAS_COUNTIES.find((c) => c.county === countyName);
+}
+
+export function countyPagePathForCountyName(
+  countyName: string,
+  locale: HomeLocale = "en",
+): string | undefined {
+  const county = getCountyByName(countyName);
+  return county ? countyPagePath(county.countySlug, locale) : undefined;
+}
+
 export function getCityBySlugs(
   countySlug: string,
   citySlug: string,
