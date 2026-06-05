@@ -2,13 +2,11 @@ import type { HomeLocale } from "@/i18n/home-locale";
 
 export type CountyLandingCopy = {
   getListedNow: string;
-  heroEyebrow: string;
-  heroTitle: string;
-  heroSubtitle: (county: string) => string;
-  heroPriceLabel: string;
+  heroEyebrow: (county: string) => string;
+  heroTitle: (county: string) => string;
+  heroSubtitle: string;
+  heroTrustLine: string;
   heroBullets: string[];
-  countyTitle: (county: string) => string;
-  citiesIntro: string;
   benefits: { title: string; body: string }[];
   mlsTitle: string;
   mlsPortals: string[];
@@ -31,42 +29,38 @@ export type CountyLandingCopy = {
 const COPY: Record<HomeLocale, CountyLandingCopy> = {
   en: {
     getListedNow: "Get Listed Now",
-    heroEyebrow: "TEXAS FLAT-FEE LISTING",
-    heroTitle: "Sell your home with clear steps and keep more equity",
-    heroSubtitle: (county) =>
-      `Broker-backed MLS listing support for sellers in ${county} County, Texas.`,
-    heroPriceLabel: "Subsonic plan from $79",
+    heroEyebrow: (county) => `Flat-fee MLS listing · ${county} County, TX`,
+    heroTitle: (county) => `List your home in ${county} County for $79`,
+    heroSubtitle:
+      "Broker-backed MLS listing for Texas sellers. Keep more equity at closing—without a 3% listing commission.",
+    heroTrustLine: "Zillow · Realtor.com · Redfin · Trulia · Licensed Texas brokerage",
     heroBullets: [
-      "One-time flat MLS listing fee",
-      "Major portal distribution included",
-      "Licensed brokerage compliance review",
-      "You control buyer-agent offers",
-      "No surprise listing-side commission",
+      "Subsonic plan from $79 (promo applied at checkout)",
+      "MLS distribution to major home-search portals",
+      "You stay in control of offers and buyer-agent terms",
     ],
-    countyTitle: (county) => `ListQik listings in ${county} County, Texas`,
-    citiesIntro: "Communities we help sellers reach in this county:",
     benefits: [
       {
         title: "Low flat fee",
-        body: "Choose Subsonic and pay a simple upfront listing fee—not a 3% listing commission.",
+        body: "Pay a simple upfront listing fee—not a 3% listing commission.",
       },
       {
         title: "Keep more equity",
-        body: "ListQik.com targets about 1% total listing-side cost vs. ~3% with many traditional brokers.",
+        body: "ListQik targets about 1% total listing-side cost vs. ~3% with many traditional brokers.",
       },
       {
-        title: "Flexible plans",
-        body: "Compare Subsonic, Supersonic, and Hypersonic tiers and add marketing upgrades when you need them.",
+        title: "Start online today",
+        body: "Pick a plan, enter your address, and begin seller intake in minutes.",
       },
     ],
     mlsTitle: "Your listing can appear on major home-search sites",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "MLS feeds"],
-    infoTitle: (county) => `Why sellers in ${county} County choose ListQik`,
+    infoTitle: (county) => `ListQik support in ${county} County`,
     infoActive: (county) =>
-      `${county} County is in ListQik's published Texas service footprint. Start intake online, compare plans, and work with licensed brokerage support for MLS submission and compliance.`,
+      `${county} County is in ListQik's published Texas service footprint. Complete intake online and work with licensed brokerage support for MLS submission and compliance.`,
     infoInactive: (county) =>
-      `ListQik supports Texas sellers statewide. For ${county} County addresses, concierge can confirm broker availability, MLS path, and timing before you checkout.`,
-    compareTitle: "Same MLS exposure—without a 6% listing commission stack",
+      `ListQik supports Texas sellers statewide. Start online now—we'll confirm broker and MLS path for your ${county} County address during intake.`,
+    compareTitle: "Same MLS exposure—without a 6% commission stack",
     compareListQik: {
       label: "ListQik Subsonic",
       fee: "$79 promo + 0.50% at closing",
@@ -75,9 +69,9 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
     compareTraditional: {
       label: "Traditional listing broker",
       fee: "~3% listing commission",
-      note: "Typical full-service listing-side fee at closing",
+      note: "Typical listing-side fee at closing",
     },
-    propertyTypesTitle: "We list the property types sellers bring us",
+    propertyTypesTitle: "Property types we list",
     propertyTypes: ["Single-family homes", "Condos & townhomes", "Vacant land", "Investment properties"],
     faqTitle: "Flat-fee listing basics",
     faqItems: [
@@ -99,47 +93,43 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
       },
     ],
     citiesSectionTitle: (county) => `Cities and towns in ${county} County`,
-    citiesSectionIntro: (n) => `${n} communities with dedicated local ListQik pages.`,
-    finalCtaTitle: "Ready to list in this county?",
-    finalCtaBody: "Open Subsonic pricing, enter your property address, and start your seller intake in minutes.",
+    citiesSectionIntro: (n) => `${n} communities in this county.`,
+    finalCtaTitle: "Ready to list?",
+    finalCtaBody: "Enter your property address and start Subsonic seller intake—it takes just a few minutes.",
   },
   es: {
     getListedNow: "Publicar ahora",
-    heroEyebrow: "LISTADO DE TARIFA FIJA EN TEXAS",
-    heroTitle: "Venda su casa con pasos claros y conserve más capital",
-    heroSubtitle: (county) =>
-      `Apoyo MLS respaldado por correduría para vendedores en el condado de ${county}, Texas.`,
-    heroPriceLabel: "Plan Subsonic desde $79",
+    heroEyebrow: (county) => `Listado MLS tarifa fija · Condado de ${county}, TX`,
+    heroTitle: (county) => `Publique su casa en el condado de ${county} por $79`,
+    heroSubtitle:
+      "Listado MLS respaldado por correduría en Texas. Conserve más capital al cierre—sin comisión del 3% del listado.",
+    heroTrustLine: "Zillow · Realtor.com · Redfin · Trulia · Correduría con licencia en Texas",
     heroBullets: [
-      "Tarifa MLS fija única",
-      "Distribución en portales principales",
-      "Revisión de cumplimiento con correduría con licencia",
-      "Usted controla las ofertas del agente comprador",
-      "Sin comisión sorpresa del lado del listado",
+      "Plan Subsonic desde $79 (promo aplicada al pagar)",
+      "Distribución MLS en portales principales",
+      "Usted controla ofertas y compensación al agente comprador",
     ],
-    countyTitle: (county) => `Listados ListQik en el condado de ${county}, Texas`,
-    citiesIntro: "Comunidades que apoyamos en este condado:",
     benefits: [
       {
         title: "Tarifa fija baja",
-        body: "Elija Subsonic y pague una tarifa de listado clara—no una comisión del 3% del listado.",
+        body: "Pague una tarifa de listado clara—no una comisión del 3% del listado.",
       },
       {
         title: "Conserve más capital",
-        body: "ListQik.com apunta a ~1% del costo del listado vs. ~3% con muchos corredores tradicionales.",
+        body: "ListQik apunta a ~1% del costo del listado vs. ~3% con muchos corredores tradicionales.",
       },
       {
-        title: "Planes flexibles",
-        body: "Compare Subsonic, Supersonic e Hypersonic y agregue mejoras de marketing cuando las necesite.",
+        title: "Empiece en línea hoy",
+        body: "Elija un plan, ingrese su dirección e inicie el intake en minutos.",
       },
     ],
     mlsTitle: "Su listado puede aparecer en los principales sitios de búsqueda",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "Feeds MLS"],
-    infoTitle: (county) => `Por qué vendedores en el condado de ${county} eligen ListQik`,
+    infoTitle: (county) => `Apoyo ListQik en el condado de ${county}`,
     infoActive: (county) =>
-      `El condado de ${county} está en la zona de servicio publicada de ListQik en Texas. Inicie el intake en línea, compare planes y trabaje con correduría con licencia para el MLS y cumplimiento.`,
+      `El condado de ${county} está en la zona de servicio publicada de ListQik en Texas. Complete el intake en línea y trabaje con correduría con licencia para el MLS y cumplimiento.`,
     infoInactive: (county) =>
-      `ListQik apoya vendedores en todo Texas. Para direcciones en el condado de ${county}, concierge puede confirmar disponibilidad de corredor, ruta MLS y tiempos antes del pago.`,
+      `ListQik apoya vendedores en todo Texas. Inicie en línea ahora—confirmaremos corredor y ruta MLS para su dirección en el condado de ${county} durante el intake.`,
     compareTitle: "La misma exposición MLS—sin una comisión del 6%",
     compareListQik: {
       label: "ListQik Subsonic",
@@ -151,7 +141,7 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
       fee: "~3% comisión de listado",
       note: "Tarifa típica del lado del listado al cierre",
     },
-    propertyTypesTitle: "Listamos los tipos de propiedad que los vendedores traen",
+    propertyTypesTitle: "Tipos de propiedad que listamos",
     propertyTypes: ["Casas unifamiliares", "Condominios y townhomes", "Terrenos vacíos", "Propiedades de inversión"],
     faqTitle: "Conceptos básicos del listado de tarifa fija",
     faqItems: [
@@ -173,9 +163,9 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
       },
     ],
     citiesSectionTitle: (county) => `Ciudades y pueblos en el condado de ${county}`,
-    citiesSectionIntro: (n) => `${n} comunidades con páginas locales dedicadas de ListQik.`,
-    finalCtaTitle: "¿Listo para publicar en este condado?",
-    finalCtaBody: "Abra precios Subsonic, ingrese la dirección de su propiedad e inicie su intake en minutos.",
+    citiesSectionIntro: (n) => `${n} comunidades en este condado.`,
+    finalCtaTitle: "¿Listo para publicar?",
+    finalCtaBody: "Ingrese la dirección de su propiedad e inicie el intake Subsonic—solo toma unos minutos.",
   },
 };
 
