@@ -42,6 +42,7 @@ export async function generateTexasCityMetadata(
       canonical: cityPagePath(countySlug, citySlug, locale),
     },
     openGraph: { title, description },
+    robots: { index: false, follow: true },
   };
 }
 

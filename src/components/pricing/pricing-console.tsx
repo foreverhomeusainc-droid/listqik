@@ -13,6 +13,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { GoogleAdsPurchaseConversion } from "@/components/analytics/google-ads-purchase-conversion";
+import { fireSubsonicIntakeStartedConversion } from "@/lib/google-ads-events";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
 import {
@@ -138,6 +139,7 @@ export function PricingConsole() {
     landingPromoHandled.current = true;
     setLandingPromoSource(START_NOW_SUBSONIC_PROMO);
     selectPlan({ ...subsonic, price: copy.subsonicPromoPrice });
+    fireSubsonicIntakeStartedConversion();
     requestAnimationFrame(() => {
       window.scrollTo(0, 0);
       const addressInput = document.getElementById("wizard-property-address");

@@ -107,11 +107,28 @@ export function coverageLabel(tier: ServiceCoverageTier, locale: HomeLocale = "e
   return localizedCoverageLabel(tier, locale);
 }
 
-export function countySeoTitle(countyName: string, locale: HomeLocale = "en"): string {
+export function countySeoTitle(
+  countyName: string,
+  tier: ServiceCoverageTier,
+  locale: HomeLocale = "en",
+): string {
   if (locale === "es") {
-    return `Venda su casa en el condado de ${countyName}, TX | ListQik`;
+    if (tier === "statewide") {
+      return `Listado en el condado de ${countyName}, TX | ListQik`;
+    }
+    if (tier === "har-core" || tier === "har-extended") {
+      return `Listado MLS Houston · Condado de ${countyName} por $79 | ListQik`;
+    }
+    return `Publique en el condado de ${countyName} por $79 | ListQik`;
   }
-  return `Sell Your Home in ${countyName} County, TX | ListQik`;
+
+  if (tier === "statewide") {
+    return `List Your Home in ${countyName} County, TX | ListQik`;
+  }
+  if (tier === "har-core" || tier === "har-extended") {
+    return `Houston-Area MLS Listing · ${countyName} County for $79 | ListQik`;
+  }
+  return `List Your Home in ${countyName} County for $79 | ListQik`;
 }
 
 export function countySeoDescription(
@@ -167,15 +184,13 @@ export function allCityStaticParams(): { countySlug: string; citySlug: string }[
   return params;
 }
 
+/** County + Texas index URLs only — city pages are noindex and excluded from sitemap. */
 export function allLocationSitemapPaths(): string[] {
   const paths: string[] = [];
   for (const locale of ["en", "es"] as const) {
     paths.push(texasIndexPath(locale));
     for (const county of TEXAS_COUNTIES) {
       paths.push(countyPagePath(county.countySlug, locale));
-      for (const city of county.cities) {
-        paths.push(cityPagePath(county.countySlug, city.slug, locale));
-      }
     }
   }
   return paths;

@@ -1,4 +1,12 @@
 import type { HomeLocale } from "@/i18n/home-locale";
+import type { ServiceCoverageTier } from "@/lib/texas-location-seo";
+
+export type CountyHeroContent = {
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroBullets: string[];
+};
 
 export type CountyLandingCopy = {
   getListedNow: string;
@@ -171,4 +179,132 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
 
 export function getCountyLandingCopy(locale: HomeLocale): CountyLandingCopy {
   return COPY[locale];
+}
+
+const HERO_BY_TIER: Record<
+  HomeLocale,
+  Record<ServiceCoverageTier, (county: string) => CountyHeroContent>
+> = {
+  en: {
+    primary: (county) => ({
+      heroEyebrow: `Flat-fee MLS listing · ${county} County, TX`,
+      heroTitle: `List your home in ${county} County for $79`,
+      heroSubtitle:
+        "Broker-backed MLS listing for Texas sellers. Keep more equity at closing—without a 3% listing commission.",
+      heroBullets: [
+        "Subsonic plan from $79 (promo applied at checkout)",
+        "MLS distribution to major home-search portals",
+        "You stay in control of offers and buyer-agent terms",
+      ],
+    }),
+    extended: (county) => ({
+      heroEyebrow: `Extended ListQik service · ${county} County, TX`,
+      heroTitle: `List your home in ${county} County for $79`,
+      heroSubtitle:
+        "DFW-area flat-fee MLS listing with licensed brokerage support. Start online in minutes.",
+      heroBullets: [
+        "Subsonic plan from $79 (promo applied at checkout)",
+        "Published extended service county for ListQik",
+        "MLS distribution to major home-search portals",
+      ],
+    }),
+    "har-core": (county) => ({
+      heroEyebrow: `Houston HAR market · ${county} County, TX`,
+      heroTitle: `List your home in ${county} County for $79`,
+      heroSubtitle:
+        "Houston-area broker-backed MLS listing. HAR-compatible MLS path confirmed during seller intake.",
+      heroBullets: [
+        "Subsonic plan from $79 (promo applied at checkout)",
+        "Houston HAR core market county",
+        "Licensed Texas brokerage handles MLS submission",
+      ],
+    }),
+    "har-extended": (county) => ({
+      heroEyebrow: `Houston HAR extended market · ${county} County, TX`,
+      heroTitle: `List your home in ${county} County for $79`,
+      heroSubtitle:
+        "Extended Houston-area listing support. We'll confirm HAR MLS path for your property address.",
+      heroBullets: [
+        "Subsonic plan from $79 (promo applied at checkout)",
+        "Extended Houston HAR market coverage",
+        "Start intake online—broker path confirmed before MLS submission",
+      ],
+    }),
+    statewide: (county) => ({
+      heroEyebrow: `Texas flat-fee listing · ${county} County`,
+      heroTitle: `Start your ${county} County listing online`,
+      heroSubtitle:
+        "ListQik supports Texas sellers statewide. Enter your address—we'll confirm broker and MLS path during intake.",
+      heroBullets: [
+        "Subsonic plan from $79 (promo applied at checkout)",
+        "Broker and MLS path confirmed for your address",
+        "Concierge support if you have questions before checkout",
+      ],
+    }),
+  },
+  es: {
+    primary: (county) => ({
+      heroEyebrow: `Listado MLS tarifa fija · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el condado de ${county} por $79`,
+      heroSubtitle:
+        "Listado MLS respaldado por correduría en Texas. Conserve más capital al cierre—sin comisión del 3% del listado.",
+      heroBullets: [
+        "Plan Subsonic desde $79 (promo aplicada al pagar)",
+        "Distribución MLS en portales principales",
+        "Usted controla ofertas y compensación al agente comprador",
+      ],
+    }),
+    extended: (county) => ({
+      heroEyebrow: `Servicio extendido ListQik · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el condado de ${county} por $79`,
+      heroSubtitle:
+        "Listado MLS de tarifa fija en el área DFW con correduría con licencia. Empiece en línea en minutos.",
+      heroBullets: [
+        "Plan Subsonic desde $79 (promo aplicada al pagar)",
+        "Condado de servicio extendido publicado por ListQik",
+        "Distribución MLS en portales principales",
+      ],
+    }),
+    "har-core": (county) => ({
+      heroEyebrow: `Mercado HAR Houston · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el condado de ${county} por $79`,
+      heroSubtitle:
+        "Listado MLS en el área de Houston. Ruta MLS compatible con HAR confirmada durante el intake.",
+      heroBullets: [
+        "Plan Subsonic desde $79 (promo aplicada al pagar)",
+        "Condado núcleo del mercado HAR Houston",
+        "Correduría con licencia en Texas gestiona el envío MLS",
+      ],
+    }),
+    "har-extended": (county) => ({
+      heroEyebrow: `Mercado extendido HAR Houston · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el condado de ${county} por $79`,
+      heroSubtitle:
+        "Apoyo de listado en el área extendida de Houston. Confirmaremos la ruta MLS HAR para su dirección.",
+      heroBullets: [
+        "Plan Subsonic desde $79 (promo aplicada al pagar)",
+        "Cobertura extendida del mercado HAR Houston",
+        "Inicie intake en línea—ruta de corredor confirmada antes del MLS",
+      ],
+    }),
+    statewide: (county) => ({
+      heroEyebrow: `Listado tarifa fija Texas · Condado de ${county}`,
+      heroTitle: `Inicie su listado en el condado de ${county} en línea`,
+      heroSubtitle:
+        "ListQik apoya vendedores en todo Texas. Ingrese su dirección—confirmaremos corredor y ruta MLS durante el intake.",
+      heroBullets: [
+        "Plan Subsonic desde $79 (promo aplicada al pagar)",
+        "Corredor y ruta MLS confirmados para su dirección",
+        "Apoyo concierge si tiene preguntas antes de pagar",
+      ],
+    }),
+  },
+};
+
+export function getCountyHeroContent(
+  tier: ServiceCoverageTier,
+  county: string,
+  locale: HomeLocale,
+): CountyHeroContent {
+  return HERO_BY_TIER[locale][tier](county);
 }

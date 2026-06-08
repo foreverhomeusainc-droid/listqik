@@ -3,13 +3,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
+import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { LocationSeoJsonLd } from "@/components/service-area/location-seo-json-ld";
-import { getCountyLandingCopy } from "@/i18n/county-landing-copy";
+import { getCountyHeroContent, getCountyLandingCopy } from "@/i18n/county-landing-copy";
 import type { HomeLocale } from "@/i18n/home-locale";
 import { getTexasLocationCopy, localizedCoverageLabel } from "@/i18n/texas-location-copy";
 import { locationAlternates } from "@/lib/locale-metadata";
 import { localeSitePath } from "@/lib/locale-site-path";
-import { startNowSubsonicPricingHref } from "@/lib/stripe-subsonic-landing-promo";
 import {
   cityPagePath,
   countyCoverageTier,
@@ -39,12 +39,12 @@ function GetListedButton({
       : "min-h-[48px] px-7 text-sm";
 
   return (
-    <Link
-      href={startNowSubsonicPricingHref(locale)}
+    <SubsonicPricingLink
+      locale={locale}
       className={`inline-flex items-center justify-center rounded-full border border-emerald-400/80 bg-emerald-500/30 font-semibold tracking-wide text-emerald-50 shadow-[0_0_28px_rgba(16,185,129,0.35)] transition hover:bg-emerald-400/40 ${sizeClass} ${className}`}
     >
       {label}
-    </Link>
+    </SubsonicPricingLink>
   );
 }
 
@@ -64,7 +64,7 @@ export async function generateTexasCountyMetadata(
 
   const tier = countyCoverageTier(county.county);
   const enPath = countyPagePath(countySlug, "en");
-  const title = countySeoTitle(county.county, locale);
+  const title = countySeoTitle(county.county, tier, locale);
   const description = countySeoDescription(county.county, tier, county.cities.length, locale);
   const hreflang = locationAlternates(enPath);
 
@@ -94,7 +94,8 @@ export async function TexasCountyLocationPage({
   const copy = getCountyLandingCopy(locale);
   const tier = countyCoverageTier(county.county);
   const active = isActiveListQikCounty(county.county);
-  const title = countySeoTitle(county.county, locale);
+  const hero = getCountyHeroContent(tier, county.county, locale);
+  const title = countySeoTitle(county.county, tier, locale);
   const description = countySeoDescription(county.county, tier, county.cities.length, locale);
   const path = countyPagePath(countySlug, locale);
 
@@ -122,12 +123,12 @@ export async function TexasCountyLocationPage({
         <Container className="relative py-10 sm:py-14 lg:py-16">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold tracking-[0.18em] text-emerald-300/95 sm:text-sm">
-              {copy.heroEyebrow(county.county)}
+              {hero.heroEyebrow}
             </p>
             <h1 className="mt-3 text-3xl font-semibold leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.65rem]">
-              {copy.heroTitle(county.county)}
+              {hero.heroTitle}
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-emerald-50/90 sm:text-lg">{copy.heroSubtitle}</p>
+            <p className="mt-4 text-base leading-relaxed text-emerald-50/90 sm:text-lg">{hero.heroSubtitle}</p>
             <div className="mt-7 flex justify-center">
               <GetListedButton locale={locale} label={copy.getListedNow} size="large" />
             </div>
@@ -135,7 +136,7 @@ export async function TexasCountyLocationPage({
           </div>
 
           <ul className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {copy.heroBullets.map((item) => (
+            {hero.heroBullets.map((item) => (
               <li
                 key={item}
                 className="flex h-full items-start gap-3 rounded-xl border border-emerald-500/20 bg-black/35 px-4 py-3 text-left text-sm text-emerald-50/85"
