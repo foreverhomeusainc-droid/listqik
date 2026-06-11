@@ -119,6 +119,9 @@ export function countySeoTitle(
     if (tier === "har-core" || tier === "har-extended") {
       return `Listado MLS Houston · Condado de ${countyName} por $79 | ListQik`;
     }
+    if (tier === "primary" || tier === "extended") {
+      return `Listado MLS NTREIS · Condado de ${countyName} por $79 | ListQik`;
+    }
     return `Publique en el condado de ${countyName} por $79 | ListQik`;
   }
 
@@ -126,7 +129,10 @@ export function countySeoTitle(
     return `List Your Home in ${countyName} County, TX | ListQik`;
   }
   if (tier === "har-core" || tier === "har-extended") {
-    return `Houston-Area MLS Listing · ${countyName} County for $79 | ListQik`;
+    return `List on Houston MLS in ${countyName} County for $79 | ListQik`;
+  }
+  if (tier === "primary" || tier === "extended") {
+    return `List on NTREIS MLS in ${countyName} County for $79 | ListQik`;
   }
   return `List Your Home in ${countyName} County for $79 | ListQik`;
 }

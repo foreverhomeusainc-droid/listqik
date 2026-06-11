@@ -68,6 +68,7 @@ export const ES_MARKETING_SITEMAP_PATHS = [
   "/es/resources/blogs",
   "/es/resources/videos",
   "/es/service-area/texas",
+  "/es/service-area/texas/dfw",
 ] as const;
 
 /** hreflang for dynamic location paths under `/service-area/texas/...` */

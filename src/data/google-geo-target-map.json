@@ -1,0 +1,6370 @@
+{
+  "generatedAt": "2026-06-11T15:20:11.989Z",
+  "sourceCsv": ".tmp/geotargets2/third_party/devsite/developers/en/google-ads/api/data/geo/geotargets-2026-05-28.csv",
+  "stats": {
+    "texasCountyMappings": 254,
+    "texasCityMappings": 801,
+    "skippedCities": 306,
+    "totalCriteriaIds": 1055
+  },
+  "dfwSatelliteCountySlugs": [
+    "rockwall-county",
+    "kaufman-county",
+    "ellis-county",
+    "johnson-county",
+    "hood-county",
+    "wise-county",
+    "hunt-county",
+    "grayson-county",
+    "navarro-county",
+    "van-zandt-county",
+    "hill-county",
+    "somervell-county"
+  ],
+  "satelliteCountyCriteriaIds": {
+    "9059476": "ellis-county",
+    "9059496": "grayson-county",
+    "9059514": "hill-county",
+    "9059516": "hood-county",
+    "9059521": "hunt-county",
+    "9059531": "johnson-county",
+    "9059534": "kaufman-county",
+    "9059580": "navarro-county",
+    "9059602": "rockwall-county",
+    "9059616": "somervell-county",
+    "9059636": "van-zandt-county",
+    "9059651": "wise-county"
+  },
+  "byCriteriaId": {
+    "1026169": {
+      "countySlug": "hale-county",
+      "countyName": "Hale",
+      "targetType": "City",
+      "googleName": "Abernathy"
+    },
+    "1026170": {
+      "countySlug": "taylor-county",
+      "countyName": "Taylor",
+      "targetType": "City",
+      "googleName": "Abilene"
+    },
+    "1026171": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Addison"
+    },
+    "1026172": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Alamo"
+    },
+    "1026173": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Alba"
+    },
+    "1026174": {
+      "countySlug": "shackelford-county",
+      "countyName": "Shackelford",
+      "targetType": "City",
+      "googleName": "Albany"
+    },
+    "1026175": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "City",
+      "googleName": "Aledo"
+    },
+    "1026176": {
+      "countySlug": "jim-wells-county",
+      "countyName": "Jim Wells",
+      "targetType": "City",
+      "googleName": "Alice"
+    },
+    "1026178": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Allen"
+    },
+    "1026179": {
+      "countySlug": "brewster-county",
+      "countyName": "Brewster",
+      "targetType": "City",
+      "googleName": "Alpine"
+    },
+    "1026180": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Alvarado"
+    },
+    "1026181": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Alvin"
+    },
+    "1026182": {
+      "countySlug": "randall-county",
+      "countyName": "Randall",
+      "targetType": "City",
+      "googleName": "Amarillo"
+    },
+    "1026184": {
+      "countySlug": "grimes-county",
+      "countyName": "Grimes",
+      "targetType": "City",
+      "googleName": "Anderson"
+    },
+    "1026185": {
+      "countySlug": "andrews-county",
+      "countyName": "Andrews",
+      "targetType": "City",
+      "googleName": "Andrews"
+    },
+    "1026186": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Angleton"
+    },
+    "1026187": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Anna"
+    },
+    "1026188": {
+      "countySlug": "jones-county",
+      "countyName": "Jones",
+      "targetType": "City",
+      "googleName": "Anson"
+    },
+    "1026189": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Anthony"
+    },
+    "1026190": {
+      "countySlug": "trinity-county",
+      "countyName": "Trinity",
+      "targetType": "City",
+      "googleName": "Apple Springs"
+    },
+    "1026191": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Aransas Pass"
+    },
+    "1026192": {
+      "countySlug": "archer-county",
+      "countyName": "Archer",
+      "targetType": "City",
+      "googleName": "Archer City"
+    },
+    "1026193": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Argyle"
+    },
+    "1026194": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Arlington"
+    },
+    "1026195": {
+      "countySlug": "kenedy-county",
+      "countyName": "Kenedy",
+      "targetType": "City",
+      "googleName": "Armstrong"
+    },
+    "1026196": {
+      "countySlug": "stonewall-county",
+      "countyName": "Stonewall",
+      "targetType": "City",
+      "googleName": "Aspermont"
+    },
+    "1026197": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Atascosa"
+    },
+    "1026198": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Athens"
+    },
+    "1026199": {
+      "countySlug": "cass-county",
+      "countyName": "Cass",
+      "targetType": "City",
+      "googleName": "Atlanta"
+    },
+    "1026200": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Aubrey"
+    },
+    "1026201": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Austin"
+    },
+    "1026203": {
+      "countySlug": "red-river-county",
+      "countyName": "Red River",
+      "targetType": "City",
+      "googleName": "Avery"
+    },
+    "1026204": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Azle"
+    },
+    "1026205": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Bailey"
+    },
+    "1026206": {
+      "countySlug": "callahan-county",
+      "countyName": "Callahan",
+      "targetType": "City",
+      "googleName": "Baird"
+    },
+    "1026207": {
+      "countySlug": "runnels-county",
+      "countyName": "Runnels",
+      "targetType": "City",
+      "googleName": "Ballinger"
+    },
+    "1026208": {
+      "countySlug": "bandera-county",
+      "countyName": "Bandera",
+      "targetType": "City",
+      "googleName": "Bandera"
+    },
+    "1026210": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Bartlett"
+    },
+    "1026211": {
+      "countySlug": "bastrop-county",
+      "countyName": "Bastrop",
+      "targetType": "City",
+      "googleName": "Bastrop"
+    },
+    "1026213": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Baytown"
+    },
+    "1026214": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Beaumont"
+    },
+    "1026215": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Bedford"
+    },
+    "1026216": {
+      "countySlug": "bee-county",
+      "countyName": "Bee",
+      "targetType": "City",
+      "googleName": "Beeville"
+    },
+    "1026217": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Bellaire"
+    },
+    "1026218": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Bells"
+    },
+    "1026219": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "City",
+      "googleName": "Bellville"
+    },
+    "1026220": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Belton"
+    },
+    "1026222": {
+      "countySlug": "knox-county",
+      "countyName": "Knox",
+      "targetType": "City",
+      "googleName": "Benjamin"
+    },
+    "1026224": {
+      "countySlug": "upshur-county",
+      "countyName": "Upshur",
+      "targetType": "City",
+      "googleName": "Big Sandy"
+    },
+    "1026226": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "City",
+      "googleName": "Bishop"
+    },
+    "1026227": {
+      "countySlug": "blanco-county",
+      "countyName": "Blanco",
+      "targetType": "City",
+      "googleName": "Blanco"
+    },
+    "1026228": {
+      "countySlug": "victoria-county",
+      "countyName": "Victoria",
+      "targetType": "City",
+      "googleName": "Bloomington"
+    },
+    "1026229": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Blue Ridge"
+    },
+    "1026232": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Bonham"
+    },
+    "1026234": {
+      "countySlug": "montague-county",
+      "countyName": "Montague",
+      "targetType": "City",
+      "googleName": "Bowie"
+    },
+    "1026235": {
+      "countySlug": "kinney-county",
+      "countyName": "Kinney",
+      "targetType": "City",
+      "googleName": "Brackettville"
+    },
+    "1026237": {
+      "countySlug": "hopkins-county",
+      "countyName": "Hopkins",
+      "targetType": "City",
+      "googleName": "Brashear"
+    },
+    "1026238": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Brazoria"
+    },
+    "1026239": {
+      "countySlug": "stephens-county",
+      "countyName": "Stephens",
+      "targetType": "City",
+      "googleName": "Breckenridge"
+    },
+    "1026240": {
+      "countySlug": "washington-county",
+      "countyName": "Washington",
+      "targetType": "City",
+      "googleName": "Brenham"
+    },
+    "1026241": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "City",
+      "googleName": "Bridge City"
+    },
+    "1026242": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Bridgeport"
+    },
+    "1026243": {
+      "countySlug": "burnet-county",
+      "countyName": "Burnet",
+      "targetType": "City",
+      "googleName": "Briggs"
+    },
+    "1026244": {
+      "countySlug": "wheeler-county",
+      "countyName": "Wheeler",
+      "targetType": "City",
+      "googleName": "Briscoe"
+    },
+    "1026245": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "City",
+      "googleName": "Brookshire"
+    },
+    "1026246": {
+      "countySlug": "terry-county",
+      "countyName": "Terry",
+      "targetType": "City",
+      "googleName": "Brownfield"
+    },
+    "1026248": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "Brownsville"
+    },
+    "1026250": {
+      "countySlug": "brazos-county",
+      "countyName": "Brazos",
+      "targetType": "City",
+      "googleName": "Bryan"
+    },
+    "1026251": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "Buda"
+    },
+    "1026255": {
+      "countySlug": "jasper-county",
+      "countyName": "Jasper",
+      "targetType": "City",
+      "googleName": "Buna"
+    },
+    "1026256": {
+      "countySlug": "wichita-county",
+      "countyName": "Wichita",
+      "targetType": "City",
+      "googleName": "Burkburnett"
+    },
+    "1026257": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Burleson"
+    },
+    "1026258": {
+      "countySlug": "burnet-county",
+      "countyName": "Burnet",
+      "targetType": "City",
+      "googleName": "Burnet"
+    },
+    "1026259": {
+      "countySlug": "potter-county",
+      "countyName": "Potter",
+      "targetType": "City",
+      "googleName": "Bushland"
+    },
+    "1026260": {
+      "countySlug": "clay-county",
+      "countyName": "Clay",
+      "targetType": "City",
+      "googleName": "Byers"
+    },
+    "1026261": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Caddo Mills"
+    },
+    "1026262": {
+      "countySlug": "burleson-county",
+      "countyName": "Burleson",
+      "targetType": "City",
+      "googleName": "Caldwell"
+    },
+    "1026263": {
+      "countySlug": "robertson-county",
+      "countyName": "Robertson",
+      "targetType": "City",
+      "googleName": "Calvert"
+    },
+    "1026264": {
+      "countySlug": "milam-county",
+      "countyName": "Milam",
+      "targetType": "City",
+      "googleName": "Cameron"
+    },
+    "1026265": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Campbell"
+    },
+    "1026267": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Canton"
+    },
+    "1026268": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Canutillo"
+    },
+    "1026269": {
+      "countySlug": "randall-county",
+      "countyName": "Randall",
+      "targetType": "City",
+      "googleName": "Canyon"
+    },
+    "1026270": {
+      "countySlug": "dimmit-county",
+      "countyName": "Dimmit",
+      "targetType": "City",
+      "googleName": "Carrizo Springs"
+    },
+    "1026271": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Carrollton"
+    },
+    "1026272": {
+      "countySlug": "panola-county",
+      "countyName": "Panola",
+      "targetType": "City",
+      "googleName": "Carthage"
+    },
+    "1026273": {
+      "countySlug": "medina-county",
+      "countyName": "Medina",
+      "targetType": "City",
+      "googleName": "Castroville"
+    },
+    "1026274": {
+      "countySlug": "bastrop-county",
+      "countyName": "Bastrop",
+      "targetType": "City",
+      "googleName": "Cedar Creek"
+    },
+    "1026275": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Cedar Hill"
+    },
+    "1026276": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Cedar Park"
+    },
+    "1026277": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Celeste"
+    },
+    "1026278": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Celina"
+    },
+    "1026279": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "City",
+      "googleName": "Center"
+    },
+    "1026281": {
+      "countySlug": "leon-county",
+      "countyName": "Leon",
+      "targetType": "City",
+      "googleName": "Centerville"
+    },
+    "1026282": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Chandler"
+    },
+    "1026283": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Channelview"
+    },
+    "1026284": {
+      "countySlug": "washington-county",
+      "countyName": "Washington",
+      "targetType": "City",
+      "googleName": "Chappell Hill"
+    },
+    "1026285": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Charlotte"
+    },
+    "1026286": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "City",
+      "googleName": "Chatfield"
+    },
+    "1026287": {
+      "countySlug": "san-saba-county",
+      "countyName": "San Saba",
+      "targetType": "City",
+      "googleName": "Cherokee"
+    },
+    "1026288": {
+      "countySlug": "tyler-county",
+      "countyName": "Tyler",
+      "targetType": "City",
+      "googleName": "Chester"
+    },
+    "1026290": {
+      "countySlug": "falls-county",
+      "countyName": "Falls",
+      "targetType": "City",
+      "googleName": "Chilton"
+    },
+    "1026291": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "China Spring"
+    },
+    "1026292": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "City",
+      "googleName": "Cibolo"
+    },
+    "1026293": {
+      "countySlug": "eastland-county",
+      "countyName": "Eastland",
+      "targetType": "City",
+      "googleName": "Cisco"
+    },
+    "1026294": {
+      "countySlug": "donley-county",
+      "countyName": "Donley",
+      "targetType": "City",
+      "googleName": "Clarendon"
+    },
+    "1026295": {
+      "countySlug": "red-river-county",
+      "countyName": "Red River",
+      "targetType": "City",
+      "googleName": "Clarksville"
+    },
+    "1026297": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Cleburne"
+    },
+    "1026298": {
+      "countySlug": "liberty-county",
+      "countyName": "Liberty",
+      "targetType": "City",
+      "googleName": "Cleveland"
+    },
+    "1026300": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Clint"
+    },
+    "1026301": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Clute"
+    },
+    "1026302": {
+      "countySlug": "callahan-county",
+      "countyName": "Callahan",
+      "targetType": "City",
+      "googleName": "Clyde"
+    },
+    "1026303": {
+      "countySlug": "san-jacinto-county",
+      "countyName": "San Jacinto",
+      "targetType": "City",
+      "googleName": "Coldspring"
+    },
+    "1026304": {
+      "countySlug": "coleman-county",
+      "countyName": "Coleman",
+      "targetType": "City",
+      "googleName": "Coleman"
+    },
+    "1026305": {
+      "countySlug": "brazos-county",
+      "countyName": "Brazos",
+      "targetType": "City",
+      "googleName": "College Station"
+    },
+    "1026306": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Colleyville"
+    },
+    "1026307": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Collinsville"
+    },
+    "1026308": {
+      "countySlug": "mitchell-county",
+      "countyName": "Mitchell",
+      "targetType": "City",
+      "googleName": "Colorado City"
+    },
+    "1026309": {
+      "countySlug": "colorado-county",
+      "countyName": "Colorado",
+      "targetType": "City",
+      "googleName": "Columbus"
+    },
+    "1026310": {
+      "countySlug": "comanche-county",
+      "countyName": "Comanche",
+      "targetType": "City",
+      "googleName": "Comanche"
+    },
+    "1026311": {
+      "countySlug": "kendall-county",
+      "countyName": "Kendall",
+      "targetType": "City",
+      "googleName": "Comfort"
+    },
+    "1026312": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Commerce"
+    },
+    "1026313": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Conroe"
+    },
+    "1026314": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Converse"
+    },
+    "1026315": {
+      "countySlug": "limestone-county",
+      "countyName": "Limestone",
+      "targetType": "City",
+      "googleName": "Coolidge"
+    },
+    "1026316": {
+      "countySlug": "delta-county",
+      "countyName": "Delta",
+      "targetType": "City",
+      "googleName": "Cooper"
+    },
+    "1026317": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Coppell"
+    },
+    "1026319": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "City",
+      "googleName": "Corpus Christi"
+    },
+    "1026320": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "City",
+      "googleName": "Corsicana"
+    },
+    "1026321": {
+      "countySlug": "la-salle-county",
+      "countyName": "La Salle",
+      "targetType": "City",
+      "googleName": "Cotulla"
+    },
+    "1026322": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "City",
+      "googleName": "Crandall"
+    },
+    "1026323": {
+      "countySlug": "crane-county",
+      "countyName": "Crane",
+      "targetType": "City",
+      "googleName": "Crane"
+    },
+    "1026324": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Crawford"
+    },
+    "1026327": {
+      "countySlug": "crosby-county",
+      "countyName": "Crosby",
+      "targetType": "City",
+      "googleName": "Crosbyton"
+    },
+    "1026328": {
+      "countySlug": "foard-county",
+      "countyName": "Foard",
+      "targetType": "City",
+      "googleName": "Crowell"
+    },
+    "1026329": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Crowley"
+    },
+    "1026330": {
+      "countySlug": "zavala-county",
+      "countyName": "Zavala",
+      "targetType": "City",
+      "googleName": "Crystal City"
+    },
+    "1026331": {
+      "countySlug": "dewitt-county",
+      "countyName": "DeWitt",
+      "targetType": "City",
+      "googleName": "Cuero"
+    },
+    "1026332": {
+      "countySlug": "hopkins-county",
+      "countyName": "Hopkins",
+      "targetType": "City",
+      "googleName": "Cumby"
+    },
+    "1026333": {
+      "countySlug": "nacogdoches-county",
+      "countyName": "Nacogdoches",
+      "targetType": "City",
+      "googleName": "Cushing"
+    },
+    "1026334": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Cypress"
+    },
+    "1026336": {
+      "countySlug": "morris-county",
+      "countyName": "Morris",
+      "targetType": "City",
+      "googleName": "Daingerfield"
+    },
+    "1026337": {
+      "countySlug": "caldwell-county",
+      "countyName": "Caldwell",
+      "targetType": "City",
+      "googleName": "Dale"
+    },
+    "1026338": {
+      "countySlug": "dallam-county",
+      "countyName": "Dallam",
+      "targetType": "City",
+      "googleName": "Dalhart"
+    },
+    "1026339": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Dallas"
+    },
+    "1026340": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Damon"
+    },
+    "1026341": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "City",
+      "googleName": "Dawson"
+    },
+    "1026342": {
+      "countySlug": "liberty-county",
+      "countyName": "Liberty",
+      "targetType": "City",
+      "googleName": "Dayton"
+    },
+    "1026343": {
+      "countySlug": "comanche-county",
+      "countyName": "Comanche",
+      "targetType": "City",
+      "googleName": "De Leon"
+    },
+    "1026344": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Decatur"
+    },
+    "1026345": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Deer Park"
+    },
+    "1026348": {
+      "countySlug": "hudspeth-county",
+      "countyName": "Hudspeth",
+      "targetType": "City",
+      "googleName": "Dell City"
+    },
+    "1026349": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Denison"
+    },
+    "1026350": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Denton"
+    },
+    "1026351": {
+      "countySlug": "yoakum-county",
+      "countyName": "Yoakum",
+      "targetType": "City",
+      "googleName": "Denver City"
+    },
+    "1026353": {
+      "countySlug": "medina-county",
+      "countyName": "Medina",
+      "targetType": "City",
+      "googleName": "Devine"
+    },
+    "1026354": {
+      "countySlug": "angelina-county",
+      "countyName": "Angelina",
+      "targetType": "City",
+      "googleName": "Diboll"
+    },
+    "1026355": {
+      "countySlug": "dickens-county",
+      "countyName": "Dickens",
+      "targetType": "City",
+      "googleName": "Dickens"
+    },
+    "1026357": {
+      "countySlug": "frio-county",
+      "countyName": "Frio",
+      "targetType": "City",
+      "googleName": "Dilley"
+    },
+    "1026358": {
+      "countySlug": "castro-county",
+      "countyName": "Castro",
+      "targetType": "City",
+      "googleName": "Dimmitt"
+    },
+    "1026359": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Dodd City"
+    },
+    "1026360": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Donna"
+    },
+    "1026361": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "Driftwood"
+    },
+    "1026362": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "Dripping Springs"
+    },
+    "1026363": {
+      "countySlug": "moore-county",
+      "countyName": "Moore",
+      "targetType": "City",
+      "googleName": "Dumas"
+    },
+    "1026364": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Duncanville"
+    },
+    "1026366": {
+      "countySlug": "colorado-county",
+      "countyName": "Colorado",
+      "targetType": "City",
+      "googleName": "Eagle Lake"
+    },
+    "1026367": {
+      "countySlug": "maverick-county",
+      "countyName": "Maverick",
+      "targetType": "City",
+      "googleName": "Eagle Pass"
+    },
+    "1026368": {
+      "countySlug": "wharton-county",
+      "countyName": "Wharton",
+      "targetType": "City",
+      "googleName": "East Bernard"
+    },
+    "1026369": {
+      "countySlug": "eastland-county",
+      "countyName": "Eastland",
+      "targetType": "City",
+      "googleName": "Eastland"
+    },
+    "1026370": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Ector"
+    },
+    "1026372": {
+      "countySlug": "concho-county",
+      "countyName": "Concho",
+      "targetType": "City",
+      "googleName": "Eden"
+    },
+    "1026373": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Edinburg"
+    },
+    "1026374": {
+      "countySlug": "jackson-county",
+      "countyName": "Jackson",
+      "targetType": "City",
+      "googleName": "Edna"
+    },
+    "1026375": {
+      "countySlug": "wharton-county",
+      "countyName": "Wharton",
+      "targetType": "City",
+      "googleName": "El Campo"
+    },
+    "1026376": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "El Paso"
+    },
+    "1026377": {
+      "countySlug": "schleicher-county",
+      "countyName": "Schleicher",
+      "targetType": "City",
+      "googleName": "Eldorado"
+    },
+    "1026378": {
+      "countySlug": "wichita-county",
+      "countyName": "Wichita",
+      "targetType": "City",
+      "googleName": "Electra"
+    },
+    "1026379": {
+      "countySlug": "bastrop-county",
+      "countyName": "Bastrop",
+      "targetType": "City",
+      "googleName": "Elgin"
+    },
+    "1026380": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Elm Mott"
+    },
+    "1026381": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Elmendorf"
+    },
+    "1026382": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Elsa"
+    },
+    "1026383": {
+      "countySlug": "rains-county",
+      "countyName": "Rains",
+      "targetType": "City",
+      "googleName": "Emory"
+    },
+    "1026384": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Ennis"
+    },
+    "1026385": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Euless"
+    },
+    "1026386": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Fabens"
+    },
+    "1026387": {
+      "countySlug": "freestone-county",
+      "countyName": "Freestone",
+      "targetType": "City",
+      "googleName": "Fairfield"
+    },
+    "1026388": {
+      "countySlug": "brooks-county",
+      "countyName": "Brooks",
+      "targetType": "City",
+      "googleName": "Falfurrias"
+    },
+    "1026389": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "City",
+      "googleName": "Falls City"
+    },
+    "1026390": {
+      "countySlug": "goliad-county",
+      "countyName": "Goliad",
+      "targetType": "City",
+      "googleName": "Fannin"
+    },
+    "1026391": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Farmersville"
+    },
+    "1026392": {
+      "countySlug": "parmer-county",
+      "countyName": "Parmer",
+      "targetType": "City",
+      "googleName": "Farwell"
+    },
+    "1026393": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "Fayetteville"
+    },
+    "1026394": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Ferris"
+    },
+    "1026395": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "Flatonia"
+    },
+    "1026396": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Florence"
+    },
+    "1026397": {
+      "countySlug": "wilson-county",
+      "countyName": "Wilson",
+      "targetType": "City",
+      "googleName": "Floresville"
+    },
+    "1026398": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Flower Mound"
+    },
+    "1026399": {
+      "countySlug": "floyd-county",
+      "countyName": "Floyd",
+      "targetType": "City",
+      "googleName": "Floydada"
+    },
+    "1026400": {
+      "countySlug": "lipscomb-county",
+      "countyName": "Lipscomb",
+      "targetType": "City",
+      "googleName": "Follett"
+    },
+    "1026401": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "City",
+      "googleName": "Forney"
+    },
+    "1026402": {
+      "countySlug": "robertson-county",
+      "countyName": "Robertson",
+      "targetType": "City",
+      "googleName": "Franklin"
+    },
+    "1026403": {
+      "countySlug": "gillespie-county",
+      "countyName": "Gillespie",
+      "targetType": "City",
+      "googleName": "Fredericksburg"
+    },
+    "1026405": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Fresno"
+    },
+    "1026406": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "Friendswood"
+    },
+    "1026407": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Frisco"
+    },
+    "1026408": {
+      "countySlug": "jeff-davis-county",
+      "countyName": "Jeff Davis",
+      "targetType": "City",
+      "googleName": "Fort Davis"
+    },
+    "1026409": {
+      "countySlug": "hudspeth-county",
+      "countyName": "Hudspeth",
+      "targetType": "City",
+      "googleName": "Fort Hancock"
+    },
+    "1026410": {
+      "countySlug": "pecos-county",
+      "countyName": "Pecos",
+      "targetType": "City",
+      "googleName": "Fort Stockton"
+    },
+    "1026411": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Fort Worth"
+    },
+    "1026412": {
+      "countySlug": "borden-county",
+      "countyName": "Borden",
+      "targetType": "City",
+      "googleName": "Gail"
+    },
+    "1026414": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Galena Park"
+    },
+    "1026415": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "Galveston"
+    },
+    "1026416": {
+      "countySlug": "jackson-county",
+      "countyName": "Jackson",
+      "targetType": "City",
+      "googleName": "Ganado"
+    },
+    "1026417": {
+      "countySlug": "glasscock-county",
+      "countyName": "Glasscock",
+      "targetType": "City",
+      "googleName": "Garden City"
+    },
+    "1026418": {
+      "countySlug": "ector-county",
+      "countyName": "Ector",
+      "targetType": "City",
+      "googleName": "Gardendale"
+    },
+    "1026419": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Garland"
+    },
+    "1026420": {
+      "countySlug": "nacogdoches-county",
+      "countyName": "Nacogdoches",
+      "targetType": "City",
+      "googleName": "Garrison"
+    },
+    "1026421": {
+      "countySlug": "colorado-county",
+      "countyName": "Colorado",
+      "targetType": "City",
+      "googleName": "Garwood"
+    },
+    "1026423": {
+      "countySlug": "live-oak-county",
+      "countyName": "Live Oak",
+      "targetType": "City",
+      "googleName": "George West"
+    },
+    "1026424": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Georgetown"
+    },
+    "1026426": {
+      "countySlug": "lee-county",
+      "countyName": "Lee",
+      "targetType": "City",
+      "googleName": "Giddings"
+    },
+    "1026427": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "City",
+      "googleName": "Gillett"
+    },
+    "1026428": {
+      "countySlug": "upshur-county",
+      "countyName": "Upshur",
+      "targetType": "City",
+      "googleName": "Gilmer"
+    },
+    "1026429": {
+      "countySlug": "gregg-county",
+      "countyName": "Gregg",
+      "targetType": "City",
+      "googleName": "Gladewater"
+    },
+    "1026430": {
+      "countySlug": "somervell-county",
+      "countyName": "Somervell",
+      "targetType": "City",
+      "googleName": "Glen Rose"
+    },
+    "1026431": {
+      "countySlug": "mills-county",
+      "countyName": "Mills",
+      "targetType": "City",
+      "googleName": "Goldthwaite"
+    },
+    "1026432": {
+      "countySlug": "goliad-county",
+      "countyName": "Goliad",
+      "targetType": "City",
+      "googleName": "Goliad"
+    },
+    "1026433": {
+      "countySlug": "gonzales-county",
+      "countyName": "Gonzales",
+      "targetType": "City",
+      "googleName": "Gonzales"
+    },
+    "1026435": {
+      "countySlug": "palo-pinto-county",
+      "countyName": "Palo Pinto",
+      "targetType": "City",
+      "googleName": "Gordon"
+    },
+    "1026436": {
+      "countySlug": "eastland-county",
+      "countyName": "Eastland",
+      "targetType": "City",
+      "googleName": "Gorman"
+    },
+    "1026437": {
+      "countySlug": "young-county",
+      "countyName": "Young",
+      "targetType": "City",
+      "googleName": "Graham"
+    },
+    "1026438": {
+      "countySlug": "hood-county",
+      "countyName": "Hood",
+      "targetType": "City",
+      "googleName": "Granbury"
+    },
+    "1026439": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Grand Prairie"
+    },
+    "1026440": {
+      "countySlug": "houston-county",
+      "countyName": "Houston",
+      "targetType": "City",
+      "googleName": "Grapeland"
+    },
+    "1026441": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Grapevine"
+    },
+    "1026442": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Greenville"
+    },
+    "1026443": {
+      "countySlug": "limestone-county",
+      "countyName": "Limestone",
+      "targetType": "City",
+      "googleName": "Groesbeck"
+    },
+    "1026444": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Groves"
+    },
+    "1026445": {
+      "countySlug": "hansford-county",
+      "countyName": "Hansford",
+      "targetType": "City",
+      "googleName": "Gruver"
+    },
+    "1026446": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Gunter"
+    },
+    "1026447": {
+      "countySlug": "king-county",
+      "countyName": "King",
+      "targetType": "City",
+      "googleName": "Guthrie"
+    },
+    "1026448": {
+      "countySlug": "hale-county",
+      "countyName": "Hale",
+      "targetType": "City",
+      "googleName": "Hale Center"
+    },
+    "1026449": {
+      "countySlug": "lavaca-county",
+      "countyName": "Lavaca",
+      "targetType": "City",
+      "googleName": "Hallettsville"
+    },
+    "1026450": {
+      "countySlug": "harrison-county",
+      "countyName": "Harrison",
+      "targetType": "City",
+      "googleName": "Hallsville"
+    },
+    "1026451": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Haltom City"
+    },
+    "1026452": {
+      "countySlug": "hamilton-county",
+      "countyName": "Hamilton",
+      "targetType": "City",
+      "googleName": "Hamilton"
+    },
+    "1026453": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Hamshire"
+    },
+    "1026454": {
+      "countySlug": "liberty-county",
+      "countyName": "Liberty",
+      "targetType": "City",
+      "googleName": "Hardin"
+    },
+    "1026455": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Harker Heights"
+    },
+    "1026456": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "Harlingen"
+    },
+    "1026457": {
+      "countySlug": "gillespie-county",
+      "countyName": "Gillespie",
+      "targetType": "City",
+      "googleName": "Harper"
+    },
+    "1026458": {
+      "countySlug": "wilbarger-county",
+      "countyName": "Wilbarger",
+      "targetType": "City",
+      "googleName": "Harrold"
+    },
+    "1026459": {
+      "countySlug": "hartley-county",
+      "countyName": "Hartley",
+      "targetType": "City",
+      "googleName": "Hartley"
+    },
+    "1026460": {
+      "countySlug": "haskell-county",
+      "countyName": "Haskell",
+      "targetType": "City",
+      "googleName": "Haskell"
+    },
+    "1026461": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Haslet"
+    },
+    "1026462": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Hawkins"
+    },
+    "1026463": {
+      "countySlug": "robertson-county",
+      "countyName": "Robertson",
+      "targetType": "City",
+      "googleName": "Hearne"
+    },
+    "1026464": {
+      "countySlug": "jim-hogg-county",
+      "countyName": "Jim Hogg",
+      "targetType": "City",
+      "googleName": "Hebbronville"
+    },
+    "1026466": {
+      "countySlug": "sabine-county",
+      "countyName": "Sabine",
+      "targetType": "City",
+      "googleName": "Hemphill"
+    },
+    "1026467": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "City",
+      "googleName": "Hempstead"
+    },
+    "1026468": {
+      "countySlug": "rusk-county",
+      "countyName": "Rusk",
+      "targetType": "City",
+      "googleName": "Henderson"
+    },
+    "1026469": {
+      "countySlug": "clay-county",
+      "countyName": "Clay",
+      "targetType": "City",
+      "googleName": "Henrietta"
+    },
+    "1026470": {
+      "countySlug": "deaf-smith-county",
+      "countyName": "Deaf Smith",
+      "targetType": "City",
+      "googleName": "Hereford"
+    },
+    "1026471": {
+      "countySlug": "hamilton-county",
+      "countyName": "Hamilton",
+      "targetType": "City",
+      "googleName": "Hico"
+    },
+    "1026472": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Hidalgo"
+    },
+    "1026473": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Highlands"
+    },
+    "1026474": {
+      "countySlug": "hill-county",
+      "countyName": "Hill",
+      "targetType": "City",
+      "googleName": "Hillsboro"
+    },
+    "1026475": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "Hitchcock"
+    },
+    "1026476": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Hockley"
+    },
+    "1026477": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Holland"
+    },
+    "1026479": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Honey Grove"
+    },
+    "1026481": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Houston"
+    },
+    "1026482": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Howe"
+    },
+    "1026483": {
+      "countySlug": "hill-county",
+      "countyName": "Hill",
+      "targetType": "City",
+      "googleName": "Hubbard"
+    },
+    "1026484": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Huffman"
+    },
+    "1026485": {
+      "countySlug": "cass-county",
+      "countyName": "Cass",
+      "targetType": "City",
+      "googleName": "Hughes Springs"
+    },
+    "1026486": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Humble"
+    },
+    "1026487": {
+      "countySlug": "kerr-county",
+      "countyName": "Kerr",
+      "targetType": "City",
+      "googleName": "Hunt"
+    },
+    "1026488": {
+      "countySlug": "angelina-county",
+      "countyName": "Angelina",
+      "targetType": "City",
+      "googleName": "Huntington"
+    },
+    "1026489": {
+      "countySlug": "walker-county",
+      "countyName": "Walker",
+      "targetType": "City",
+      "googleName": "Huntsville"
+    },
+    "1026490": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Hurst"
+    },
+    "1026491": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Hutchins"
+    },
+    "1026492": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Hutto"
+    },
+    "1026493": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "City",
+      "googleName": "Industry"
+    },
+    "1026494": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Ingleside"
+    },
+    "1026495": {
+      "countySlug": "kerr-county",
+      "countyName": "Kerr",
+      "targetType": "City",
+      "googleName": "Ingram"
+    },
+    "1026496": {
+      "countySlug": "wichita-county",
+      "countyName": "Wichita",
+      "targetType": "City",
+      "googleName": "Iowa Park"
+    },
+    "1026497": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Irving"
+    },
+    "1026498": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Italy"
+    },
+    "1026499": {
+      "countySlug": "hill-county",
+      "countyName": "Hill",
+      "targetType": "City",
+      "googleName": "Itasca"
+    },
+    "1026500": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Ivanhoe"
+    },
+    "1026501": {
+      "countySlug": "jack-county",
+      "countyName": "Jack",
+      "targetType": "City",
+      "googleName": "Jacksboro"
+    },
+    "1026502": {
+      "countySlug": "cherokee-county",
+      "countyName": "Cherokee",
+      "targetType": "City",
+      "googleName": "Jacksonville"
+    },
+    "1026504": {
+      "countySlug": "kent-county",
+      "countyName": "Kent",
+      "targetType": "City",
+      "googleName": "Jayton"
+    },
+    "1026506": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "City",
+      "googleName": "Joaquin"
+    },
+    "1026507": {
+      "countySlug": "blanco-county",
+      "countyName": "Blanco",
+      "targetType": "City",
+      "googleName": "Johnson City"
+    },
+    "1026508": {
+      "countySlug": "coryell-county",
+      "countyName": "Coryell",
+      "targetType": "City",
+      "googleName": "Jonesboro"
+    },
+    "1026509": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Joshua"
+    },
+    "1026510": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Jourdanton"
+    },
+    "1026511": {
+      "countySlug": "kimble-county",
+      "countyName": "Kimble",
+      "targetType": "City",
+      "googleName": "Junction"
+    },
+    "1026512": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Justin"
+    },
+    "1026513": {
+      "countySlug": "harrison-county",
+      "countyName": "Harrison",
+      "targetType": "City",
+      "googleName": "Karnack"
+    },
+    "1026514": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "City",
+      "googleName": "Karnes City"
+    },
+    "1026516": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "City",
+      "googleName": "Kaufman"
+    },
+    "1026517": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Keene"
+    },
+    "1026518": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Keller"
+    },
+    "1026521": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Kendleton"
+    },
+    "1026522": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "City",
+      "googleName": "Kenedy"
+    },
+    "1026523": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Kennedale"
+    },
+    "1026524": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "City",
+      "googleName": "Kerens"
+    },
+    "1026525": {
+      "countySlug": "winkler-county",
+      "countyName": "Winkler",
+      "targetType": "City",
+      "googleName": "Kermit"
+    },
+    "1026526": {
+      "countySlug": "kerr-county",
+      "countyName": "Kerr",
+      "targetType": "City",
+      "googleName": "Kerrville"
+    },
+    "1026527": {
+      "countySlug": "gregg-county",
+      "countyName": "Gregg",
+      "targetType": "City",
+      "googleName": "Kilgore"
+    },
+    "1026528": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Killeen"
+    },
+    "1026529": {
+      "countySlug": "kleberg-county",
+      "countyName": "Kleberg",
+      "targetType": "City",
+      "googleName": "Kingsville"
+    },
+    "1026530": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "City",
+      "googleName": "Knippa"
+    },
+    "1026531": {
+      "countySlug": "knox-county",
+      "countyName": "Knox",
+      "targetType": "City",
+      "googleName": "Knox City"
+    },
+    "1026532": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Krum"
+    },
+    "1026534": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "La Grange"
+    },
+    "1026535": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "La Joya"
+    },
+    "1026536": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "La Marque"
+    },
+    "1026538": {
+      "countySlug": "zavala-county",
+      "countyName": "Zavala",
+      "targetType": "City",
+      "googleName": "La Pryor"
+    },
+    "1026539": {
+      "countySlug": "jackson-county",
+      "countyName": "Jackson",
+      "targetType": "City",
+      "googleName": "La Salle"
+    },
+    "1026540": {
+      "countySlug": "wilson-county",
+      "countyName": "Wilson",
+      "targetType": "City",
+      "googleName": "La Vernia"
+    },
+    "1026541": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "La Villa"
+    },
+    "1026542": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Ladonia"
+    },
+    "1026543": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Lake Dallas"
+    },
+    "1026544": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Lake Jackson"
+    },
+    "1026545": {
+      "countySlug": "dawson-county",
+      "countyName": "Dawson",
+      "targetType": "City",
+      "googleName": "Lamesa"
+    },
+    "1026546": {
+      "countySlug": "lampasas-county",
+      "countyName": "Lampasas",
+      "targetType": "City",
+      "googleName": "Lampasas"
+    },
+    "1026547": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Lancaster"
+    },
+    "1026548": {
+      "countySlug": "webb-county",
+      "countyName": "Webb",
+      "targetType": "City",
+      "googleName": "Laredo"
+    },
+    "1026551": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "League City"
+    },
+    "1026552": {
+      "countySlug": "real-county",
+      "countyName": "Real",
+      "targetType": "City",
+      "googleName": "Leakey"
+    },
+    "1026553": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Leander"
+    },
+    "1026554": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Leonard"
+    },
+    "1026555": {
+      "countySlug": "hockley-county",
+      "countyName": "Hockley",
+      "targetType": "City",
+      "googleName": "Levelland"
+    },
+    "1026556": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Lewisville"
+    },
+    "1026559": {
+      "countySlug": "cass-county",
+      "countyName": "Cass",
+      "targetType": "City",
+      "googleName": "Linden"
+    },
+    "1026560": {
+      "countySlug": "hood-county",
+      "countyName": "Hood",
+      "targetType": "City",
+      "googleName": "Lipan"
+    },
+    "1026561": {
+      "countySlug": "lipscomb-county",
+      "countyName": "Lipscomb",
+      "targetType": "City",
+      "googleName": "Lipscomb"
+    },
+    "1026564": {
+      "countySlug": "lamb-county",
+      "countyName": "Lamb",
+      "targetType": "City",
+      "googleName": "Littlefield"
+    },
+    "1026565": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Liverpool"
+    },
+    "1026568": {
+      "countySlug": "caldwell-county",
+      "countyName": "Caldwell",
+      "targetType": "City",
+      "googleName": "Lockhart"
+    },
+    "1026569": {
+      "countySlug": "lampasas-county",
+      "countyName": "Lampasas",
+      "targetType": "City",
+      "googleName": "Lometa"
+    },
+    "1026570": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Lone Oak"
+    },
+    "1026571": {
+      "countySlug": "morris-county",
+      "countyName": "Morris",
+      "targetType": "City",
+      "googleName": "Lone Star"
+    },
+    "1026572": {
+      "countySlug": "gregg-county",
+      "countyName": "Gregg",
+      "targetType": "City",
+      "googleName": "Longview"
+    },
+    "1026574": {
+      "countySlug": "falls-county",
+      "countyName": "Falls",
+      "targetType": "City",
+      "googleName": "Lott"
+    },
+    "1026575": {
+      "countySlug": "wharton-county",
+      "countyName": "Wharton",
+      "targetType": "City",
+      "googleName": "Louise"
+    },
+    "1026576": {
+      "countySlug": "houston-county",
+      "countyName": "Houston",
+      "targetType": "City",
+      "googleName": "Lovelady"
+    },
+    "1026577": {
+      "countySlug": "young-county",
+      "countyName": "Young",
+      "targetType": "City",
+      "googleName": "Loving"
+    },
+    "1026578": {
+      "countySlug": "lubbock-county",
+      "countyName": "Lubbock",
+      "targetType": "City",
+      "googleName": "Lubbock"
+    },
+    "1026579": {
+      "countySlug": "angelina-county",
+      "countyName": "Angelina",
+      "targetType": "City",
+      "googleName": "Lufkin"
+    },
+    "1026580": {
+      "countySlug": "caldwell-county",
+      "countyName": "Caldwell",
+      "targetType": "City",
+      "googleName": "Luling"
+    },
+    "1026582": {
+      "countySlug": "willacy-county",
+      "countyName": "Willacy",
+      "targetType": "City",
+      "googleName": "Lyford"
+    },
+    "1026583": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Lytle"
+    },
+    "1026585": {
+      "countySlug": "madison-county",
+      "countyName": "Madison",
+      "targetType": "City",
+      "googleName": "Madisonville"
+    },
+    "1026586": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Magnolia"
+    },
+    "1026587": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Malakoff"
+    },
+    "1026588": {
+      "countySlug": "hill-county",
+      "countyName": "Hill",
+      "targetType": "City",
+      "googleName": "Malone"
+    },
+    "1026589": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Manchaca"
+    },
+    "1026590": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Manor"
+    },
+    "1026591": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Mansfield"
+    },
+    "1026593": {
+      "countySlug": "presidio-county",
+      "countyName": "Presidio",
+      "targetType": "City",
+      "googleName": "Marfa"
+    },
+    "1026594": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "City",
+      "googleName": "Marion"
+    },
+    "1026595": {
+      "countySlug": "falls-county",
+      "countyName": "Falls",
+      "targetType": "City",
+      "googleName": "Marlin"
+    },
+    "1026596": {
+      "countySlug": "leon-county",
+      "countyName": "Leon",
+      "targetType": "City",
+      "googleName": "Marquez"
+    },
+    "1026597": {
+      "countySlug": "harrison-county",
+      "countyName": "Harrison",
+      "targetType": "City",
+      "googleName": "Marshall"
+    },
+    "1026598": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Mart"
+    },
+    "1026599": {
+      "countySlug": "mason-county",
+      "countyName": "Mason",
+      "targetType": "City",
+      "googleName": "Mason"
+    },
+    "1026600": {
+      "countySlug": "motley-county",
+      "countyName": "Motley",
+      "targetType": "City",
+      "googleName": "Matador"
+    },
+    "1026601": {
+      "countySlug": "matagorda-county",
+      "countyName": "Matagorda",
+      "targetType": "City",
+      "googleName": "Matagorda"
+    },
+    "1026602": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Mathis"
+    },
+    "1026604": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Maypearl"
+    },
+    "1026607": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "McKinney"
+    },
+    "1026609": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "McAllen"
+    },
+    "1026610": {
+      "countySlug": "bandera-county",
+      "countyName": "Bandera",
+      "targetType": "City",
+      "googleName": "Medina"
+    },
+    "1026611": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Melissa"
+    },
+    "1026612": {
+      "countySlug": "hall-county",
+      "countyName": "Hall",
+      "targetType": "City",
+      "googleName": "Memphis"
+    },
+    "1026613": {
+      "countySlug": "menard-county",
+      "countyName": "Menard",
+      "targetType": "City",
+      "googleName": "Menard"
+    },
+    "1026614": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Mercedes"
+    },
+    "1026615": {
+      "countySlug": "bosque-county",
+      "countyName": "Bosque",
+      "targetType": "City",
+      "googleName": "Meridian"
+    },
+    "1026617": {
+      "countySlug": "taylor-county",
+      "countyName": "Taylor",
+      "targetType": "City",
+      "googleName": "Merkel"
+    },
+    "1026618": {
+      "countySlug": "irion-county",
+      "countyName": "Irion",
+      "targetType": "City",
+      "googleName": "Mertzon"
+    },
+    "1026619": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Mesquite"
+    },
+    "1026620": {
+      "countySlug": "limestone-county",
+      "countyName": "Limestone",
+      "targetType": "City",
+      "googleName": "Mexia"
+    },
+    "1026621": {
+      "countySlug": "roberts-county",
+      "countyName": "Roberts",
+      "targetType": "City",
+      "googleName": "Miami"
+    },
+    "1026622": {
+      "countySlug": "midland-county",
+      "countyName": "Midland",
+      "targetType": "City",
+      "googleName": "Midland"
+    },
+    "1026623": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Midlothian"
+    },
+    "1026624": {
+      "countySlug": "sabine-county",
+      "countyName": "Sabine",
+      "targetType": "City",
+      "googleName": "Milam"
+    },
+    "1026625": {
+      "countySlug": "milam-county",
+      "countyName": "Milam",
+      "targetType": "City",
+      "googleName": "Milano"
+    },
+    "1026626": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Milford"
+    },
+    "1026627": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Mineola"
+    },
+    "1026628": {
+      "countySlug": "palo-pinto-county",
+      "countyName": "Palo Pinto",
+      "targetType": "City",
+      "googleName": "Mineral Wells"
+    },
+    "1026630": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Missouri City"
+    },
+    "1026631": {
+      "countySlug": "ward-county",
+      "countyName": "Ward",
+      "targetType": "City",
+      "googleName": "Monahans"
+    },
+    "1026633": {
+      "countySlug": "montague-county",
+      "countyName": "Montague",
+      "targetType": "City",
+      "googleName": "Montague"
+    },
+    "1026634": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Montgomery"
+    },
+    "1026635": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Moody"
+    },
+    "1026636": {
+      "countySlug": "frio-county",
+      "countyName": "Frio",
+      "targetType": "City",
+      "googleName": "Moore"
+    },
+    "1026637": {
+      "countySlug": "hansford-county",
+      "countyName": "Hansford",
+      "targetType": "City",
+      "googleName": "Morse"
+    },
+    "1026638": {
+      "countySlug": "cochran-county",
+      "countyName": "Cochran",
+      "targetType": "City",
+      "googleName": "Morton"
+    },
+    "1026639": {
+      "countySlug": "titus-county",
+      "countyName": "Titus",
+      "targetType": "City",
+      "googleName": "Mount Pleasant"
+    },
+    "1026640": {
+      "countySlug": "franklin-county",
+      "countyName": "Franklin",
+      "targetType": "City",
+      "googleName": "Mount Vernon"
+    },
+    "1026641": {
+      "countySlug": "cooke-county",
+      "countyName": "Cooke",
+      "targetType": "City",
+      "googleName": "Muenster"
+    },
+    "1026642": {
+      "countySlug": "bailey-county",
+      "countyName": "Bailey",
+      "targetType": "City",
+      "googleName": "Muleshoe"
+    },
+    "1026643": {
+      "countySlug": "robertson-county",
+      "countyName": "Robertson",
+      "targetType": "City",
+      "googleName": "Mumford"
+    },
+    "1026644": {
+      "countySlug": "nacogdoches-county",
+      "countyName": "Nacogdoches",
+      "targetType": "City",
+      "googleName": "Nacogdoches"
+    },
+    "1026645": {
+      "countySlug": "medina-county",
+      "countyName": "Medina",
+      "targetType": "City",
+      "googleName": "Natalia"
+    },
+    "1026646": {
+      "countySlug": "grimes-county",
+      "countyName": "Grimes",
+      "targetType": "City",
+      "googleName": "Navasota"
+    },
+    "1026647": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Nederland"
+    },
+    "1026648": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Needville"
+    },
+    "1026649": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Nevada"
+    },
+    "1026652": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "New Caney"
+    },
+    "1026653": {
+      "countySlug": "walker-county",
+      "countyName": "Walker",
+      "targetType": "City",
+      "googleName": "New Waverly"
+    },
+    "1026654": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Newark"
+    },
+    "1026655": {
+      "countySlug": "newton-county",
+      "countyName": "Newton",
+      "targetType": "City",
+      "googleName": "Newton"
+    },
+    "1026656": {
+      "countySlug": "gonzales-county",
+      "countyName": "Gonzales",
+      "targetType": "City",
+      "googleName": "Nixon"
+    },
+    "1026657": {
+      "countySlug": "nolan-county",
+      "countyName": "Nolan",
+      "targetType": "City",
+      "googleName": "Nolan"
+    },
+    "1026660": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Odem"
+    },
+    "1026661": {
+      "countySlug": "ector-county",
+      "countyName": "Ector",
+      "targetType": "City",
+      "googleName": "Odessa"
+    },
+    "1026662": {
+      "countySlug": "young-county",
+      "countyName": "Young",
+      "targetType": "City",
+      "googleName": "Olney"
+    },
+    "1026663": {
+      "countySlug": "polk-county",
+      "countyName": "Polk",
+      "targetType": "City",
+      "googleName": "Onalaska"
+    },
+    "1026664": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "City",
+      "googleName": "Orange"
+    },
+    "1026665": {
+      "countySlug": "jim-wells-county",
+      "countyName": "Jim Wells",
+      "targetType": "City",
+      "googleName": "Orange Grove"
+    },
+    "1026667": {
+      "countySlug": "rusk-county",
+      "countyName": "Rusk",
+      "targetType": "City",
+      "googleName": "Overton"
+    },
+    "1026668": {
+      "countySlug": "crockett-county",
+      "countyName": "Crockett",
+      "targetType": "City",
+      "googleName": "Ozona"
+    },
+    "1026670": {
+      "countySlug": "concho-county",
+      "countyName": "Concho",
+      "targetType": "City",
+      "googleName": "Paint Rock"
+    },
+    "1026671": {
+      "countySlug": "matagorda-county",
+      "countyName": "Matagorda",
+      "targetType": "City",
+      "googleName": "Palacios"
+    },
+    "1026672": {
+      "countySlug": "anderson-county",
+      "countyName": "Anderson",
+      "targetType": "City",
+      "googleName": "Palestine"
+    },
+    "1026673": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Palmer"
+    },
+    "1026674": {
+      "countySlug": "palo-pinto-county",
+      "countyName": "Palo Pinto",
+      "targetType": "City",
+      "googleName": "Palo Pinto"
+    },
+    "1026675": {
+      "countySlug": "gray-county",
+      "countyName": "Gray",
+      "targetType": "City",
+      "googleName": "Pampa"
+    },
+    "1026676": {
+      "countySlug": "carson-county",
+      "countyName": "Carson",
+      "targetType": "City",
+      "googleName": "Panhandle"
+    },
+    "1026678": {
+      "countySlug": "lamar-county",
+      "countyName": "Lamar",
+      "targetType": "City",
+      "googleName": "Paris"
+    },
+    "1026679": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "County",
+      "googleName": "Parker County"
+    },
+    "1026680": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Pasadena"
+    },
+    "1026681": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Pearland"
+    },
+    "1026682": {
+      "countySlug": "frio-county",
+      "countyName": "Frio",
+      "targetType": "City",
+      "googleName": "Pearsall"
+    },
+    "1026684": {
+      "countySlug": "ector-county",
+      "countyName": "Ector",
+      "targetType": "City",
+      "googleName": "Penwell"
+    },
+    "1026685": {
+      "countySlug": "ochiltree-county",
+      "countyName": "Ochiltree",
+      "targetType": "City",
+      "googleName": "Perryton"
+    },
+    "1026686": {
+      "countySlug": "hale-county",
+      "countyName": "Hale",
+      "targetType": "City",
+      "googleName": "Petersburg"
+    },
+    "1026687": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Pflugerville"
+    },
+    "1026688": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Pharr"
+    },
+    "1026689": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Pilot Point"
+    },
+    "1026690": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Pinehurst"
+    },
+    "1026692": {
+      "countySlug": "camp-county",
+      "countyName": "Camp",
+      "targetType": "City",
+      "googleName": "Pittsburg"
+    },
+    "1026693": {
+      "countySlug": "yoakum-county",
+      "countyName": "Yoakum",
+      "targetType": "City",
+      "googleName": "Plains"
+    },
+    "1026694": {
+      "countySlug": "hale-county",
+      "countyName": "Hale",
+      "targetType": "City",
+      "googleName": "Plainview"
+    },
+    "1026695": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Plano"
+    },
+    "1026696": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Pleasanton"
+    },
+    "1026697": {
+      "countySlug": "rains-county",
+      "countyName": "Rains",
+      "targetType": "City",
+      "googleName": "Point"
+    },
+    "1026698": {
+      "countySlug": "calhoun-county",
+      "countyName": "Calhoun",
+      "targetType": "City",
+      "googleName": "Point Comfort"
+    },
+    "1026699": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Ponder"
+    },
+    "1026700": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "City",
+      "googleName": "Port Aransas"
+    },
+    "1026701": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Port Arthur"
+    },
+    "1026702": {
+      "countySlug": "calhoun-county",
+      "countyName": "Calhoun",
+      "targetType": "City",
+      "googleName": "Port Lavaca"
+    },
+    "1026703": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "Port Neches"
+    },
+    "1026704": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Porter"
+    },
+    "1026705": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Portland"
+    },
+    "1026706": {
+      "countySlug": "garza-county",
+      "countyName": "Garza",
+      "targetType": "City",
+      "googleName": "Post"
+    },
+    "1026707": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Poteet"
+    },
+    "1026708": {
+      "countySlug": "wilson-county",
+      "countyName": "Wilson",
+      "targetType": "City",
+      "googleName": "Poth"
+    },
+    "1026709": {
+      "countySlug": "potter-county",
+      "countyName": "Potter",
+      "targetType": "County",
+      "googleName": "Potter County"
+    },
+    "1026710": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Pottsboro"
+    },
+    "1026711": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "City",
+      "googleName": "Prairie View"
+    },
+    "1026712": {
+      "countySlug": "jim-wells-county",
+      "countyName": "Jim Wells",
+      "targetType": "City",
+      "googleName": "Premont"
+    },
+    "1026713": {
+      "countySlug": "presidio-county",
+      "countyName": "Presidio",
+      "targetType": "City",
+      "googleName": "Presidio"
+    },
+    "1026714": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Princeton"
+    },
+    "1026715": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Progreso"
+    },
+    "1026716": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Prosper"
+    },
+    "1026717": {
+      "countySlug": "hardeman-county",
+      "countyName": "Hardeman",
+      "targetType": "City",
+      "googleName": "Quanah"
+    },
+    "1026718": {
+      "countySlug": "cass-county",
+      "countyName": "Cass",
+      "targetType": "City",
+      "googleName": "Queen City"
+    },
+    "1026720": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Quinlan"
+    },
+    "1026721": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Quitman"
+    },
+    "1026722": {
+      "countySlug": "eastland-county",
+      "countyName": "Eastland",
+      "targetType": "City",
+      "googleName": "Ranger"
+    },
+    "1026723": {
+      "countySlug": "upton-county",
+      "countyName": "Upton",
+      "targetType": "City",
+      "googleName": "Rankin"
+    },
+    "1026724": {
+      "countySlug": "willacy-county",
+      "countyName": "Willacy",
+      "targetType": "City",
+      "googleName": "Raymondville"
+    },
+    "1026725": {
+      "countySlug": "falls-county",
+      "countyName": "Falls",
+      "targetType": "City",
+      "googleName": "Reagan"
+    },
+    "1026727": {
+      "countySlug": "refugio-county",
+      "countyName": "Refugio",
+      "targetType": "City",
+      "googleName": "Refugio"
+    },
+    "1026728": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "City",
+      "googleName": "Rice"
+    },
+    "1026729": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Richardson"
+    },
+    "1026731": {
+      "countySlug": "starr-county",
+      "countyName": "Starr",
+      "targetType": "City",
+      "googleName": "Rio Grande City"
+    },
+    "1026732": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "Rio Hondo"
+    },
+    "1026733": {
+      "countySlug": "kleberg-county",
+      "countyName": "Kleberg",
+      "targetType": "City",
+      "googleName": "Riviera"
+    },
+    "1026735": {
+      "countySlug": "coke-county",
+      "countyName": "Coke",
+      "targetType": "City",
+      "googleName": "Robert Lee"
+    },
+    "1026736": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "City",
+      "googleName": "Robstown"
+    },
+    "1026737": {
+      "countySlug": "fisher-county",
+      "countyName": "Fisher",
+      "targetType": "City",
+      "googleName": "Roby"
+    },
+    "1026738": {
+      "countySlug": "milam-county",
+      "countyName": "Milam",
+      "targetType": "City",
+      "googleName": "Rockdale"
+    },
+    "1026739": {
+      "countySlug": "aransas-county",
+      "countyName": "Aransas",
+      "targetType": "City",
+      "googleName": "Rockport"
+    },
+    "1026740": {
+      "countySlug": "edwards-county",
+      "countyName": "Edwards",
+      "targetType": "City",
+      "googleName": "Rocksprings"
+    },
+    "1026742": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Rogers"
+    },
+    "1026743": {
+      "countySlug": "starr-county",
+      "countyName": "Starr",
+      "targetType": "City",
+      "googleName": "Roma"
+    },
+    "1026744": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Rosenberg"
+    },
+    "1026745": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Rosharon"
+    },
+    "1026747": {
+      "countySlug": "blanco-county",
+      "countyName": "Blanco",
+      "targetType": "City",
+      "googleName": "Round Mountain"
+    },
+    "1026748": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Round Rock"
+    },
+    "1026749": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "Round Top"
+    },
+    "1026750": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Rowlett"
+    },
+    "1026751": {
+      "countySlug": "rockwall-county",
+      "countyName": "Rockwall",
+      "targetType": "City",
+      "googleName": "Royse City"
+    },
+    "1026752": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "City",
+      "googleName": "Runge"
+    },
+    "1026754": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "City",
+      "googleName": "Sabinal"
+    },
+    "1026755": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Sachse"
+    },
+    "1026756": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Sadler"
+    },
+    "1026757": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Salado"
+    },
+    "1026758": {
+      "countySlug": "tom-green-county",
+      "countyName": "Tom Green",
+      "targetType": "City",
+      "googleName": "San Angelo"
+    },
+    "1026759": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "San Antonio"
+    },
+    "1026760": {
+      "countySlug": "san-augustine-county",
+      "countyName": "San Augustine",
+      "targetType": "City",
+      "googleName": "San Augustine"
+    },
+    "1026761": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "San Benito"
+    },
+    "1026762": {
+      "countySlug": "duval-county",
+      "countyName": "Duval",
+      "targetType": "City",
+      "googleName": "San Diego"
+    },
+    "1026763": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "San Elizario"
+    },
+    "1026764": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "San Juan"
+    },
+    "1026765": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "San Marcos"
+    },
+    "1026766": {
+      "countySlug": "san-saba-county",
+      "countyName": "San Saba",
+      "targetType": "City",
+      "googleName": "San Saba"
+    },
+    "1026767": {
+      "countySlug": "terrell-county",
+      "countyName": "Terrell",
+      "targetType": "City",
+      "googleName": "Sanderson"
+    },
+    "1026768": {
+      "countySlug": "live-oak-county",
+      "countyName": "Live Oak",
+      "targetType": "City",
+      "googleName": "Sandia"
+    },
+    "1026769": {
+      "countySlug": "coleman-county",
+      "countyName": "Coleman",
+      "targetType": "City",
+      "googleName": "Santa Anna"
+    },
+    "1026771": {
+      "countySlug": "hardin-county",
+      "countyName": "Hardin",
+      "targetType": "City",
+      "googleName": "Saratoga"
+    },
+    "1026772": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Savoy"
+    },
+    "1026774": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "Schulenburg"
+    },
+    "1026776": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "City",
+      "googleName": "Scurry"
+    },
+    "1026778": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Seagoville"
+    },
+    "1026779": {
+      "countySlug": "gaines-county",
+      "countyName": "Gaines",
+      "targetType": "City",
+      "googleName": "Seagraves"
+    },
+    "1026780": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "City",
+      "googleName": "Sealy"
+    },
+    "1026781": {
+      "countySlug": "willacy-county",
+      "countyName": "Willacy",
+      "targetType": "City",
+      "googleName": "Sebastian"
+    },
+    "1026782": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "City",
+      "googleName": "Seguin"
+    },
+    "1026783": {
+      "countySlug": "gaines-county",
+      "countyName": "Gaines",
+      "targetType": "City",
+      "googleName": "Seminole"
+    },
+    "1026784": {
+      "countySlug": "baylor-county",
+      "countyName": "Baylor",
+      "targetType": "City",
+      "googleName": "Seymour"
+    },
+    "1026786": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "City",
+      "googleName": "Shelbyville"
+    },
+    "1026788": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Sherman"
+    },
+    "1026789": {
+      "countySlug": "lavaca-county",
+      "countyName": "Lavaca",
+      "targetType": "City",
+      "googleName": "Shiner"
+    },
+    "1026790": {
+      "countySlug": "walker-county",
+      "countyName": "Walker",
+      "targetType": "City",
+      "googleName": "Shiro"
+    },
+    "1026791": {
+      "countySlug": "hudspeth-county",
+      "countyName": "Hudspeth",
+      "targetType": "City",
+      "googleName": "Sierra Blanca"
+    },
+    "1026792": {
+      "countySlug": "hardin-county",
+      "countyName": "Hardin",
+      "targetType": "City",
+      "googleName": "Silsbee"
+    },
+    "1026793": {
+      "countySlug": "briscoe-county",
+      "countyName": "Briscoe",
+      "targetType": "City",
+      "googleName": "Silverton"
+    },
+    "1026794": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Sinton"
+    },
+    "1026796": {
+      "countySlug": "bastrop-county",
+      "countyName": "Bastrop",
+      "targetType": "City",
+      "googleName": "Smithville"
+    },
+    "1026797": {
+      "countySlug": "burleson-county",
+      "countyName": "Burleson",
+      "targetType": "City",
+      "googleName": "Snook"
+    },
+    "1026799": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "City",
+      "googleName": "Somerset"
+    },
+    "1026800": {
+      "countySlug": "sutton-county",
+      "countyName": "Sutton",
+      "targetType": "City",
+      "googleName": "Sonora"
+    },
+    "1026801": {
+      "countySlug": "hardin-county",
+      "countyName": "Hardin",
+      "targetType": "City",
+      "googleName": "Sour Lake"
+    },
+    "1026802": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "South Houston"
+    },
+    "1026805": {
+      "countySlug": "hansford-county",
+      "countyName": "Hansford",
+      "targetType": "City",
+      "googleName": "Spearman"
+    },
+    "1026806": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Spicewood"
+    },
+    "1026807": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Splendora"
+    },
+    "1026808": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Spring"
+    },
+    "1026809": {
+      "countySlug": "comal-county",
+      "countyName": "Comal",
+      "targetType": "City",
+      "googleName": "Spring Branch"
+    },
+    "1026810": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "City",
+      "googleName": "Springtown"
+    },
+    "1026811": {
+      "countySlug": "dickens-county",
+      "countyName": "Dickens",
+      "targetType": "City",
+      "googleName": "Spur"
+    },
+    "1026812": {
+      "countySlug": "tyler-county",
+      "countyName": "Tyler",
+      "targetType": "City",
+      "googleName": "Spurger"
+    },
+    "1026813": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Stafford"
+    },
+    "1026814": {
+      "countySlug": "jones-county",
+      "countyName": "Jones",
+      "targetType": "City",
+      "googleName": "Stamford"
+    },
+    "1026815": {
+      "countySlug": "martin-county",
+      "countyName": "Martin",
+      "targetType": "City",
+      "googleName": "Stanton"
+    },
+    "1026816": {
+      "countySlug": "erath-county",
+      "countyName": "Erath",
+      "targetType": "City",
+      "googleName": "Stephenville"
+    },
+    "1026817": {
+      "countySlug": "sterling-county",
+      "countyName": "Sterling",
+      "targetType": "City",
+      "googleName": "Sterling City"
+    },
+    "1026818": {
+      "countySlug": "hutchinson-county",
+      "countyName": "Hutchinson",
+      "targetType": "City",
+      "googleName": "Stinnett"
+    },
+    "1026819": {
+      "countySlug": "wilson-county",
+      "countyName": "Wilson",
+      "targetType": "City",
+      "googleName": "Stockdale"
+    },
+    "1026821": {
+      "countySlug": "sherman-county",
+      "countyName": "Sherman",
+      "targetType": "City",
+      "googleName": "Stratford"
+    },
+    "1026822": {
+      "countySlug": "palo-pinto-county",
+      "countyName": "Palo Pinto",
+      "targetType": "City",
+      "googleName": "Strawn"
+    },
+    "1026823": {
+      "countySlug": "freestone-county",
+      "countyName": "Freestone",
+      "targetType": "City",
+      "googleName": "Streetman"
+    },
+    "1026824": {
+      "countySlug": "lamb-county",
+      "countyName": "Lamb",
+      "targetType": "City",
+      "googleName": "Sudan"
+    },
+    "1026825": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Sugar Land"
+    },
+    "1026826": {
+      "countySlug": "hopkins-county",
+      "countyName": "Hopkins",
+      "targetType": "City",
+      "googleName": "Sulphur Springs"
+    },
+    "1026828": {
+      "countySlug": "nolan-county",
+      "countyName": "Nolan",
+      "targetType": "City",
+      "googleName": "Sweetwater"
+    },
+    "1026829": {
+      "countySlug": "lynn-county",
+      "countyName": "Lynn",
+      "targetType": "City",
+      "googleName": "Tahoka"
+    },
+    "1026830": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Taylor"
+    },
+    "1026831": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Temple"
+    },
+    "1026832": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "City",
+      "googleName": "Tenaha"
+    },
+    "1026833": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "City",
+      "googleName": "Terrell"
+    },
+    "1026834": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "Texarkana"
+    },
+    "1026835": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "Texas City"
+    },
+    "1026836": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "The Colony"
+    },
+    "1026837": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Thompsons"
+    },
+    "1026838": {
+      "countySlug": "milam-county",
+      "countyName": "Milam",
+      "targetType": "City",
+      "googleName": "Thorndale"
+    },
+    "1026839": {
+      "countySlug": "limestone-county",
+      "countyName": "Limestone",
+      "targetType": "City",
+      "googleName": "Thornton"
+    },
+    "1026840": {
+      "countySlug": "live-oak-county",
+      "countyName": "Live Oak",
+      "targetType": "City",
+      "googleName": "Three Rivers"
+    },
+    "1026841": {
+      "countySlug": "throckmorton-county",
+      "countyName": "Throckmorton",
+      "targetType": "City",
+      "googleName": "Throckmorton"
+    },
+    "1026842": {
+      "countySlug": "mcmullen-county",
+      "countyName": "McMullen",
+      "targetType": "City",
+      "googleName": "Tilden"
+    },
+    "1026843": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "City",
+      "googleName": "Timpson"
+    },
+    "1026844": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Tioga"
+    },
+    "1026845": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Tom Bean"
+    },
+    "1026846": {
+      "countySlug": "tom-green-county",
+      "countyName": "Tom Green",
+      "targetType": "County",
+      "googleName": "Tom Green County"
+    },
+    "1026847": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Tomball"
+    },
+    "1026848": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Tornillo"
+    },
+    "1026849": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "City",
+      "googleName": "Trenton"
+    },
+    "1026850": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Trinidad"
+    },
+    "1026851": {
+      "countySlug": "trinity-county",
+      "countyName": "Trinity",
+      "targetType": "City",
+      "googleName": "Trinity"
+    },
+    "1026852": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Troy"
+    },
+    "1026854": {
+      "countySlug": "taylor-county",
+      "countyName": "Taylor",
+      "targetType": "City",
+      "googleName": "Tye"
+    },
+    "1026855": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "City",
+      "googleName": "Tyler"
+    },
+    "1026857": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "City",
+      "googleName": "Utopia"
+    },
+    "1026858": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "City",
+      "googleName": "Uvalde"
+    },
+    "1026859": {
+      "countySlug": "cooke-county",
+      "countyName": "Cooke",
+      "targetType": "City",
+      "googleName": "Valley View"
+    },
+    "1026860": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Van Alstyne"
+    },
+    "1026862": {
+      "countySlug": "matagorda-county",
+      "countyName": "Matagorda",
+      "targetType": "City",
+      "googleName": "Van Vleck"
+    },
+    "1026863": {
+      "countySlug": "oldham-county",
+      "countyName": "Oldham",
+      "targetType": "City",
+      "googleName": "Vega"
+    },
+    "1026864": {
+      "countySlug": "wilbarger-county",
+      "countyName": "Wilbarger",
+      "targetType": "City",
+      "googleName": "Vernon"
+    },
+    "1026865": {
+      "countySlug": "victoria-county",
+      "countyName": "Victoria",
+      "targetType": "City",
+      "googleName": "Victoria"
+    },
+    "1026866": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "City",
+      "googleName": "Vidor"
+    },
+    "1026867": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Waco"
+    },
+    "1026868": {
+      "countySlug": "matagorda-county",
+      "countyName": "Matagorda",
+      "targetType": "City",
+      "googleName": "Wadsworth"
+    },
+    "1026869": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "City",
+      "googleName": "Waller"
+    },
+    "1026870": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "City",
+      "googleName": "Wallis"
+    },
+    "1026871": {
+      "countySlug": "washington-county",
+      "countyName": "Washington",
+      "targetType": "City",
+      "googleName": "Washington"
+    },
+    "1026872": {
+      "countySlug": "harrison-county",
+      "countyName": "Harrison",
+      "targetType": "City",
+      "googleName": "Waskom"
+    },
+    "1026873": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Waxahachie"
+    },
+    "1026874": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "City",
+      "googleName": "Weatherford"
+    },
+    "1026875": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Webster"
+    },
+    "1026876": {
+      "countySlug": "collingsworth-county",
+      "countyName": "Collingsworth",
+      "targetType": "City",
+      "googleName": "Wellington"
+    },
+    "1026877": {
+      "countySlug": "terry-county",
+      "countyName": "Terry",
+      "targetType": "City",
+      "googleName": "Wellman"
+    },
+    "1026878": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Weslaco"
+    },
+    "1026879": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "West Columbia"
+    },
+    "1026881": {
+      "countySlug": "wharton-county",
+      "countyName": "Wharton",
+      "targetType": "City",
+      "googleName": "Wharton"
+    },
+    "1026882": {
+      "countySlug": "wheeler-county",
+      "countyName": "Wheeler",
+      "targetType": "City",
+      "googleName": "Wheeler"
+    },
+    "1026883": {
+      "countySlug": "cochran-county",
+      "countyName": "Cochran",
+      "targetType": "City",
+      "googleName": "Whiteface"
+    },
+    "1026884": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "City",
+      "googleName": "Whitehouse"
+    },
+    "1026885": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Whitesboro"
+    },
+    "1026886": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Whitewright"
+    },
+    "1026887": {
+      "countySlug": "hockley-county",
+      "countyName": "Hockley",
+      "targetType": "City",
+      "googleName": "Whitharral"
+    },
+    "1026889": {
+      "countySlug": "wichita-county",
+      "countyName": "Wichita",
+      "targetType": "City",
+      "googleName": "Wichita Falls"
+    },
+    "1026890": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Willis"
+    },
+    "1026891": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Wills Point"
+    },
+    "1026892": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "Wimberley"
+    },
+    "1026893": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Winnsboro"
+    },
+    "1026894": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "City",
+      "googleName": "Wolfe City"
+    },
+    "1026895": {
+      "countySlug": "lubbock-county",
+      "countyName": "Lubbock",
+      "targetType": "City",
+      "googleName": "Wolfforth"
+    },
+    "1026896": {
+      "countySlug": "refugio-county",
+      "countyName": "Refugio",
+      "targetType": "City",
+      "googleName": "Woodsboro"
+    },
+    "1026898": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Woodway"
+    },
+    "1026899": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Wylie"
+    },
+    "1026900": {
+      "countySlug": "lavaca-county",
+      "countyName": "Lavaca",
+      "targetType": "City",
+      "googleName": "Yoakum"
+    },
+    "1026901": {
+      "countySlug": "zapata-county",
+      "countyName": "Zapata",
+      "targetType": "City",
+      "googleName": "Zapata"
+    },
+    "9051499": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Alamo Heights"
+    },
+    "9051542": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Balch Springs"
+    },
+    "9051585": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Benbrook"
+    },
+    "9051690": {
+      "countySlug": "comal-county",
+      "countyName": "Comal",
+      "targetType": "City",
+      "googleName": "Canyon Lake"
+    },
+    "9051933": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Farmers Branch"
+    },
+    "9051967": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Fort Bliss"
+    },
+    "9051970": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Fort Hood"
+    },
+    "9052003": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Fulshear"
+    },
+    "9052012": {
+      "countySlug": "comal-county",
+      "countyName": "Comal",
+      "targetType": "City",
+      "googleName": "Garden Ridge"
+    },
+    "9052033": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Godley"
+    },
+    "9052046": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Grandview"
+    },
+    "9052125": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Hewitt"
+    },
+    "9052131": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Highland Park"
+    },
+    "9052132": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Highland Village"
+    },
+    "9052162": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "City",
+      "googleName": "Horizon City"
+    },
+    "9052205": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Jersey Village"
+    },
+    "9052239": {
+      "countySlug": "llano-county",
+      "countyName": "Llano",
+      "targetType": "City",
+      "googleName": "Kingsland"
+    },
+    "9052275": {
+      "countySlug": "bandera-county",
+      "countyName": "Bandera",
+      "targetType": "City",
+      "googleName": "Lakehills"
+    },
+    "9052283": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Lakeway"
+    },
+    "9052301": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Lavon"
+    },
+    "9052318": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Liberty Hill"
+    },
+    "9052337": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Live Oak"
+    },
+    "9052349": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Lorena"
+    },
+    "9052384": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Manvel"
+    },
+    "9052495": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Murphy"
+    },
+    "9052605": {
+      "countySlug": "upshur-county",
+      "countyName": "Upshur",
+      "targetType": "City",
+      "googleName": "Ore City"
+    },
+    "9052637": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Paradise"
+    },
+    "9052700": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "Port Isabel"
+    },
+    "9052790": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Saginaw"
+    },
+    "9052806": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Sanger"
+    },
+    "9052914": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Saint Hedwig"
+    },
+    "9052976": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "The Woodlands"
+    },
+    "9053007": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "City",
+      "googleName": "Trophy Club"
+    },
+    "9053048": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "City",
+      "googleName": "Venus"
+    },
+    "9053066": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "Wake Village"
+    },
+    "9053085": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Watauga"
+    },
+    "9053115": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "West Lake Hills"
+    },
+    "9053182": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Windcrest"
+    },
+    "9053184": {
+      "countySlug": "archer-county",
+      "countyName": "Archer",
+      "targetType": "City",
+      "googleName": "Windthorst"
+    },
+    "9059406": {
+      "countySlug": "anderson-county",
+      "countyName": "Anderson",
+      "targetType": "County",
+      "googleName": "Anderson County"
+    },
+    "9059407": {
+      "countySlug": "andrews-county",
+      "countyName": "Andrews",
+      "targetType": "County",
+      "googleName": "Andrews County"
+    },
+    "9059408": {
+      "countySlug": "angelina-county",
+      "countyName": "Angelina",
+      "targetType": "County",
+      "googleName": "Angelina County"
+    },
+    "9059409": {
+      "countySlug": "aransas-county",
+      "countyName": "Aransas",
+      "targetType": "County",
+      "googleName": "Aransas County"
+    },
+    "9059410": {
+      "countySlug": "archer-county",
+      "countyName": "Archer",
+      "targetType": "County",
+      "googleName": "Archer County"
+    },
+    "9059411": {
+      "countySlug": "armstrong-county",
+      "countyName": "Armstrong",
+      "targetType": "County",
+      "googleName": "Armstrong County"
+    },
+    "9059412": {
+      "countySlug": "atascosa-county",
+      "countyName": "Atascosa",
+      "targetType": "County",
+      "googleName": "Atascosa County"
+    },
+    "9059413": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "County",
+      "googleName": "Austin County"
+    },
+    "9059414": {
+      "countySlug": "bailey-county",
+      "countyName": "Bailey",
+      "targetType": "County",
+      "googleName": "Bailey County"
+    },
+    "9059415": {
+      "countySlug": "bandera-county",
+      "countyName": "Bandera",
+      "targetType": "County",
+      "googleName": "Bandera County"
+    },
+    "9059416": {
+      "countySlug": "bastrop-county",
+      "countyName": "Bastrop",
+      "targetType": "County",
+      "googleName": "Bastrop County"
+    },
+    "9059417": {
+      "countySlug": "baylor-county",
+      "countyName": "Baylor",
+      "targetType": "County",
+      "googleName": "Baylor County"
+    },
+    "9059418": {
+      "countySlug": "bee-county",
+      "countyName": "Bee",
+      "targetType": "County",
+      "googleName": "Bee County"
+    },
+    "9059419": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "County",
+      "googleName": "Bell County"
+    },
+    "9059420": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "County",
+      "googleName": "Bexar County"
+    },
+    "9059421": {
+      "countySlug": "blanco-county",
+      "countyName": "Blanco",
+      "targetType": "County",
+      "googleName": "Blanco County"
+    },
+    "9059422": {
+      "countySlug": "borden-county",
+      "countyName": "Borden",
+      "targetType": "County",
+      "googleName": "Borden County"
+    },
+    "9059423": {
+      "countySlug": "bosque-county",
+      "countyName": "Bosque",
+      "targetType": "County",
+      "googleName": "Bosque County"
+    },
+    "9059424": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "County",
+      "googleName": "Bowie County"
+    },
+    "9059425": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "County",
+      "googleName": "Brazoria County"
+    },
+    "9059426": {
+      "countySlug": "brazos-county",
+      "countyName": "Brazos",
+      "targetType": "County",
+      "googleName": "Brazos County"
+    },
+    "9059427": {
+      "countySlug": "brewster-county",
+      "countyName": "Brewster",
+      "targetType": "County",
+      "googleName": "Brewster County"
+    },
+    "9059428": {
+      "countySlug": "briscoe-county",
+      "countyName": "Briscoe",
+      "targetType": "County",
+      "googleName": "Briscoe County"
+    },
+    "9059429": {
+      "countySlug": "brooks-county",
+      "countyName": "Brooks",
+      "targetType": "County",
+      "googleName": "Brooks County"
+    },
+    "9059430": {
+      "countySlug": "brown-county",
+      "countyName": "Brown",
+      "targetType": "County",
+      "googleName": "Brown County"
+    },
+    "9059431": {
+      "countySlug": "burleson-county",
+      "countyName": "Burleson",
+      "targetType": "County",
+      "googleName": "Burleson County"
+    },
+    "9059432": {
+      "countySlug": "burnet-county",
+      "countyName": "Burnet",
+      "targetType": "County",
+      "googleName": "Burnet County"
+    },
+    "9059433": {
+      "countySlug": "caldwell-county",
+      "countyName": "Caldwell",
+      "targetType": "County",
+      "googleName": "Caldwell County"
+    },
+    "9059434": {
+      "countySlug": "calhoun-county",
+      "countyName": "Calhoun",
+      "targetType": "County",
+      "googleName": "Calhoun County"
+    },
+    "9059435": {
+      "countySlug": "callahan-county",
+      "countyName": "Callahan",
+      "targetType": "County",
+      "googleName": "Callahan County"
+    },
+    "9059436": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "County",
+      "googleName": "Cameron County"
+    },
+    "9059437": {
+      "countySlug": "camp-county",
+      "countyName": "Camp",
+      "targetType": "County",
+      "googleName": "Camp County"
+    },
+    "9059438": {
+      "countySlug": "carson-county",
+      "countyName": "Carson",
+      "targetType": "County",
+      "googleName": "Carson County"
+    },
+    "9059439": {
+      "countySlug": "cass-county",
+      "countyName": "Cass",
+      "targetType": "County",
+      "googleName": "Cass County"
+    },
+    "9059440": {
+      "countySlug": "castro-county",
+      "countyName": "Castro",
+      "targetType": "County",
+      "googleName": "Castro County"
+    },
+    "9059441": {
+      "countySlug": "chambers-county",
+      "countyName": "Chambers",
+      "targetType": "County",
+      "googleName": "Chambers County"
+    },
+    "9059442": {
+      "countySlug": "cherokee-county",
+      "countyName": "Cherokee",
+      "targetType": "County",
+      "googleName": "Cherokee County"
+    },
+    "9059443": {
+      "countySlug": "childress-county",
+      "countyName": "Childress",
+      "targetType": "County",
+      "googleName": "Childress County"
+    },
+    "9059444": {
+      "countySlug": "clay-county",
+      "countyName": "Clay",
+      "targetType": "County",
+      "googleName": "Clay County"
+    },
+    "9059445": {
+      "countySlug": "cochran-county",
+      "countyName": "Cochran",
+      "targetType": "County",
+      "googleName": "Cochran County"
+    },
+    "9059446": {
+      "countySlug": "coke-county",
+      "countyName": "Coke",
+      "targetType": "County",
+      "googleName": "Coke County"
+    },
+    "9059447": {
+      "countySlug": "coleman-county",
+      "countyName": "Coleman",
+      "targetType": "County",
+      "googleName": "Coleman County"
+    },
+    "9059448": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "County",
+      "googleName": "Collin County"
+    },
+    "9059449": {
+      "countySlug": "collingsworth-county",
+      "countyName": "Collingsworth",
+      "targetType": "County",
+      "googleName": "Collingsworth County"
+    },
+    "9059450": {
+      "countySlug": "colorado-county",
+      "countyName": "Colorado",
+      "targetType": "County",
+      "googleName": "Colorado County"
+    },
+    "9059451": {
+      "countySlug": "comal-county",
+      "countyName": "Comal",
+      "targetType": "County",
+      "googleName": "Comal County"
+    },
+    "9059452": {
+      "countySlug": "comanche-county",
+      "countyName": "Comanche",
+      "targetType": "County",
+      "googleName": "Comanche County"
+    },
+    "9059453": {
+      "countySlug": "concho-county",
+      "countyName": "Concho",
+      "targetType": "County",
+      "googleName": "Concho County"
+    },
+    "9059454": {
+      "countySlug": "cooke-county",
+      "countyName": "Cooke",
+      "targetType": "County",
+      "googleName": "Cooke County"
+    },
+    "9059455": {
+      "countySlug": "coryell-county",
+      "countyName": "Coryell",
+      "targetType": "County",
+      "googleName": "Coryell County"
+    },
+    "9059456": {
+      "countySlug": "cottle-county",
+      "countyName": "Cottle",
+      "targetType": "County",
+      "googleName": "Cottle County"
+    },
+    "9059457": {
+      "countySlug": "crane-county",
+      "countyName": "Crane",
+      "targetType": "County",
+      "googleName": "Crane County"
+    },
+    "9059458": {
+      "countySlug": "crockett-county",
+      "countyName": "Crockett",
+      "targetType": "County",
+      "googleName": "Crockett County"
+    },
+    "9059459": {
+      "countySlug": "crosby-county",
+      "countyName": "Crosby",
+      "targetType": "County",
+      "googleName": "Crosby County"
+    },
+    "9059460": {
+      "countySlug": "culberson-county",
+      "countyName": "Culberson",
+      "targetType": "County",
+      "googleName": "Culberson County"
+    },
+    "9059461": {
+      "countySlug": "dallam-county",
+      "countyName": "Dallam",
+      "targetType": "County",
+      "googleName": "Dallam County"
+    },
+    "9059462": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "County",
+      "googleName": "Dallas County"
+    },
+    "9059463": {
+      "countySlug": "dawson-county",
+      "countyName": "Dawson",
+      "targetType": "County",
+      "googleName": "Dawson County"
+    },
+    "9059464": {
+      "countySlug": "deaf-smith-county",
+      "countyName": "Deaf Smith",
+      "targetType": "County",
+      "googleName": "Deaf Smith County"
+    },
+    "9059465": {
+      "countySlug": "delta-county",
+      "countyName": "Delta",
+      "targetType": "County",
+      "googleName": "Delta County"
+    },
+    "9059466": {
+      "countySlug": "denton-county",
+      "countyName": "Denton",
+      "targetType": "County",
+      "googleName": "Denton County"
+    },
+    "9059467": {
+      "countySlug": "dewitt-county",
+      "countyName": "DeWitt",
+      "targetType": "County",
+      "googleName": "DeWitt County"
+    },
+    "9059468": {
+      "countySlug": "dickens-county",
+      "countyName": "Dickens",
+      "targetType": "County",
+      "googleName": "Dickens County"
+    },
+    "9059469": {
+      "countySlug": "dimmit-county",
+      "countyName": "Dimmit",
+      "targetType": "County",
+      "googleName": "Dimmit County"
+    },
+    "9059470": {
+      "countySlug": "donley-county",
+      "countyName": "Donley",
+      "targetType": "County",
+      "googleName": "Donley County"
+    },
+    "9059471": {
+      "countySlug": "duval-county",
+      "countyName": "Duval",
+      "targetType": "County",
+      "googleName": "Duval County"
+    },
+    "9059472": {
+      "countySlug": "eastland-county",
+      "countyName": "Eastland",
+      "targetType": "County",
+      "googleName": "Eastland County"
+    },
+    "9059473": {
+      "countySlug": "ector-county",
+      "countyName": "Ector",
+      "targetType": "County",
+      "googleName": "Ector County"
+    },
+    "9059474": {
+      "countySlug": "edwards-county",
+      "countyName": "Edwards",
+      "targetType": "County",
+      "googleName": "Edwards County"
+    },
+    "9059475": {
+      "countySlug": "el-paso-county",
+      "countyName": "El Paso",
+      "targetType": "County",
+      "googleName": "El Paso County"
+    },
+    "9059476": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "County",
+      "googleName": "Ellis County"
+    },
+    "9059477": {
+      "countySlug": "erath-county",
+      "countyName": "Erath",
+      "targetType": "County",
+      "googleName": "Erath County"
+    },
+    "9059478": {
+      "countySlug": "falls-county",
+      "countyName": "Falls",
+      "targetType": "County",
+      "googleName": "Falls County"
+    },
+    "9059479": {
+      "countySlug": "fannin-county",
+      "countyName": "Fannin",
+      "targetType": "County",
+      "googleName": "Fannin County"
+    },
+    "9059480": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "County",
+      "googleName": "Fayette County"
+    },
+    "9059481": {
+      "countySlug": "fisher-county",
+      "countyName": "Fisher",
+      "targetType": "County",
+      "googleName": "Fisher County"
+    },
+    "9059482": {
+      "countySlug": "floyd-county",
+      "countyName": "Floyd",
+      "targetType": "County",
+      "googleName": "Floyd County"
+    },
+    "9059483": {
+      "countySlug": "foard-county",
+      "countyName": "Foard",
+      "targetType": "County",
+      "googleName": "Foard County"
+    },
+    "9059484": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "County",
+      "googleName": "Fort Bend County"
+    },
+    "9059485": {
+      "countySlug": "franklin-county",
+      "countyName": "Franklin",
+      "targetType": "County",
+      "googleName": "Franklin County"
+    },
+    "9059486": {
+      "countySlug": "freestone-county",
+      "countyName": "Freestone",
+      "targetType": "County",
+      "googleName": "Freestone County"
+    },
+    "9059487": {
+      "countySlug": "frio-county",
+      "countyName": "Frio",
+      "targetType": "County",
+      "googleName": "Frio County"
+    },
+    "9059488": {
+      "countySlug": "gaines-county",
+      "countyName": "Gaines",
+      "targetType": "County",
+      "googleName": "Gaines County"
+    },
+    "9059489": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "County",
+      "googleName": "Galveston County"
+    },
+    "9059490": {
+      "countySlug": "garza-county",
+      "countyName": "Garza",
+      "targetType": "County",
+      "googleName": "Garza County"
+    },
+    "9059491": {
+      "countySlug": "gillespie-county",
+      "countyName": "Gillespie",
+      "targetType": "County",
+      "googleName": "Gillespie County"
+    },
+    "9059492": {
+      "countySlug": "glasscock-county",
+      "countyName": "Glasscock",
+      "targetType": "County",
+      "googleName": "Glasscock County"
+    },
+    "9059493": {
+      "countySlug": "goliad-county",
+      "countyName": "Goliad",
+      "targetType": "County",
+      "googleName": "Goliad County"
+    },
+    "9059494": {
+      "countySlug": "gonzales-county",
+      "countyName": "Gonzales",
+      "targetType": "County",
+      "googleName": "Gonzales County"
+    },
+    "9059495": {
+      "countySlug": "gray-county",
+      "countyName": "Gray",
+      "targetType": "County",
+      "googleName": "Gray County"
+    },
+    "9059496": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "County",
+      "googleName": "Grayson County"
+    },
+    "9059497": {
+      "countySlug": "gregg-county",
+      "countyName": "Gregg",
+      "targetType": "County",
+      "googleName": "Gregg County"
+    },
+    "9059498": {
+      "countySlug": "grimes-county",
+      "countyName": "Grimes",
+      "targetType": "County",
+      "googleName": "Grimes County"
+    },
+    "9059499": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "County",
+      "googleName": "Guadalupe County"
+    },
+    "9059500": {
+      "countySlug": "hale-county",
+      "countyName": "Hale",
+      "targetType": "County",
+      "googleName": "Hale County"
+    },
+    "9059501": {
+      "countySlug": "hall-county",
+      "countyName": "Hall",
+      "targetType": "County",
+      "googleName": "Hall County"
+    },
+    "9059502": {
+      "countySlug": "hamilton-county",
+      "countyName": "Hamilton",
+      "targetType": "County",
+      "googleName": "Hamilton County"
+    },
+    "9059503": {
+      "countySlug": "hansford-county",
+      "countyName": "Hansford",
+      "targetType": "County",
+      "googleName": "Hansford County"
+    },
+    "9059504": {
+      "countySlug": "hardeman-county",
+      "countyName": "Hardeman",
+      "targetType": "County",
+      "googleName": "Hardeman County"
+    },
+    "9059505": {
+      "countySlug": "hardin-county",
+      "countyName": "Hardin",
+      "targetType": "County",
+      "googleName": "Hardin County"
+    },
+    "9059506": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "County",
+      "googleName": "Harris County"
+    },
+    "9059507": {
+      "countySlug": "harrison-county",
+      "countyName": "Harrison",
+      "targetType": "County",
+      "googleName": "Harrison County"
+    },
+    "9059508": {
+      "countySlug": "hartley-county",
+      "countyName": "Hartley",
+      "targetType": "County",
+      "googleName": "Hartley County"
+    },
+    "9059509": {
+      "countySlug": "haskell-county",
+      "countyName": "Haskell",
+      "targetType": "County",
+      "googleName": "Haskell County"
+    },
+    "9059510": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "County",
+      "googleName": "Hays County"
+    },
+    "9059511": {
+      "countySlug": "hemphill-county",
+      "countyName": "Hemphill",
+      "targetType": "County",
+      "googleName": "Hemphill County"
+    },
+    "9059512": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "County",
+      "googleName": "Henderson County"
+    },
+    "9059513": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "County",
+      "googleName": "Hidalgo County"
+    },
+    "9059514": {
+      "countySlug": "hill-county",
+      "countyName": "Hill",
+      "targetType": "County",
+      "googleName": "Hill County"
+    },
+    "9059515": {
+      "countySlug": "hockley-county",
+      "countyName": "Hockley",
+      "targetType": "County",
+      "googleName": "Hockley County"
+    },
+    "9059516": {
+      "countySlug": "hood-county",
+      "countyName": "Hood",
+      "targetType": "County",
+      "googleName": "Hood County"
+    },
+    "9059517": {
+      "countySlug": "hopkins-county",
+      "countyName": "Hopkins",
+      "targetType": "County",
+      "googleName": "Hopkins County"
+    },
+    "9059518": {
+      "countySlug": "houston-county",
+      "countyName": "Houston",
+      "targetType": "County",
+      "googleName": "Houston County"
+    },
+    "9059519": {
+      "countySlug": "howard-county",
+      "countyName": "Howard",
+      "targetType": "County",
+      "googleName": "Howard County"
+    },
+    "9059520": {
+      "countySlug": "hudspeth-county",
+      "countyName": "Hudspeth",
+      "targetType": "County",
+      "googleName": "Hudspeth County"
+    },
+    "9059521": {
+      "countySlug": "hunt-county",
+      "countyName": "Hunt",
+      "targetType": "County",
+      "googleName": "Hunt County"
+    },
+    "9059522": {
+      "countySlug": "hutchinson-county",
+      "countyName": "Hutchinson",
+      "targetType": "County",
+      "googleName": "Hutchinson County"
+    },
+    "9059523": {
+      "countySlug": "irion-county",
+      "countyName": "Irion",
+      "targetType": "County",
+      "googleName": "Irion County"
+    },
+    "9059524": {
+      "countySlug": "jack-county",
+      "countyName": "Jack",
+      "targetType": "County",
+      "googleName": "Jack County"
+    },
+    "9059525": {
+      "countySlug": "jackson-county",
+      "countyName": "Jackson",
+      "targetType": "County",
+      "googleName": "Jackson County"
+    },
+    "9059526": {
+      "countySlug": "jasper-county",
+      "countyName": "Jasper",
+      "targetType": "County",
+      "googleName": "Jasper County"
+    },
+    "9059527": {
+      "countySlug": "jeff-davis-county",
+      "countyName": "Jeff Davis",
+      "targetType": "County",
+      "googleName": "Jeff Davis County"
+    },
+    "9059528": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "County",
+      "googleName": "Jefferson County"
+    },
+    "9059529": {
+      "countySlug": "jim-hogg-county",
+      "countyName": "Jim Hogg",
+      "targetType": "County",
+      "googleName": "Jim Hogg County"
+    },
+    "9059530": {
+      "countySlug": "jim-wells-county",
+      "countyName": "Jim Wells",
+      "targetType": "County",
+      "googleName": "Jim Wells County"
+    },
+    "9059531": {
+      "countySlug": "johnson-county",
+      "countyName": "Johnson",
+      "targetType": "County",
+      "googleName": "Johnson County"
+    },
+    "9059532": {
+      "countySlug": "jones-county",
+      "countyName": "Jones",
+      "targetType": "County",
+      "googleName": "Jones County"
+    },
+    "9059533": {
+      "countySlug": "karnes-county",
+      "countyName": "Karnes",
+      "targetType": "County",
+      "googleName": "Karnes County"
+    },
+    "9059534": {
+      "countySlug": "kaufman-county",
+      "countyName": "Kaufman",
+      "targetType": "County",
+      "googleName": "Kaufman County"
+    },
+    "9059535": {
+      "countySlug": "kendall-county",
+      "countyName": "Kendall",
+      "targetType": "County",
+      "googleName": "Kendall County"
+    },
+    "9059536": {
+      "countySlug": "kenedy-county",
+      "countyName": "Kenedy",
+      "targetType": "County",
+      "googleName": "Kenedy County"
+    },
+    "9059537": {
+      "countySlug": "kent-county",
+      "countyName": "Kent",
+      "targetType": "County",
+      "googleName": "Kent County"
+    },
+    "9059538": {
+      "countySlug": "kerr-county",
+      "countyName": "Kerr",
+      "targetType": "County",
+      "googleName": "Kerr County"
+    },
+    "9059539": {
+      "countySlug": "kimble-county",
+      "countyName": "Kimble",
+      "targetType": "County",
+      "googleName": "Kimble County"
+    },
+    "9059540": {
+      "countySlug": "king-county",
+      "countyName": "King",
+      "targetType": "County",
+      "googleName": "King County"
+    },
+    "9059541": {
+      "countySlug": "kinney-county",
+      "countyName": "Kinney",
+      "targetType": "County",
+      "googleName": "Kinney County"
+    },
+    "9059542": {
+      "countySlug": "kleberg-county",
+      "countyName": "Kleberg",
+      "targetType": "County",
+      "googleName": "Kleberg County"
+    },
+    "9059543": {
+      "countySlug": "knox-county",
+      "countyName": "Knox",
+      "targetType": "County",
+      "googleName": "Knox County"
+    },
+    "9059544": {
+      "countySlug": "la-salle-county",
+      "countyName": "La Salle",
+      "targetType": "County",
+      "googleName": "La Salle County"
+    },
+    "9059545": {
+      "countySlug": "lamar-county",
+      "countyName": "Lamar",
+      "targetType": "County",
+      "googleName": "Lamar County"
+    },
+    "9059546": {
+      "countySlug": "lamb-county",
+      "countyName": "Lamb",
+      "targetType": "County",
+      "googleName": "Lamb County"
+    },
+    "9059547": {
+      "countySlug": "lampasas-county",
+      "countyName": "Lampasas",
+      "targetType": "County",
+      "googleName": "Lampasas County"
+    },
+    "9059548": {
+      "countySlug": "lavaca-county",
+      "countyName": "Lavaca",
+      "targetType": "County",
+      "googleName": "Lavaca County"
+    },
+    "9059549": {
+      "countySlug": "lee-county",
+      "countyName": "Lee",
+      "targetType": "County",
+      "googleName": "Lee County"
+    },
+    "9059550": {
+      "countySlug": "leon-county",
+      "countyName": "Leon",
+      "targetType": "County",
+      "googleName": "Leon County"
+    },
+    "9059551": {
+      "countySlug": "liberty-county",
+      "countyName": "Liberty",
+      "targetType": "County",
+      "googleName": "Liberty County"
+    },
+    "9059552": {
+      "countySlug": "limestone-county",
+      "countyName": "Limestone",
+      "targetType": "County",
+      "googleName": "Limestone County"
+    },
+    "9059553": {
+      "countySlug": "lipscomb-county",
+      "countyName": "Lipscomb",
+      "targetType": "County",
+      "googleName": "Lipscomb County"
+    },
+    "9059554": {
+      "countySlug": "live-oak-county",
+      "countyName": "Live Oak",
+      "targetType": "County",
+      "googleName": "Live Oak County"
+    },
+    "9059555": {
+      "countySlug": "llano-county",
+      "countyName": "Llano",
+      "targetType": "County",
+      "googleName": "Llano County"
+    },
+    "9059556": {
+      "countySlug": "loving-county",
+      "countyName": "Loving",
+      "targetType": "County",
+      "googleName": "Loving County"
+    },
+    "9059557": {
+      "countySlug": "lubbock-county",
+      "countyName": "Lubbock",
+      "targetType": "County",
+      "googleName": "Lubbock County"
+    },
+    "9059558": {
+      "countySlug": "lynn-county",
+      "countyName": "Lynn",
+      "targetType": "County",
+      "googleName": "Lynn County"
+    },
+    "9059559": {
+      "countySlug": "madison-county",
+      "countyName": "Madison",
+      "targetType": "County",
+      "googleName": "Madison County"
+    },
+    "9059560": {
+      "countySlug": "marion-county",
+      "countyName": "Marion",
+      "targetType": "County",
+      "googleName": "Marion County"
+    },
+    "9059561": {
+      "countySlug": "martin-county",
+      "countyName": "Martin",
+      "targetType": "County",
+      "googleName": "Martin County"
+    },
+    "9059562": {
+      "countySlug": "mason-county",
+      "countyName": "Mason",
+      "targetType": "County",
+      "googleName": "Mason County"
+    },
+    "9059563": {
+      "countySlug": "matagorda-county",
+      "countyName": "Matagorda",
+      "targetType": "County",
+      "googleName": "Matagorda County"
+    },
+    "9059564": {
+      "countySlug": "maverick-county",
+      "countyName": "Maverick",
+      "targetType": "County",
+      "googleName": "Maverick County"
+    },
+    "9059565": {
+      "countySlug": "mcculloch-county",
+      "countyName": "McCulloch",
+      "targetType": "County",
+      "googleName": "McCulloch County"
+    },
+    "9059566": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "County",
+      "googleName": "McLennan County"
+    },
+    "9059567": {
+      "countySlug": "mcmullen-county",
+      "countyName": "McMullen",
+      "targetType": "County",
+      "googleName": "McMullen County"
+    },
+    "9059568": {
+      "countySlug": "medina-county",
+      "countyName": "Medina",
+      "targetType": "County",
+      "googleName": "Medina County"
+    },
+    "9059569": {
+      "countySlug": "menard-county",
+      "countyName": "Menard",
+      "targetType": "County",
+      "googleName": "Menard County"
+    },
+    "9059570": {
+      "countySlug": "midland-county",
+      "countyName": "Midland",
+      "targetType": "County",
+      "googleName": "Midland County"
+    },
+    "9059571": {
+      "countySlug": "milam-county",
+      "countyName": "Milam",
+      "targetType": "County",
+      "googleName": "Milam County"
+    },
+    "9059572": {
+      "countySlug": "mills-county",
+      "countyName": "Mills",
+      "targetType": "County",
+      "googleName": "Mills County"
+    },
+    "9059573": {
+      "countySlug": "mitchell-county",
+      "countyName": "Mitchell",
+      "targetType": "County",
+      "googleName": "Mitchell County"
+    },
+    "9059574": {
+      "countySlug": "montague-county",
+      "countyName": "Montague",
+      "targetType": "County",
+      "googleName": "Montague County"
+    },
+    "9059575": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "County",
+      "googleName": "Montgomery County"
+    },
+    "9059576": {
+      "countySlug": "moore-county",
+      "countyName": "Moore",
+      "targetType": "County",
+      "googleName": "Moore County"
+    },
+    "9059577": {
+      "countySlug": "morris-county",
+      "countyName": "Morris",
+      "targetType": "County",
+      "googleName": "Morris County"
+    },
+    "9059578": {
+      "countySlug": "motley-county",
+      "countyName": "Motley",
+      "targetType": "County",
+      "googleName": "Motley County"
+    },
+    "9059579": {
+      "countySlug": "nacogdoches-county",
+      "countyName": "Nacogdoches",
+      "targetType": "County",
+      "googleName": "Nacogdoches County"
+    },
+    "9059580": {
+      "countySlug": "navarro-county",
+      "countyName": "Navarro",
+      "targetType": "County",
+      "googleName": "Navarro County"
+    },
+    "9059581": {
+      "countySlug": "newton-county",
+      "countyName": "Newton",
+      "targetType": "County",
+      "googleName": "Newton County"
+    },
+    "9059582": {
+      "countySlug": "nolan-county",
+      "countyName": "Nolan",
+      "targetType": "County",
+      "googleName": "Nolan County"
+    },
+    "9059583": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "County",
+      "googleName": "Nueces County"
+    },
+    "9059584": {
+      "countySlug": "ochiltree-county",
+      "countyName": "Ochiltree",
+      "targetType": "County",
+      "googleName": "Ochiltree County"
+    },
+    "9059585": {
+      "countySlug": "oldham-county",
+      "countyName": "Oldham",
+      "targetType": "County",
+      "googleName": "Oldham County"
+    },
+    "9059586": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "County",
+      "googleName": "Orange County"
+    },
+    "9059587": {
+      "countySlug": "palo-pinto-county",
+      "countyName": "Palo Pinto",
+      "targetType": "County",
+      "googleName": "Palo Pinto County"
+    },
+    "9059588": {
+      "countySlug": "panola-county",
+      "countyName": "Panola",
+      "targetType": "County",
+      "googleName": "Panola County"
+    },
+    "9059589": {
+      "countySlug": "parmer-county",
+      "countyName": "Parmer",
+      "targetType": "County",
+      "googleName": "Parmer County"
+    },
+    "9059590": {
+      "countySlug": "pecos-county",
+      "countyName": "Pecos",
+      "targetType": "County",
+      "googleName": "Pecos County"
+    },
+    "9059591": {
+      "countySlug": "polk-county",
+      "countyName": "Polk",
+      "targetType": "County",
+      "googleName": "Polk County"
+    },
+    "9059592": {
+      "countySlug": "presidio-county",
+      "countyName": "Presidio",
+      "targetType": "County",
+      "googleName": "Presidio County"
+    },
+    "9059593": {
+      "countySlug": "rains-county",
+      "countyName": "Rains",
+      "targetType": "County",
+      "googleName": "Rains County"
+    },
+    "9059594": {
+      "countySlug": "randall-county",
+      "countyName": "Randall",
+      "targetType": "County",
+      "googleName": "Randall County"
+    },
+    "9059595": {
+      "countySlug": "reagan-county",
+      "countyName": "Reagan",
+      "targetType": "County",
+      "googleName": "Reagan County"
+    },
+    "9059596": {
+      "countySlug": "real-county",
+      "countyName": "Real",
+      "targetType": "County",
+      "googleName": "Real County"
+    },
+    "9059597": {
+      "countySlug": "red-river-county",
+      "countyName": "Red River",
+      "targetType": "County",
+      "googleName": "Red River County"
+    },
+    "9059598": {
+      "countySlug": "reeves-county",
+      "countyName": "Reeves",
+      "targetType": "County",
+      "googleName": "Reeves County"
+    },
+    "9059599": {
+      "countySlug": "refugio-county",
+      "countyName": "Refugio",
+      "targetType": "County",
+      "googleName": "Refugio County"
+    },
+    "9059600": {
+      "countySlug": "roberts-county",
+      "countyName": "Roberts",
+      "targetType": "County",
+      "googleName": "Roberts County"
+    },
+    "9059601": {
+      "countySlug": "robertson-county",
+      "countyName": "Robertson",
+      "targetType": "County",
+      "googleName": "Robertson County"
+    },
+    "9059602": {
+      "countySlug": "rockwall-county",
+      "countyName": "Rockwall",
+      "targetType": "County",
+      "googleName": "Rockwall County"
+    },
+    "9059603": {
+      "countySlug": "runnels-county",
+      "countyName": "Runnels",
+      "targetType": "County",
+      "googleName": "Runnels County"
+    },
+    "9059604": {
+      "countySlug": "rusk-county",
+      "countyName": "Rusk",
+      "targetType": "County",
+      "googleName": "Rusk County"
+    },
+    "9059605": {
+      "countySlug": "sabine-county",
+      "countyName": "Sabine",
+      "targetType": "County",
+      "googleName": "Sabine County"
+    },
+    "9059606": {
+      "countySlug": "san-augustine-county",
+      "countyName": "San Augustine",
+      "targetType": "County",
+      "googleName": "San Augustine County"
+    },
+    "9059607": {
+      "countySlug": "san-jacinto-county",
+      "countyName": "San Jacinto",
+      "targetType": "County",
+      "googleName": "San Jacinto County"
+    },
+    "9059608": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "County",
+      "googleName": "San Patricio County"
+    },
+    "9059609": {
+      "countySlug": "san-saba-county",
+      "countyName": "San Saba",
+      "targetType": "County",
+      "googleName": "San Saba County"
+    },
+    "9059610": {
+      "countySlug": "schleicher-county",
+      "countyName": "Schleicher",
+      "targetType": "County",
+      "googleName": "Schleicher County"
+    },
+    "9059611": {
+      "countySlug": "scurry-county",
+      "countyName": "Scurry",
+      "targetType": "County",
+      "googleName": "Scurry County"
+    },
+    "9059612": {
+      "countySlug": "shackelford-county",
+      "countyName": "Shackelford",
+      "targetType": "County",
+      "googleName": "Shackelford County"
+    },
+    "9059613": {
+      "countySlug": "shelby-county",
+      "countyName": "Shelby",
+      "targetType": "County",
+      "googleName": "Shelby County"
+    },
+    "9059614": {
+      "countySlug": "sherman-county",
+      "countyName": "Sherman",
+      "targetType": "County",
+      "googleName": "Sherman County"
+    },
+    "9059615": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "County",
+      "googleName": "Smith County"
+    },
+    "9059616": {
+      "countySlug": "somervell-county",
+      "countyName": "Somervell",
+      "targetType": "County",
+      "googleName": "Somervell County"
+    },
+    "9059617": {
+      "countySlug": "starr-county",
+      "countyName": "Starr",
+      "targetType": "County",
+      "googleName": "Starr County"
+    },
+    "9059618": {
+      "countySlug": "stephens-county",
+      "countyName": "Stephens",
+      "targetType": "County",
+      "googleName": "Stephens County"
+    },
+    "9059619": {
+      "countySlug": "sterling-county",
+      "countyName": "Sterling",
+      "targetType": "County",
+      "googleName": "Sterling County"
+    },
+    "9059620": {
+      "countySlug": "stonewall-county",
+      "countyName": "Stonewall",
+      "targetType": "County",
+      "googleName": "Stonewall County"
+    },
+    "9059621": {
+      "countySlug": "sutton-county",
+      "countyName": "Sutton",
+      "targetType": "County",
+      "googleName": "Sutton County"
+    },
+    "9059622": {
+      "countySlug": "swisher-county",
+      "countyName": "Swisher",
+      "targetType": "County",
+      "googleName": "Swisher County"
+    },
+    "9059623": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "County",
+      "googleName": "Tarrant County"
+    },
+    "9059624": {
+      "countySlug": "taylor-county",
+      "countyName": "Taylor",
+      "targetType": "County",
+      "googleName": "Taylor County"
+    },
+    "9059625": {
+      "countySlug": "terrell-county",
+      "countyName": "Terrell",
+      "targetType": "County",
+      "googleName": "Terrell County"
+    },
+    "9059626": {
+      "countySlug": "terry-county",
+      "countyName": "Terry",
+      "targetType": "County",
+      "googleName": "Terry County"
+    },
+    "9059627": {
+      "countySlug": "throckmorton-county",
+      "countyName": "Throckmorton",
+      "targetType": "County",
+      "googleName": "Throckmorton County"
+    },
+    "9059628": {
+      "countySlug": "titus-county",
+      "countyName": "Titus",
+      "targetType": "County",
+      "googleName": "Titus County"
+    },
+    "9059629": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "County",
+      "googleName": "Travis County"
+    },
+    "9059630": {
+      "countySlug": "trinity-county",
+      "countyName": "Trinity",
+      "targetType": "County",
+      "googleName": "Trinity County"
+    },
+    "9059631": {
+      "countySlug": "tyler-county",
+      "countyName": "Tyler",
+      "targetType": "County",
+      "googleName": "Tyler County"
+    },
+    "9059632": {
+      "countySlug": "upshur-county",
+      "countyName": "Upshur",
+      "targetType": "County",
+      "googleName": "Upshur County"
+    },
+    "9059633": {
+      "countySlug": "upton-county",
+      "countyName": "Upton",
+      "targetType": "County",
+      "googleName": "Upton County"
+    },
+    "9059634": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "County",
+      "googleName": "Uvalde County"
+    },
+    "9059635": {
+      "countySlug": "val-verde-county",
+      "countyName": "Val Verde",
+      "targetType": "County",
+      "googleName": "Val Verde County"
+    },
+    "9059636": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "County",
+      "googleName": "Van Zandt County"
+    },
+    "9059637": {
+      "countySlug": "victoria-county",
+      "countyName": "Victoria",
+      "targetType": "County",
+      "googleName": "Victoria County"
+    },
+    "9059638": {
+      "countySlug": "walker-county",
+      "countyName": "Walker",
+      "targetType": "County",
+      "googleName": "Walker County"
+    },
+    "9059639": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "County",
+      "googleName": "Waller County"
+    },
+    "9059640": {
+      "countySlug": "ward-county",
+      "countyName": "Ward",
+      "targetType": "County",
+      "googleName": "Ward County"
+    },
+    "9059641": {
+      "countySlug": "washington-county",
+      "countyName": "Washington",
+      "targetType": "County",
+      "googleName": "Washington County"
+    },
+    "9059642": {
+      "countySlug": "webb-county",
+      "countyName": "Webb",
+      "targetType": "County",
+      "googleName": "Webb County"
+    },
+    "9059643": {
+      "countySlug": "wharton-county",
+      "countyName": "Wharton",
+      "targetType": "County",
+      "googleName": "Wharton County"
+    },
+    "9059644": {
+      "countySlug": "wheeler-county",
+      "countyName": "Wheeler",
+      "targetType": "County",
+      "googleName": "Wheeler County"
+    },
+    "9059645": {
+      "countySlug": "wichita-county",
+      "countyName": "Wichita",
+      "targetType": "County",
+      "googleName": "Wichita County"
+    },
+    "9059646": {
+      "countySlug": "wilbarger-county",
+      "countyName": "Wilbarger",
+      "targetType": "County",
+      "googleName": "Wilbarger County"
+    },
+    "9059647": {
+      "countySlug": "willacy-county",
+      "countyName": "Willacy",
+      "targetType": "County",
+      "googleName": "Willacy County"
+    },
+    "9059648": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "County",
+      "googleName": "Williamson County"
+    },
+    "9059649": {
+      "countySlug": "wilson-county",
+      "countyName": "Wilson",
+      "targetType": "County",
+      "googleName": "Wilson County"
+    },
+    "9059650": {
+      "countySlug": "winkler-county",
+      "countyName": "Winkler",
+      "targetType": "County",
+      "googleName": "Winkler County"
+    },
+    "9059651": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "County",
+      "googleName": "Wise County"
+    },
+    "9059652": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "County",
+      "googleName": "Wood County"
+    },
+    "9059653": {
+      "countySlug": "yoakum-county",
+      "countyName": "Yoakum",
+      "targetType": "County",
+      "googleName": "Yoakum County"
+    },
+    "9059654": {
+      "countySlug": "young-county",
+      "countyName": "Young",
+      "targetType": "County",
+      "googleName": "Young County"
+    },
+    "9059655": {
+      "countySlug": "zapata-county",
+      "countyName": "Zapata",
+      "targetType": "County",
+      "googleName": "Zapata County"
+    },
+    "9059656": {
+      "countySlug": "zavala-county",
+      "countyName": "Zavala",
+      "targetType": "County",
+      "googleName": "Zavala County"
+    },
+    "9175440": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Gun Barrel City"
+    },
+    "9189217": {
+      "countySlug": "dallas-county",
+      "countyName": "Dallas",
+      "targetType": "City",
+      "googleName": "Wilmer"
+    },
+    "9189231": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Jarrell"
+    },
+    "9189353": {
+      "countySlug": "san-jacinto-county",
+      "countyName": "San Jacinto",
+      "targetType": "City",
+      "googleName": "Shepherd"
+    },
+    "9189682": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Boyd"
+    },
+    "9189830": {
+      "countySlug": "rockwall-county",
+      "countyName": "Rockwall",
+      "targetType": "City",
+      "googleName": "Heath"
+    },
+    "9189965": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Leon Valley"
+    },
+    "9190420": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "City",
+      "googleName": "Pinehurst"
+    },
+    "9190457": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "River Oaks"
+    },
+    "9190508": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Rhome"
+    },
+    "9190659": {
+      "countySlug": "brazoria-county",
+      "countyName": "Brazoria",
+      "targetType": "City",
+      "googleName": "Sweeny"
+    },
+    "9190819": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Barrett"
+    },
+    "9190977": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Alton"
+    },
+    "9191133": {
+      "countySlug": "lamar-county",
+      "countyName": "Lamar",
+      "targetType": "City",
+      "googleName": "Reno"
+    },
+    "9191175": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Bellmead"
+    },
+    "9191430": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "San Leon"
+    },
+    "9191571": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "West"
+    },
+    "9191587": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Everman"
+    },
+    "9191872": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Hollywood Park"
+    },
+    "9191893": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Jonestown"
+    },
+    "9192027": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Castle Hills"
+    },
+    "9192330": {
+      "countySlug": "brown-county",
+      "countyName": "Brown",
+      "targetType": "City",
+      "googleName": "Early"
+    },
+    "9192704": {
+      "countySlug": "montgomery-county",
+      "countyName": "Montgomery",
+      "targetType": "City",
+      "googleName": "Cut and Shoot"
+    },
+    "9192806": {
+      "countySlug": "cameron-county",
+      "countyName": "Cameron",
+      "targetType": "City",
+      "googleName": "La Feria"
+    },
+    "9192870": {
+      "countySlug": "orange-county",
+      "countyName": "Orange",
+      "targetType": "City",
+      "googleName": "West Orange"
+    },
+    "9192887": {
+      "countySlug": "llano-county",
+      "countyName": "Llano",
+      "targetType": "City",
+      "googleName": "Buchanan Dam"
+    },
+    "9193042": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "Richland Hills"
+    },
+    "9193747": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Fort Sam Houston"
+    },
+    "9193918": {
+      "countySlug": "hardin-county",
+      "countyName": "Hardin",
+      "targetType": "City",
+      "googleName": "Kountze"
+    },
+    "9193958": {
+      "countySlug": "comal-county",
+      "countyName": "Comal",
+      "targetType": "City",
+      "googleName": "Spring Branch"
+    },
+    "9194010": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Kirby"
+    },
+    "9194081": {
+      "countySlug": "harris-county",
+      "countyName": "Harris",
+      "targetType": "City",
+      "googleName": "Jacinto City"
+    },
+    "9194199": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "City",
+      "googleName": "Selma"
+    },
+    "9194229": {
+      "countySlug": "rockwall-county",
+      "countyName": "Rockwall",
+      "targetType": "City",
+      "googleName": "Fate"
+    },
+    "9194444": {
+      "countySlug": "ellis-county",
+      "countyName": "Ellis",
+      "targetType": "City",
+      "googleName": "Ovilla"
+    },
+    "9194877": {
+      "countySlug": "bell-county",
+      "countyName": "Bell",
+      "targetType": "City",
+      "googleName": "Nolanville"
+    },
+    "9195005": {
+      "countySlug": "tarrant-county",
+      "countyName": "Tarrant",
+      "targetType": "City",
+      "googleName": "White Settlement"
+    },
+    "9195175": {
+      "countySlug": "galveston-county",
+      "countyName": "Galveston",
+      "targetType": "City",
+      "googleName": "Bacliff"
+    },
+    "9195230": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "City",
+      "googleName": "Reno"
+    },
+    "9195390": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Van"
+    },
+    "9195542": {
+      "countySlug": "chambers-county",
+      "countyName": "Chambers",
+      "targetType": "City",
+      "googleName": "Winnie"
+    },
+    "9207515": {
+      "countySlug": "colorado-county",
+      "countyName": "Colorado",
+      "targetType": "City",
+      "googleName": "Weimar"
+    },
+    "9207834": {
+      "countySlug": "taylor-county",
+      "countyName": "Taylor",
+      "targetType": "City",
+      "googleName": "Buffalo Gap"
+    },
+    "9208082": {
+      "countySlug": "collin-county",
+      "countyName": "Collin",
+      "targetType": "City",
+      "googleName": "Josephine"
+    },
+    "9208094": {
+      "countySlug": "travis-county",
+      "countyName": "Travis",
+      "targetType": "City",
+      "googleName": "Creedmoor"
+    },
+    "9209826": {
+      "countySlug": "archer-county",
+      "countyName": "Archer",
+      "targetType": "City",
+      "googleName": "Holliday"
+    },
+    "9210100": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Von Ormy"
+    },
+    "9210266": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Edgewood"
+    },
+    "9210550": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "La Blanca"
+    },
+    "9211407": {
+      "countySlug": "freestone-county",
+      "countyName": "Freestone",
+      "targetType": "City",
+      "googleName": "Teague"
+    },
+    "9211750": {
+      "countySlug": "anderson-county",
+      "countyName": "Anderson",
+      "targetType": "City",
+      "googleName": "Frankston"
+    },
+    "9212084": {
+      "countySlug": "aransas-county",
+      "countyName": "Aransas",
+      "targetType": "City",
+      "googleName": "Fulton"
+    },
+    "9212555": {
+      "countySlug": "victoria-county",
+      "countyName": "Victoria",
+      "targetType": "City",
+      "googleName": "Inez"
+    },
+    "9213006": {
+      "countySlug": "montague-county",
+      "countyName": "Montague",
+      "targetType": "City",
+      "googleName": "Nocona"
+    },
+    "9213171": {
+      "countySlug": "bexar-county",
+      "countyName": "Bexar",
+      "targetType": "City",
+      "googleName": "Shavano Park"
+    },
+    "9213183": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Penitas"
+    },
+    "9213697": {
+      "countySlug": "mclennan-county",
+      "countyName": "McLennan",
+      "targetType": "City",
+      "googleName": "Riesel"
+    },
+    "9214015": {
+      "countySlug": "wood-county",
+      "countyName": "Wood",
+      "targetType": "City",
+      "googleName": "Yantis"
+    },
+    "9214922": {
+      "countySlug": "burleson-county",
+      "countyName": "Burleson",
+      "targetType": "City",
+      "googleName": "Somerville"
+    },
+    "9214985": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Seven Points"
+    },
+    "9215176": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "De Kalb"
+    },
+    "9215899": {
+      "countySlug": "hood-county",
+      "countyName": "Hood",
+      "targetType": "City",
+      "googleName": "Cresson"
+    },
+    "9216318": {
+      "countySlug": "lampasas-county",
+      "countyName": "Lampasas",
+      "targetType": "City",
+      "googleName": "Kempner"
+    },
+    "9216558": {
+      "countySlug": "lee-county",
+      "countyName": "Lee",
+      "targetType": "City",
+      "googleName": "Lexington"
+    },
+    "9217261": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Grand Saline"
+    },
+    "9218072": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Sullivan City"
+    },
+    "9218483": {
+      "countySlug": "austin-county",
+      "countyName": "Austin",
+      "targetType": "City",
+      "googleName": "San Felipe"
+    },
+    "9218522": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "City",
+      "googleName": "Troup"
+    },
+    "9219310": {
+      "countySlug": "waller-county",
+      "countyName": "Waller",
+      "targetType": "City",
+      "googleName": "Pattison"
+    },
+    "9219519": {
+      "countySlug": "erath-county",
+      "countyName": "Erath",
+      "targetType": "City",
+      "googleName": "Dublin"
+    },
+    "9219902": {
+      "countySlug": "montague-county",
+      "countyName": "Montague",
+      "targetType": "City",
+      "googleName": "Sunset"
+    },
+    "9221494": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Eustace"
+    },
+    "9221563": {
+      "countySlug": "hays-county",
+      "countyName": "Hays",
+      "targetType": "City",
+      "googleName": "Uhland"
+    },
+    "9221953": {
+      "countySlug": "walker-county",
+      "countyName": "Walker",
+      "targetType": "City",
+      "googleName": "Riverside"
+    },
+    "9221958": {
+      "countySlug": "fort-bend-county",
+      "countyName": "Fort Bend",
+      "targetType": "City",
+      "googleName": "Simonton"
+    },
+    "9222150": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Edom"
+    },
+    "9222186": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "Nash"
+    },
+    "9222197": {
+      "countySlug": "duval-county",
+      "countyName": "Duval",
+      "targetType": "City",
+      "googleName": "Freer"
+    },
+    "9222708": {
+      "countySlug": "jasper-county",
+      "countyName": "Jasper",
+      "targetType": "City",
+      "googleName": "Evadale"
+    },
+    "9222983": {
+      "countySlug": "caldwell-county",
+      "countyName": "Caldwell",
+      "targetType": "City",
+      "googleName": "Martindale"
+    },
+    "9223513": {
+      "countySlug": "san-patricio-county",
+      "countyName": "San Patricio",
+      "targetType": "City",
+      "googleName": "Taft"
+    },
+    "9223552": {
+      "countySlug": "leon-county",
+      "countyName": "Leon",
+      "targetType": "City",
+      "googleName": "Jewett"
+    },
+    "9224880": {
+      "countySlug": "bee-county",
+      "countyName": "Bee",
+      "targetType": "City",
+      "googleName": "Skidmore"
+    },
+    "9227183": {
+      "countySlug": "fisher-county",
+      "countyName": "Fisher",
+      "targetType": "City",
+      "googleName": "Rotan"
+    },
+    "9229295": {
+      "countySlug": "morris-county",
+      "countyName": "Morris",
+      "targetType": "City",
+      "googleName": "Naples"
+    },
+    "9230759": {
+      "countySlug": "rusk-county",
+      "countyName": "Rusk",
+      "targetType": "City",
+      "googleName": "Tatum"
+    },
+    "9231783": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Chico"
+    },
+    "9232054": {
+      "countySlug": "henderson-county",
+      "countyName": "Henderson",
+      "targetType": "City",
+      "googleName": "Murchison"
+    },
+    "9232289": {
+      "countySlug": "floyd-county",
+      "countyName": "Floyd",
+      "targetType": "City",
+      "googleName": "Lockney"
+    },
+    "9233164": {
+      "countySlug": "uvalde-county",
+      "countyName": "Uvalde",
+      "targetType": "City",
+      "googleName": "Concan"
+    },
+    "9233196": {
+      "countySlug": "jefferson-county",
+      "countyName": "Jefferson",
+      "targetType": "City",
+      "googleName": "China"
+    },
+    "9234005": {
+      "countySlug": "trinity-county",
+      "countyName": "Trinity",
+      "targetType": "City",
+      "googleName": "Groveton"
+    },
+    "9234285": {
+      "countySlug": "gonzales-county",
+      "countyName": "Gonzales",
+      "targetType": "City",
+      "googleName": "Waelder"
+    },
+    "9235033": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "City",
+      "googleName": "Arp"
+    },
+    "9235269": {
+      "countySlug": "sabine-county",
+      "countyName": "Sabine",
+      "targetType": "City",
+      "googleName": "Pineland"
+    },
+    "9236720": {
+      "countySlug": "lamar-county",
+      "countyName": "Lamar",
+      "targetType": "City",
+      "googleName": "Powderly"
+    },
+    "9236889": {
+      "countySlug": "dewitt-county",
+      "countyName": "DeWitt",
+      "targetType": "City",
+      "googleName": "Yorktown"
+    },
+    "9238873": {
+      "countySlug": "parmer-county",
+      "countyName": "Parmer",
+      "targetType": "City",
+      "googleName": "Bovina"
+    },
+    "9239461": {
+      "countySlug": "freestone-county",
+      "countyName": "Freestone",
+      "targetType": "City",
+      "googleName": "Wortham"
+    },
+    "9239938": {
+      "countySlug": "washington-county",
+      "countyName": "Washington",
+      "targetType": "City",
+      "googleName": "Burton"
+    },
+    "9239992": {
+      "countySlug": "moore-county",
+      "countyName": "Moore",
+      "targetType": "City",
+      "googleName": "Cactus"
+    },
+    "9241306": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "Leary"
+    },
+    "9242461": {
+      "countySlug": "winkler-county",
+      "countyName": "Winkler",
+      "targetType": "City",
+      "googleName": "Wink"
+    },
+    "9243765": {
+      "countySlug": "frio-county",
+      "countyName": "Frio",
+      "targetType": "City",
+      "googleName": "Bigfoot"
+    },
+    "9244747": {
+      "countySlug": "guadalupe-county",
+      "countyName": "Guadalupe",
+      "targetType": "City",
+      "googleName": "Kingsbury"
+    },
+    "9244903": {
+      "countySlug": "grayson-county",
+      "countyName": "Grayson",
+      "targetType": "City",
+      "googleName": "Southmayd"
+    },
+    "9244981": {
+      "countySlug": "tyler-county",
+      "countyName": "Tyler",
+      "targetType": "City",
+      "googleName": "Ivanhoe"
+    },
+    "9245529": {
+      "countySlug": "angelina-county",
+      "countyName": "Angelina",
+      "targetType": "City",
+      "googleName": "Zavalla"
+    },
+    "9245913": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Monte Alto"
+    },
+    "9246501": {
+      "countySlug": "van-zandt-county",
+      "countyName": "Van Zandt",
+      "targetType": "City",
+      "googleName": "Fruitvale"
+    },
+    "9246677": {
+      "countySlug": "smith-county",
+      "countyName": "Smith",
+      "targetType": "City",
+      "googleName": "Winona"
+    },
+    "9246814": {
+      "countySlug": "rusk-county",
+      "countyName": "Rusk",
+      "targetType": "City",
+      "googleName": "Mount Enterprise"
+    },
+    "9248419": {
+      "countySlug": "gregg-county",
+      "countyName": "Gregg",
+      "targetType": "City",
+      "googleName": "Clarksville City"
+    },
+    "9248496": {
+      "countySlug": "jones-county",
+      "countyName": "Jones",
+      "targetType": "City",
+      "googleName": "Hawley"
+    },
+    "9249461": {
+      "countySlug": "runnels-county",
+      "countyName": "Runnels",
+      "targetType": "City",
+      "googleName": "Winters"
+    },
+    "9249536": {
+      "countySlug": "brown-county",
+      "countyName": "Brown",
+      "targetType": "City",
+      "googleName": "Bangs"
+    },
+    "9250376": {
+      "countySlug": "bowie-county",
+      "countyName": "Bowie",
+      "targetType": "City",
+      "googleName": "Redwater"
+    },
+    "9251576": {
+      "countySlug": "lamb-county",
+      "countyName": "Lamb",
+      "targetType": "City",
+      "googleName": "Olton"
+    },
+    "9251671": {
+      "countySlug": "parker-county",
+      "countyName": "Parker",
+      "targetType": "City",
+      "googleName": "Millsap"
+    },
+    "9252429": {
+      "countySlug": "red-river-county",
+      "countyName": "Red River",
+      "targetType": "City",
+      "googleName": "Bogata"
+    },
+    "9253630": {
+      "countySlug": "nueces-county",
+      "countyName": "Nueces",
+      "targetType": "City",
+      "googleName": "Agua Dulce"
+    },
+    "9253975": {
+      "countySlug": "callahan-county",
+      "countyName": "Callahan",
+      "targetType": "City",
+      "googleName": "Cross Plains"
+    },
+    "9255272": {
+      "countySlug": "lamar-county",
+      "countyName": "Lamar",
+      "targetType": "City",
+      "googleName": "Blossom"
+    },
+    "9255747": {
+      "countySlug": "armstrong-county",
+      "countyName": "Armstrong",
+      "targetType": "City",
+      "googleName": "Claude"
+    },
+    "9256743": {
+      "countySlug": "jones-county",
+      "countyName": "Jones",
+      "targetType": "City",
+      "googleName": "Hamlin"
+    },
+    "9258568": {
+      "countySlug": "wise-county",
+      "countyName": "Wise",
+      "targetType": "City",
+      "googleName": "Alvord"
+    },
+    "9259140": {
+      "countySlug": "williamson-county",
+      "countyName": "Williamson",
+      "targetType": "City",
+      "googleName": "Coupland"
+    },
+    "9259599": {
+      "countySlug": "fayette-county",
+      "countyName": "Fayette",
+      "targetType": "City",
+      "googleName": "Carmine"
+    },
+    "9260656": {
+      "countySlug": "nolan-county",
+      "countyName": "Nolan",
+      "targetType": "City",
+      "googleName": "Roscoe"
+    },
+    "9260817": {
+      "countySlug": "cooke-county",
+      "countyName": "Cooke",
+      "targetType": "City",
+      "googleName": "Lake Kiowa"
+    },
+    "9262232": {
+      "countySlug": "morris-county",
+      "countyName": "Morris",
+      "targetType": "City",
+      "googleName": "Omaha"
+    },
+    "9262470": {
+      "countySlug": "hidalgo-county",
+      "countyName": "Hidalgo",
+      "targetType": "City",
+      "googleName": "Linn"
+    }
+  }
+}

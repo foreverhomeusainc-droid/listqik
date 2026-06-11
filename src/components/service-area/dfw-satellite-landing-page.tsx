@@ -1,32 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
-import { LocationSeoJsonLd } from "@/components/service-area/location-seo-json-ld";
-import {
-  formatCityListForCopy,
-  getCountyHeroContent,
-  getCountyHowItWorksSteps,
-  getCountyLandingCopy,
-  prominentCountyCityNames,
-} from "@/i18n/county-landing-copy";
+import { getDfwSatelliteCopy } from "@/i18n/dfw-satellite-copy";
 import type { HomeLocale } from "@/i18n/home-locale";
-import { getTexasLocationCopy, localizedCoverageLabel } from "@/i18n/texas-location-copy";
-import { locationAlternates } from "@/lib/locale-metadata";
+import { getTexasLocationCopy } from "@/i18n/texas-location-copy";
+import { DFW_SATELLITE_LANDING_PATH, getDfwSatelliteCountyLinks } from "@/lib/dfw-satellite-campaign";
+import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 import { localeSitePath } from "@/lib/locale-site-path";
-import {
-  cityPagePath,
-  countyCoverageTier,
-  countyPagePath,
-  countySeoDescription,
-  countySeoTitle,
-  formatTexasLocationDisplayName,
-  getCountyBySlug,
-  isActiveListQikCounty,
-  texasIndexPath,
-} from "@/lib/texas-location-seo";
+import { formatTexasLocationDisplayName, texasIndexPath } from "@/lib/texas-location-seo";
 
 function StartListingButton({
   locale,
@@ -60,70 +43,21 @@ function SectionHeading({ children }: { children: ReactNode }) {
   );
 }
 
-export async function generateTexasCountyMetadata(
-  locale: HomeLocale,
-  params: Promise<{ countySlug: string }>,
-): Promise<Metadata> {
-  const { countySlug } = await params;
-  const county = getCountyBySlug(countySlug);
-  if (!county) return {};
-
-  const tier = countyCoverageTier(county.county);
-  const enPath = countyPagePath(countySlug, "en");
-  const title = countySeoTitle(county.county, tier, locale);
-  const description = countySeoDescription(county.county, tier, county.cities.length, locale);
-  const hreflang = locationAlternates(enPath);
-
-  return {
-    title,
-    description,
-    alternates: {
-      ...hreflang,
-      canonical: countyPagePath(countySlug, locale),
-    },
-    openGraph: { title, description },
-  };
+export function dfwSatelliteMetadata(locale: HomeLocale): Metadata {
+  const copy = getDfwSatelliteCopy(locale);
+  return buildLocalizedMetadata(locale, DFW_SATELLITE_LANDING_PATH, {
+    title: copy.metaTitle,
+    description: copy.metaDescription,
+  });
 }
 
-export async function TexasCountyLocationPage({
-  locale,
-  params,
-}: {
-  locale: HomeLocale;
-  params: Promise<{ countySlug: string }>;
-}) {
-  const { countySlug } = await params;
-  const county = getCountyBySlug(countySlug);
-  if (!county) notFound();
-
+export function DfwSatelliteLandingPage({ locale }: { locale: HomeLocale }) {
+  const copy = getDfwSatelliteCopy(locale);
   const nav = getTexasLocationCopy(locale);
-  const copy = getCountyLandingCopy(locale);
-  const tier = countyCoverageTier(county.county);
-  const active = isActiveListQikCounty(county.county);
-  const hero = getCountyHeroContent(tier, county.county, locale);
-  const howItWorks = getCountyHowItWorksSteps(tier, locale);
-  const prominentCities = prominentCountyCityNames(county.cities);
-  const cityListText = formatCityListForCopy(prominentCities, locale);
-  const title = countySeoTitle(county.county, tier, locale);
-  const description = countySeoDescription(county.county, tier, county.cities.length, locale);
-  const path = countyPagePath(countySlug, locale);
+  const counties = getDfwSatelliteCountyLinks(locale);
 
   return (
     <div>
-      <LocationSeoJsonLd
-        pageTitle={title}
-        pageDescription={description}
-        canonicalPath={path}
-        countyName={county.county}
-        breadcrumbs={[
-          { name: nav.breadcrumbHome, path: localeSitePath("/", locale) },
-          { name: nav.breadcrumbServiceArea, path: localeSitePath("/service-area", locale) },
-          { name: nav.breadcrumbTexas, path: texasIndexPath(locale) },
-          { name: nav.countyLinkLabel(county.county), path },
-        ]}
-      />
-
-      {/* Above the fold — Quality Score hero */}
       <section className="relative overflow-hidden border-b border-emerald-500/25 bg-gradient-to-br from-emerald-950 via-black to-black">
         <div
           aria-hidden
@@ -132,17 +66,17 @@ export async function TexasCountyLocationPage({
         <Container className="relative py-10 sm:py-14 lg:py-16">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold tracking-[0.18em] text-emerald-300/95 sm:text-sm">
-              {hero.heroEyebrow}
+              {copy.heroEyebrow}
             </p>
             <h1 className="mt-3 text-3xl font-semibold leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.65rem]">
-              {hero.heroTitle}
+              {copy.heroTitle}
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-emerald-50/90 sm:text-lg">{hero.heroSubtitle}</p>
+            <p className="mt-4 text-base leading-relaxed text-emerald-50/90 sm:text-lg">{copy.heroSubtitle}</p>
 
             <div className="mt-6 flex flex-col items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-950/50 px-4 py-2 text-xs font-semibold tracking-wide text-emerald-100 sm:text-sm">
                 <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" />
-                {hero.mlsTrustBadge}
+                {copy.mlsTrustBadge}
               </span>
               <StartListingButton locale={locale} label={copy.startYourListing} size="large" />
             </div>
@@ -152,37 +86,33 @@ export async function TexasCountyLocationPage({
         </Container>
       </section>
 
-      {/* Local proof */}
       <section className="border-b border-white/10 bg-black/30 py-10 sm:py-12">
         <Container>
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-lg font-semibold text-emerald-100 sm:text-xl">
-              {copy.localProofTitle(county.county)}
-            </h2>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
-              {prominentCities.length >= 2
-                ? copy.localProofBody(county.county, cityListText)
-                : copy.localProofFallback(county.county)}
-            </p>
-            {prominentCities.length > 0 ? (
-              <p className="mt-4 text-sm font-medium text-emerald-200/90">
-                {prominentCities.join(" · ")}
-                {county.cities.length > prominentCities.length
-                  ? ` · +${county.cities.length - prominentCities.length} more`
-                  : null}
-              </p>
-            ) : null}
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-lg font-semibold text-emerald-100 sm:text-xl">{copy.countiesTitle}</h2>
+            <p className="mt-3 text-base leading-relaxed text-white/75">{copy.countiesIntro}</p>
+            <ul className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3">
+              {counties.map((county) => (
+                <li key={county.countySlug}>
+                  <Link
+                    href={county.path}
+                    className="inline-flex rounded-full border border-emerald-500/25 bg-emerald-950/20 px-4 py-2 text-sm text-emerald-100 transition hover:border-emerald-400/40 hover:bg-emerald-900/30"
+                  >
+                    {formatTexasLocationDisplayName(county.countyName)} County
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
       </section>
 
-      {/* How it works — 3 steps */}
       <section className="py-12 sm:py-14">
         <Container>
           <div className="mx-auto max-w-5xl">
             <SectionHeading>{copy.howItWorksTitle}</SectionHeading>
             <ol className="mt-8 grid gap-4 sm:grid-cols-3">
-              {howItWorks.map((step, index) => (
+              {copy.howItWorksSteps.map((step, index) => (
                 <li
                   key={step.title}
                   className="glass-surface flex h-full flex-col rounded-2xl border border-emerald-500/20 p-6 text-center"
@@ -199,7 +129,6 @@ export async function TexasCountyLocationPage({
         </Container>
       </section>
 
-      {/* Pricing transparency */}
       <section className="border-y border-white/10 bg-black/20 py-12 sm:py-14">
         <Container>
           <div className="mx-auto max-w-4xl">
@@ -239,22 +168,6 @@ export async function TexasCountyLocationPage({
         </Container>
       </section>
 
-      {/* Coverage info */}
-      <section className="bg-gradient-to-br from-emerald-950/80 via-emerald-900/40 to-black py-12 sm:py-14">
-        <Container>
-          <div className="mx-auto max-w-3xl space-y-4 text-center">
-            <p className="text-xs font-semibold tracking-widest text-emerald-300/80">
-              {localizedCoverageLabel(tier, locale).toUpperCase()}
-            </p>
-            <h2 className="text-2xl font-semibold text-white sm:text-3xl">{copy.infoTitle(county.county)}</h2>
-            <p className="text-base leading-relaxed text-emerald-50/85 sm:text-lg">
-              {active ? copy.infoActive(county.county) : copy.infoInactive(county.county)}
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      {/* MLS portals */}
       <section className="border-b border-white/10 py-10 sm:py-12">
         <Container>
           <div className="mx-auto max-w-4xl text-center">
@@ -273,67 +186,25 @@ export async function TexasCountyLocationPage({
         </Container>
       </section>
 
-      {/* Property types + FAQ */}
       <section className="py-12 sm:py-14">
         <Container>
-          <div className="mx-auto max-w-5xl space-y-14">
-            <div>
-              <SectionHeading>{copy.propertyTypesTitle}</SectionHeading>
-              <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {copy.propertyTypes.map((type) => (
-                  <li
-                    key={type}
-                    className="flex min-h-[3.5rem] items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 text-center text-sm font-medium leading-snug text-emerald-100/90"
-                  >
-                    {type}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <SectionHeading>{copy.faqTitle}</SectionHeading>
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {copy.faqItems.map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex h-full flex-col rounded-xl border border-white/10 bg-black/25 p-5"
-                  >
-                    <h3 className="text-sm font-semibold text-emerald-100 sm:text-base">{item.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-white/65">{item.body}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="mx-auto max-w-5xl">
+            <SectionHeading>{copy.faqTitle}</SectionHeading>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {copy.faqItems.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex h-full flex-col rounded-xl border border-white/10 bg-black/25 p-5"
+                >
+                  <h3 className="text-sm font-semibold text-emerald-100 sm:text-base">{item.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-white/65">{item.body}</p>
+                </div>
+              ))}
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Cities */}
-      {county.cities.length > 0 ? (
-        <section className="border-t border-white/10 py-12 sm:py-14">
-          <Container>
-            <div className="mx-auto max-w-5xl text-center">
-              <SectionHeading>{copy.citiesSectionTitle(county.county)}</SectionHeading>
-              <p className="mt-3 text-sm text-white/60">{copy.citiesSectionIntro(county.cities.length)}</p>
-              <ul className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3">
-                {county.cities.map((city) => (
-                  <li key={city.slug}>
-                    <Link
-                      href={cityPagePath(county.countySlug, city.slug, locale)}
-                      className="inline-flex rounded-full border border-emerald-500/25 bg-emerald-950/20 px-4 py-2 text-sm text-emerald-100 transition hover:border-emerald-400/40 hover:bg-emerald-900/30"
-                    >
-                      {formatTexasLocationDisplayName(city.name)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Container>
-        </section>
-      ) : null}
-
-      {/* Final CTA */}
       <section className="border-t border-emerald-500/20 bg-emerald-950/20 py-14 sm:py-16">
         <Container>
           <div className="mx-auto max-w-2xl space-y-4 text-center">
@@ -342,6 +213,15 @@ export async function TexasCountyLocationPage({
             <div className="flex justify-center pt-2">
               <StartListingButton locale={locale} label={copy.startYourListing} size="large" />
             </div>
+            <p className="pt-4 text-xs text-white/45">
+              <Link href={texasIndexPath(locale)} className="underline-offset-2 hover:underline">
+                {nav.breadcrumbTexas}
+              </Link>
+              {" · "}
+              <Link href={localeSitePath("/service-area", locale)} className="underline-offset-2 hover:underline">
+                {nav.breadcrumbServiceArea}
+              </Link>
+            </p>
           </div>
         </Container>
       </section>

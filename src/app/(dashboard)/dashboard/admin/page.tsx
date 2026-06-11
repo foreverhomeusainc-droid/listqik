@@ -13,6 +13,7 @@ import { ListingUpgradeRequest } from "@/models/ListingUpgradeRequest";
 import { PlanPurchase } from "@/models/PlanPurchase";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
+import { LandingPageEvent } from "@/models/LandingPageEvent";
 import { User } from "@/models/User";
 
 const sections = [
@@ -23,6 +24,11 @@ const sections = [
   { href: "/dashboard/admin/offers", title: "Offers", description: "Buyer offers across listings." },
   { href: "/dashboard/admin/upgrade-requests", title: "Upgrade requests", description: "Pending service requests." },
   { href: "/dashboard/admin/checkouts", title: "Checkouts", description: "Pricing funnel and abandoned carts." },
+  {
+    href: "/dashboard/admin/landing-analytics",
+    title: "Landing analytics",
+    description: "County lander views and Get Listed Now clicks.",
+  },
   { href: "/dashboard/admin/blogs", title: "Blogs", description: "Create and publish resource articles." },
   { href: "/dashboard/admin/settings", title: "Settings", description: "Admin access configuration." },
 ] as const;
@@ -58,6 +64,8 @@ export default async function AdminOverviewPage() {
     users,
     listings,
     documents,
+    landingPageViews7d,
+    landingCtaClicks7d,
   ] = await Promise.all([
     User.countDocuments(),
     Listing.countDocuments(),
@@ -73,6 +81,8 @@ export default async function AdminOverviewPage() {
     User.find().select("_id email name passwordSetupTokenSha256 passwordSetupExpiresAt userAgreementAcknowledgedAt").lean(),
     Listing.find({ status: "INCOMPLETE" }).sort({ updatedAt: -1 }).limit(40).lean(),
     ListingDocument.find().select("listingId fileName").lean(),
+    LandingPageEvent.countDocuments({ eventType: "page_view", createdAt: { $gte: sevenDaysAgo } }),
+    LandingPageEvent.countDocuments({ eventType: "cta_click", createdAt: { $gte: sevenDaysAgo } }),
   ]);
 
   const docsByListing = new Map<string, string[]>();
@@ -123,6 +133,19 @@ export default async function AdminOverviewPage() {
         <StatCard label="Pending" value={pendingListings} />
         <StatCard label="Sold" value={soldListings} />
         <StatCard label="Open upgrade requests" value={openUpgradeRequests} />
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <Link
+          href="/dashboard/admin/landing-analytics"
+          className="rounded-2xl border border-emerald-500/25 bg-emerald-950/20 p-4 transition hover:border-emerald-400/40"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200/80">
+            Landing page views (7d)
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-emerald-50">{landingPageViews7d}</p>
+          <p className="mt-1 text-xs text-white/50">{landingCtaClicks7d} Get Listed Now clicks</p>
+        </Link>
       </div>
 
       <section className="space-y-3">

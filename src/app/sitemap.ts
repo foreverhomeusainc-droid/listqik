@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/start-now",
     "/listings",
     "/service-area",
+    "/service-area/texas/dfw",
     "/resources",
     "/resources/blogs",
     "/resources/videos",
@@ -55,11 +56,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           ? 0.9
           : path === "/service-area" || path === "/es/service-area"
             ? 0.75
-            : /\/service-area\/texas\/[^/]+-county$/.test(path) ||
-                /\/es\/service-area\/texas\/[^/]+-county$/.test(path)
-              ? 0.65
-              : path.includes("/service-area/texas/")
-                ? 0.55
-                : 0.7,
+            : path === "/service-area/texas/dfw" || path === "/es/service-area/texas/dfw"
+              ? 0.7
+              : /\/service-area\/texas\/[^/]+-county$/.test(path) ||
+                  /\/es\/service-area\/texas\/[^/]+-county$/.test(path)
+                ? 0.65
+                : path.includes("/service-area/texas/")
+                  ? 0.55
+                  : 0.7,
   }));
 }

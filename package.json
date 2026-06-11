@@ -20,6 +20,8 @@
     "db:create-admin": "node scripts/create-admin-user.mjs",
     "db:migrate-blogs": "node scripts/migrate-blog-posts.mjs --confirm",
     "data:texas-locations": "node scripts/generate-texas-locations.mjs",
+    "data:google-geo-map": "node scripts/build-google-geo-map.mjs",
+    "ads:dfw-satellite-setup": "node scripts/print-dfw-satellite-ads-setup.mjs",
     "db:seed-blog-texas-counties": "node scripts/seed-blog-discovering-texas.mjs"
   },
   "dependencies": {
