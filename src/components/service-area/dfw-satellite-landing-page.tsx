@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Container } from "@/components/container";
+import { BrokerDisclosureBlock } from "@/components/marketing/broker-disclosure-block";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { getDfwSatelliteCopy } from "@/i18n/dfw-satellite-copy";
 import type { HomeLocale } from "@/i18n/home-locale";
@@ -82,6 +83,15 @@ export function DfwSatelliteLandingPage({ locale }: { locale: HomeLocale }) {
             </div>
 
             <p className="mt-5 text-xs font-medium tracking-wide text-white/55 sm:text-sm">{copy.heroTrustLine}</p>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-b border-white/10 bg-black/40 py-8 sm:py-10">
+        <Container>
+          <div className="mx-auto max-w-2xl">
+            <h2 className="sr-only">{copy.brokerDisclosureTitle}</h2>
+            <BrokerDisclosureBlock locale={locale} variant="prominent" />
           </div>
         </Container>
       </section>

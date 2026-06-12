@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { BROKER_CONTACT, brokerFullAddressLine } from "@/lib/broker-contact";
 import { localeSitePath } from "@/lib/locale-site-path";
 
 export function SiteFooterChrome() {
@@ -31,9 +32,22 @@ export function SiteFooterChrome() {
                 : "Local Texas broker support · 4-hour rapid deployment"}
             </div>
             <div className="pt-2 text-xs text-white/60">
-              <div className="font-semibold text-white/70">
-                Resolution Realty Group
-              </div>
+              <div className="font-semibold text-white/70">Resolution Realty Group</div>
+              <address className="mt-2 not-italic leading-relaxed text-white/55">
+                <div>{brokerFullAddressLine()}</div>
+                <div className="mt-1">
+                  <a href={`tel:${BROKER_CONTACT.phoneTel}`} className="hover:text-white">
+                    {BROKER_CONTACT.phone}
+                  </a>
+                  {" · "}
+                  <a href={`mailto:${BROKER_CONTACT.email}`} className="hover:text-white">
+                    {BROKER_CONTACT.email}
+                  </a>
+                </div>
+                <div className="mt-1">
+                  TREC {BROKER_CONTACT.sponsoringBrokerLicense}
+                </div>
+              </address>
               <div className="mt-2 flex items-center gap-3">
                 <Image
                   src="/central-metro-realty-logo.svg"

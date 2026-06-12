@@ -19,18 +19,18 @@ const GEO_ZIP_URL =
   "https://developers.google.com/static/google-ads/api/data/geo/geotargets-2026-05-28.csv.zip";
 
 const DFW_SATELLITE_COUNTY_SLUGS = [
-  "rockwall-county",
-  "kaufman-county",
   "ellis-county",
   "johnson-county",
-  "hood-county",
-  "wise-county",
-  "hunt-county",
+  "kaufman-county",
   "grayson-county",
+  "rockwall-county",
+  "hunt-county",
+  "henderson-county",
+  "wise-county",
+  "hood-county",
   "navarro-county",
-  "van-zandt-county",
-  "hill-county",
-  "somervell-county",
+  "cherokee-county",
+  "fannin-county",
 ];
 
 function buildCityToCountyLookup() {

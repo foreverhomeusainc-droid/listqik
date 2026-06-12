@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { BROKER_CONTACT, brokerFullAddressLine } from "@/lib/broker-contact";
 
 const SPONSORING_BROKER = {
-  name: "Central Metro Realty",
-  license: "588680",
-  email: "broker@centralmetro.com",
-  phone: "737-249-9010",
+  name: BROKER_CONTACT.sponsoringBroker,
+  license: BROKER_CONTACT.sponsoringBrokerLicense,
+  email: BROKER_CONTACT.email,
+  phone: BROKER_CONTACT.phone,
+  address: brokerFullAddressLine(),
 };
 
 const DESIGNATED_BROKER = {
@@ -180,6 +182,14 @@ export function IabsContent() {
             retain a copy for your records.
           </p>
         </header>
+
+        <address className="not-italic rounded-xl border border-white/10 bg-black/25 p-4 text-sm text-white/80">
+          <div className="font-semibold text-white/90">Central Metro Realty — business address</div>
+          <div className="mt-2">{BROKER_CONTACT.streetAddress}</div>
+          <div>
+            {BROKER_CONTACT.city}, {BROKER_CONTACT.state} {BROKER_CONTACT.postalCode}
+          </div>
+        </address>
 
         <div className="overflow-x-auto">
           <table className="w-full min-w-[520px] border-collapse text-xs text-white/85">

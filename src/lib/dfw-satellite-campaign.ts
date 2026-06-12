@@ -5,23 +5,24 @@ import { countyPagePath } from "@/lib/texas-location-seo";
 export const LISTQIK_MARKETING_ORIGIN = "https://listqik.com";
 
 /**
- * DFW Satellite counties — ring counties around DFW primary (Collin, Dallas, Denton, Tarrant).
- * Extended tier, typically 100k–250k population, NTREIS MLS footprint.
- * Used for campaign geo targeting and ValueTrack county resolution.
+ * DFW Satellite counties — from the extended-service pop report, ranked by population
+ * (highest first among North Texas / DFW-orbit counties). Used for Google Ads geo
+ * targeting and ValueTrack county resolution. Excludes primary DFW core (Collin,
+ * Dallas, Denton, Tarrant) which run in separate campaigns.
  */
 export const DFW_SATELLITE_COUNTY_NAMES = [
-  "Rockwall",
-  "Kaufman",
   "Ellis",
   "Johnson",
-  "Hood",
-  "Wise",
-  "Hunt",
+  "Kaufman",
   "Grayson",
+  "Rockwall",
+  "Hunt",
+  "Henderson",
+  "Wise",
+  "Hood",
   "Navarro",
-  "Van Zandt",
-  "Hill",
-  "Somervell",
+  "Cherokee",
+  "Fannin",
 ] as const;
 
 export type DfwSatelliteCountyName = (typeof DFW_SATELLITE_COUNTY_NAMES)[number];

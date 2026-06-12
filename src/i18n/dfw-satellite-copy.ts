@@ -4,6 +4,7 @@ export type DfwSatelliteCopy = {
   metaTitle: string;
   metaDescription: string;
   breadcrumbLabel: string;
+  brokerDisclosureTitle: string;
   heroEyebrow: string;
   heroTitle: string;
   heroSubtitle: string;
@@ -41,9 +42,10 @@ const COPY: Record<HomeLocale, DfwSatelliteCopy> = {
     mlsTrustBadge: "Broker-backed NTREIS MLS listing",
     startYourListing: "Start Your Listing",
     heroTrustLine: "Zillow · Realtor.com · Redfin · Trulia · Licensed Texas brokerage",
-    countiesTitle: "DFW satellite counties we serve",
+    brokerDisclosureTitle: "Licensed brokerage disclosure",
+    countiesTitle: "North Texas counties in our DFW campaign",
     countiesIntro:
-      "ListQik supports sellers across these North Texas counties surrounding the DFW metro. Select your county for local cities and listing details.",
+      "These counties are from our extended-service population report—ranked by size around the DFW metro. Select your county for local cities and NTREIS listing details.",
     howItWorksTitle: "How it works",
     howItWorksSteps: [
       {
@@ -115,9 +117,10 @@ const COPY: Record<HomeLocale, DfwSatelliteCopy> = {
     mlsTrustBadge: "Listado MLS NTREIS con respaldo de correduría",
     startYourListing: "Iniciar su listado",
     heroTrustLine: "Zillow · Realtor.com · Redfin · Trulia · Correduría con licencia en Texas",
-    countiesTitle: "Condados satélite del DFW que atendemos",
+    brokerDisclosureTitle: "Divulgación de correduría con licencia",
+    countiesTitle: "Condados del norte de Texas en nuestra campaña DFW",
     countiesIntro:
-      "ListQik apoya a vendedores en estos condados del norte de Texas alrededor del metro DFW. Elija su condado para ver ciudades y detalles locales.",
+      "Estos condados provienen de nuestro informe de población de servicio extendido—ordenados por tamaño alrededor del metro DFW. Elija su condado para ver ciudades y detalles del listado NTREIS.",
     howItWorksTitle: "Cómo funciona",
     howItWorksSteps: [
       {

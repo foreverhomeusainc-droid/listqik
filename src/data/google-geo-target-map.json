@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-11T15:20:11.989Z",
+  "generatedAt": "2026-06-12T12:33:37.226Z",
   "sourceCsv": ".tmp/geotargets2/third_party/devsite/developers/en/google-ads/api/data/geo/geotargets-2026-05-28.csv",
   "stats": {
     "texasCountyMappings": 254,
@@ -8,31 +8,31 @@
     "totalCriteriaIds": 1055
   },
   "dfwSatelliteCountySlugs": [
-    "rockwall-county",
-    "kaufman-county",
     "ellis-county",
     "johnson-county",
-    "hood-county",
-    "wise-county",
-    "hunt-county",
+    "kaufman-county",
     "grayson-county",
+    "rockwall-county",
+    "hunt-county",
+    "henderson-county",
+    "wise-county",
+    "hood-county",
     "navarro-county",
-    "van-zandt-county",
-    "hill-county",
-    "somervell-county"
+    "cherokee-county",
+    "fannin-county"
   ],
   "satelliteCountyCriteriaIds": {
+    "9059442": "cherokee-county",
     "9059476": "ellis-county",
+    "9059479": "fannin-county",
     "9059496": "grayson-county",
-    "9059514": "hill-county",
+    "9059512": "henderson-county",
     "9059516": "hood-county",
     "9059521": "hunt-county",
     "9059531": "johnson-county",
     "9059534": "kaufman-county",
     "9059580": "navarro-county",
     "9059602": "rockwall-county",
-    "9059616": "somervell-county",
-    "9059636": "van-zandt-county",
     "9059651": "wise-county"
   },
   "byCriteriaId": {
