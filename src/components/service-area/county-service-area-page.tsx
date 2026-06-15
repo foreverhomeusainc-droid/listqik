@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
+import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { LocationSeoJsonLd } from "@/components/service-area/location-seo-json-ld";
 import {
@@ -345,6 +346,8 @@ export async function TexasCountyLocationPage({
           </div>
         </Container>
       </section>
+
+      <GhlInlineFormSection locale={locale} />
     </div>
   );
 }

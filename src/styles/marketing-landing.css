@@ -1433,6 +1433,21 @@ input:focus-visible {
   border-color: #1a4338;
 }
 
+.ghlFormSection {
+  width: min(1320px, 100% - 1.5rem);
+  margin: 1.25rem auto 2rem;
+}
+
+.ghlFormFrame {
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid #d8e3f2;
+  background: #fff;
+  padding: 0.35rem;
+  box-shadow: var(--shadow-md);
+}
+
 .siteFooter {
   background: linear-gradient(180deg, #071511 0%, #040d0b 100%);
 }

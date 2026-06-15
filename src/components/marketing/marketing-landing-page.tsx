@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
 import { StartNowLanguageToggle } from "@/components/marketing/start-now-language-toggle";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import { fullServiceMailto, getStartNowCopy } from "@/i18n/start-now-copy";
@@ -164,6 +165,8 @@ export function MarketingLandingPage() {
             </Link>
           </div>
         </section>
+
+        <GhlInlineFormSection locale={locale} variant="start-now" />
       </main>
 
       {showGiftPopup ? (

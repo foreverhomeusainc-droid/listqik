@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Container } from "@/components/container";
+import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
 import { BrokerDisclosureBlock } from "@/components/marketing/broker-disclosure-block";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { getDfwSatelliteCopy } from "@/i18n/dfw-satellite-copy";
@@ -235,6 +236,8 @@ export function DfwSatelliteLandingPage({ locale }: { locale: HomeLocale }) {
           </div>
         </Container>
       </section>
+
+      <GhlInlineFormSection locale={locale} />
     </div>
   );
 }
