@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Container } from "@/components/container";
 import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
+import { SocialLeadCtaSection } from "@/components/marketing/social-lead-cta-section";
 import { BrokerDisclosureBlock } from "@/components/marketing/broker-disclosure-block";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { getDfwSatelliteCopy } from "@/i18n/dfw-satellite-copy";
@@ -237,6 +238,7 @@ export function DfwSatelliteLandingPage({ locale }: { locale: HomeLocale }) {
         </Container>
       </section>
 
+      <SocialLeadCtaSection locale={locale} />
       <GhlInlineFormSection locale={locale} />
     </div>
   );

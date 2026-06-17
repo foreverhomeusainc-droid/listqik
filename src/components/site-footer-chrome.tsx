@@ -5,11 +5,12 @@ import Image from "next/image";
 import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
 import { useSiteLocale } from "@/components/site-locale-provider";
-import { InstagramIcon, TiktokIcon, YoutubeIcon } from "@/components/social-icons";
+import { FacebookIcon, InstagramIcon, TiktokIcon, YoutubeIcon } from "@/components/social-icons";
 import { BROKER_CONTACT, brokerFullAddressLine } from "@/lib/broker-contact";
 import { localeSitePath } from "@/lib/locale-site-path";
 import {
   getListQikYoutubeChannelUrl,
+  LISTQIK_FACEBOOK_MESSENGER_URL,
   LISTQIK_INSTAGRAM_URL,
   LISTQIK_TIKTOK_URL,
 } from "@/lib/social-links";
@@ -68,6 +69,15 @@ export function SiteFooterChrome() {
                 className={socialLinkClassName}
               >
                 <InstagramIcon />
+              </a>
+              <a
+                href={LISTQIK_FACEBOOK_MESSENGER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ready ? t.messengerAriaLabel : "ListQik on Messenger"}
+                className={socialLinkClassName}
+              >
+                <FacebookIcon />
               </a>
             </div>
             <div className="pt-2 text-xs text-white/60">

@@ -44,6 +44,8 @@ export type SiteChromeCopy = {
     youtubeAriaLabel: string;
     tiktokAriaLabel: string;
     instagramAriaLabel: string;
+    facebookAriaLabel: string;
+    messengerAriaLabel: string;
   };
 };
 
@@ -93,6 +95,8 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       youtubeAriaLabel: "ListQik on YouTube",
       tiktokAriaLabel: "ListQik on TikTok",
       instagramAriaLabel: "ListQik on Instagram",
+      facebookAriaLabel: "ListQik on Facebook",
+      messengerAriaLabel: "ListQik on Messenger",
     },
   },
   es: {
@@ -141,6 +145,8 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       youtubeAriaLabel: "ListQik en YouTube",
       tiktokAriaLabel: "ListQik en TikTok",
       instagramAriaLabel: "ListQik en Instagram",
+      facebookAriaLabel: "ListQik en Facebook",
+      messengerAriaLabel: "ListQik en Messenger",
     },
   },
 };
