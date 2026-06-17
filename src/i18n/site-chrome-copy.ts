@@ -41,6 +41,9 @@ export type SiteChromeCopy = {
     status: string;
     operational: string;
     centralMetroAlt: string;
+    youtubeAriaLabel: string;
+    tiktokAriaLabel: string;
+    instagramAriaLabel: string;
   };
 };
 
@@ -87,6 +90,9 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       status: "Status:",
       operational: "Operational",
       centralMetroAlt: "Central Metro Realty",
+      youtubeAriaLabel: "ListQik on YouTube",
+      tiktokAriaLabel: "ListQik on TikTok",
+      instagramAriaLabel: "ListQik on Instagram",
     },
   },
   es: {
@@ -132,6 +138,9 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
       status: "Estado:",
       operational: "Operativo",
       centralMetroAlt: "Central Metro Realty",
+      youtubeAriaLabel: "ListQik en YouTube",
+      tiktokAriaLabel: "ListQik en TikTok",
+      instagramAriaLabel: "ListQik en Instagram",
     },
   },
 };

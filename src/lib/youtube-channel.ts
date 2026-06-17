@@ -16,8 +16,8 @@ export type YouTubeChannelFeed = {
 };
 
 const DEFAULT_CHANNEL_ID = "UCijYyspf6u9RSR2vg82A__A";
-const DEFAULT_HANDLE = "ListQuick";
-const DEFAULT_CHANNEL_URL = "https://www.youtube.com/@ListQuick";
+const DEFAULT_HANDLE = "listquick";
+const DEFAULT_CHANNEL_URL = "https://www.youtube.com/@listquick";
 
 function channelUrlFromEnv(): string {
   return (

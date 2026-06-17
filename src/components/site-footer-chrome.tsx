@@ -5,13 +5,23 @@ import Image from "next/image";
 import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
 import { useSiteLocale } from "@/components/site-locale-provider";
+import { InstagramIcon, TiktokIcon, YoutubeIcon } from "@/components/social-icons";
 import { BROKER_CONTACT, brokerFullAddressLine } from "@/lib/broker-contact";
 import { localeSitePath } from "@/lib/locale-site-path";
+import {
+  getListQikYoutubeChannelUrl,
+  LISTQIK_INSTAGRAM_URL,
+  LISTQIK_TIKTOK_URL,
+} from "@/lib/social-links";
+
+const socialLinkClassName =
+  "inline-flex rounded-md p-1 text-white/55 transition hover:bg-white/5 hover:text-white";
 
 export function SiteFooterChrome() {
   const { locale, chrome, ready } = useSiteLocale();
   const t = chrome.footer;
   const year = new Date().getFullYear();
+  const youtubeUrl = getListQikYoutubeChannelUrl(locale);
 
   return (
     <footer className="border-t border-white/10">
@@ -30,6 +40,35 @@ export function SiteFooterChrome() {
               {ready
                 ? t.brokerSupport
                 : "Local Texas broker support · 4-hour rapid deployment"}
+            </div>
+            <div className="flex items-center gap-3 pt-3">
+              <a
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ready ? t.youtubeAriaLabel : "ListQik on YouTube"}
+                className={socialLinkClassName}
+              >
+                <YoutubeIcon />
+              </a>
+              <a
+                href={LISTQIK_TIKTOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ready ? t.tiktokAriaLabel : "ListQik on TikTok"}
+                className={socialLinkClassName}
+              >
+                <TiktokIcon />
+              </a>
+              <a
+                href={LISTQIK_INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ready ? t.instagramAriaLabel : "ListQik on Instagram"}
+                className={socialLinkClassName}
+              >
+                <InstagramIcon />
+              </a>
             </div>
             <div className="pt-2 text-xs text-white/60">
               <div className="font-semibold text-white/70">Resolution Realty Group</div>
