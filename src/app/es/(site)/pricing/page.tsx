@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { GoogleAdsCheckoutSuccess } from "@/components/analytics/google-ads-checkout-success";
 import { PricingConsole } from "@/components/pricing/pricing-console";
 import { getPricingCopy } from "@/i18n/pricing-copy";
 import { buildLocalizedMetadata } from "@/lib/locale-metadata";
@@ -21,6 +22,7 @@ function PricingFallback() {
 export default function EsPricingPage() {
   return (
     <Suspense fallback={<PricingFallback />}>
+      <GoogleAdsCheckoutSuccess />
       <PricingConsole />
     </Suspense>
   );

@@ -25,7 +25,7 @@ function loadEnvLocal() {
 }
 
 const PLAN_CATALOG = [
-  { slug: "subsonic", name: "Subsonic", amountUsd: 99 },
+  { slug: "subsonic", name: "Subsonic", amountUsd: 79 },
   { slug: "supersonic", name: "Supersonic", amountUsd: 295 },
   { slug: "hypersonic", name: "Hypersonic", amountUsd: 595 },
 ];

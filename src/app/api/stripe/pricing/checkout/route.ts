@@ -4,8 +4,6 @@ import { connectDb } from "@/lib/mongodb";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import {
   isStartNowSubsonicPromo,
-  resolveSubsonicLandingCheckoutDiscounts,
-  type SubsonicLandingCheckoutDiscount,
 } from "@/lib/stripe-subsonic-landing-promo";
 
 type CheckoutPayload = {
@@ -149,25 +147,10 @@ export async function POST(req: Request) {
   }
 
   const promoSource = compact(body.promoSource);
-  const applyStartNowSubsonicDiscount =
+  const fromStartNowLanding =
     checkoutKind === "plan" &&
     planSlug === "subsonic" &&
     isStartNowSubsonicPromo(promoSource);
-
-  let landingDiscounts: SubsonicLandingCheckoutDiscount[] | undefined;
-  if (applyStartNowSubsonicDiscount) {
-    landingDiscounts = await resolveSubsonicLandingCheckoutDiscounts(stripe);
-    if (!landingDiscounts?.length) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error:
-            "Landing Subsonic discount is not configured. Run npm run stripe:startnow-subsonic-promo and set STRIPE_SUBSONIC_LANDING_PROMOTION_CODE_ID (or promo/coupon env vars).",
-        },
-        { status: 503 },
-      );
-    }
-  }
 
   const metadata: Record<string, string> = {
     checkoutKind,
@@ -187,12 +170,10 @@ export async function POST(req: Request) {
     propertyCounty: compact(body.property?.county),
     propertyType: compact(body.property?.propertyType),
     upgradeSlugsCsv: selectedUpgradeSlugs.join(","),
-    ...(applyStartNowSubsonicDiscount ? { promoSource: "start-now" } : {}),
+    ...(fromStartNowLanding ? { promoSource: "start-now" } : {}),
   };
 
-  const discountParams = landingDiscounts
-    ? { discounts: landingDiscounts, allow_promotion_codes: false as const }
-    : { allow_promotion_codes: true as const };
+  const discountParams = { allow_promotion_codes: true as const };
 
   /** Plan checkout charges in USD so manual promotion codes validate reliably. */
   const planAdaptivePricingParams =

@@ -38,7 +38,7 @@ const ghl = new HighLevel({
 });
 
 const plans = [
-  { slug: "subsonic", name: "Subsonic", amount: 99 },
+  { slug: "subsonic", name: "Subsonic", amount: 79 },
   { slug: "supersonic", name: "Supersonic", amount: 295 },
   { slug: "hypersonic", name: "Hypersonic", amount: 595 },
 ];

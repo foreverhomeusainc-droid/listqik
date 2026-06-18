@@ -13,6 +13,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { GoogleAdsPurchaseConversion } from "@/components/analytics/google-ads-purchase-conversion";
+import type { GoogleAdsPurchasePayload } from "@/lib/google-ads-config";
 import { fireSubsonicIntakeStartedConversion } from "@/lib/google-ads-events";
 import { CockpitGauge } from "@/components/cockpit-gauge";
 import { Container } from "@/components/container";
@@ -96,6 +97,8 @@ export function PricingConsole() {
   const [planCheckoutClientSecret, setPlanCheckoutClientSecret] = useState<string | null>(null);
   const [, setCheckingPlanPayment] = useState(false);
   const [planPaymentRecorded, setPlanPaymentRecorded] = useState(false);
+  const [planPurchaseConversion, setPlanPurchaseConversion] =
+    useState<GoogleAdsPurchasePayload | null>(null);
   const [, setPlanAutoAdvanced] = useState(false);
   const [handoffBusy, setHandoffBusy] = useState<"listing-setup" | "upgrades" | null>(null);
   const [pendingUpgradesWaiting, setPendingUpgradesWaiting] = useState(false);
@@ -138,7 +141,7 @@ export function PricingConsole() {
     if (!subsonic) return;
     landingPromoHandled.current = true;
     setLandingPromoSource(START_NOW_SUBSONIC_PROMO);
-    selectPlan({ ...subsonic, price: copy.subsonicPromoPrice });
+    selectPlan({ ...subsonic });
     fireSubsonicIntakeStartedConversion();
     requestAnimationFrame(() => {
       window.scrollTo(0, 0);
@@ -154,13 +157,9 @@ export function PricingConsole() {
       if (!s.plan) return s;
       const updated = copy.plans.find((p) => p.id === s.plan!.id);
       if (!updated) return s;
-      const price =
-        updated.id === "subsonic" && landingPromoSource
-          ? copy.subsonicPromoPrice
-          : updated.price;
-      return { ...s, plan: { ...updated, price } };
+      return { ...s, plan: { ...updated } };
     });
-  }, [locale, copy, landingPromoSource]);
+  }, [locale, copy]);
 
   function closeWizard() {
     if (submitting) return;
@@ -228,6 +227,7 @@ export function PricingConsole() {
       | {
           ok?: boolean;
           planPaid?: boolean;
+          planPurchase?: GoogleAdsPurchasePayload | null;
           error?: string;
         }
       | null;
@@ -236,6 +236,9 @@ export function PricingConsole() {
       return null;
     }
     setPlanPaymentRecorded(Boolean(data.planPaid));
+    if (data.planPurchase?.transactionId && data.planPurchase.value > 0) {
+      setPlanPurchaseConversion(data.planPurchase);
+    }
     if (data.planPaid) {
       setError("");
       advanceToUpgradesIfReady();
@@ -453,12 +456,7 @@ export function PricingConsole() {
 
         <CockpitBackdropPanel>
           <section className="grid gap-5 lg:grid-cols-3">
-            {plans.map((plan) => {
-              const displayPrice =
-                plan.id === "subsonic" && autoOpenSubsonicIntake
-                  ? copy.subsonicPromoPrice
-                  : plan.price;
-              return (
+            {plans.map((plan) => (
               <article
                 key={plan.id}
                 className={[
@@ -481,7 +479,7 @@ export function PricingConsole() {
                 </div>
 
                 <div className="mt-4 min-h-[206px] rounded-2xl border border-white/10 bg-black/25 p-4">
-                  <div className="font-mono text-3xl font-bold text-white">{displayPrice}</div>
+                  <div className="font-mono text-3xl font-bold text-white">{plan.price}</div>
                   <div className="mt-1 text-sm text-white/75">{plan.closeFee}</div>
                   <dl className="mt-4 grid gap-2 text-sm text-white/80">
                     <div className="flex justify-between gap-3">
@@ -502,13 +500,7 @@ export function PricingConsole() {
                 <div className="mt-4">
                   <button
                     type="button"
-                    onClick={() =>
-                      selectPlan(
-                        plan.id === "subsonic" && autoOpenSubsonicIntake
-                          ? { ...plan, price: copy.subsonicPromoPrice }
-                          : plan,
-                      )
-                    }
+                    onClick={() => selectPlan(plan)}
                     className="btn-primary w-full justify-center"
                   >
                     {copy.planCard.selectPlan} {plan.name}
@@ -530,8 +522,7 @@ export function PricingConsole() {
                   </div>
                 </div>
               </article>
-              );
-            })}
+            ))}
           </section>
         </CockpitBackdropPanel>
 
@@ -786,11 +777,14 @@ export function PricingConsole() {
           ) : null}
           {wizard.step === 3 ? (
             <div className="grid gap-4">
-              {planPaymentRecorded && checkoutSessionId && planPurchaseValue ? (
+              {(planPurchaseConversion ||
+                (planPaymentRecorded && checkoutSessionId && planPurchaseValue)) ? (
                 <GoogleAdsPurchaseConversion
-                  transactionId={checkoutSessionId}
-                  value={planPurchaseValue}
-                  currency="USD"
+                  transactionId={
+                    planPurchaseConversion?.transactionId || checkoutSessionId!
+                  }
+                  value={planPurchaseConversion?.value ?? planPurchaseValue!}
+                  currency={planPurchaseConversion?.currency ?? "USD"}
                 />
               ) : null}
               <h2 className="text-xl font-semibold text-white">{copy.wizard.step3Title}</h2>

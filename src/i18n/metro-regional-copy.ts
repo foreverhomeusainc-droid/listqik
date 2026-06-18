@@ -40,7 +40,7 @@ const AUSTIN_COPY: Record<HomeLocale, MetroRegionalCopy> = {
     pricingTransparencyTitle: "Transparent pricing—no surprise listing commission",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% at closing",
+      fee: "$79 + 0.50% at closing",
       note: "Flat upfront fee · broker-backed MLS listing",
     },
     compareTraditional: {
@@ -56,7 +56,7 @@ const AUSTIN_COPY: Record<HomeLocale, MetroRegionalCopy> = {
       "Buyer-agent inquiries and showing requests routed to you",
     ],
     pricingClosingDisclosure:
-      "Subsonic is $79 upfront (promo applied at checkout) plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules.",
+      "Subsonic is $79 upfront plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules.",
     mlsTitle: "Your listing can appear on major home-search sites",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "ACTRIS MLS"],
     faqTitle: "Austin flat-fee listing basics",
@@ -115,7 +115,7 @@ const AUSTIN_COPY: Record<HomeLocale, MetroRegionalCopy> = {
     pricingTransparencyTitle: "Precios transparentes—sin comisión sorpresa del listado",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% al cierre",
+      fee: "$79 + 0.50% al cierre",
       note: "Tarifa fija inicial · listado MLS con respaldo de correduría",
     },
     compareTraditional: {
@@ -131,7 +131,7 @@ const AUSTIN_COPY: Record<HomeLocale, MetroRegionalCopy> = {
       "Consultas de agentes compradores y solicitudes de visitas dirigidas a usted",
     ],
     pricingClosingDisclosure:
-      "Subsonic cuesta $79 por adelantado (promo en el checkout) más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS.",
+      "Subsonic cuesta $79 por adelantado más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS.",
     mlsTitle: "Su listado puede aparecer en los principales sitios de búsqueda",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "MLS ACTRIS"],
     faqTitle: "Conceptos básicos del listado tarifa fija Austin",
@@ -193,7 +193,7 @@ const SAN_ANTONIO_COPY: Record<HomeLocale, MetroRegionalCopy> = {
     pricingTransparencyTitle: "Transparent pricing—no surprise listing commission",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% at closing",
+      fee: "$79 + 0.50% at closing",
       note: "Flat upfront fee · broker-backed MLS listing",
     },
     compareTraditional: {
@@ -209,7 +209,7 @@ const SAN_ANTONIO_COPY: Record<HomeLocale, MetroRegionalCopy> = {
       "Buyer-agent inquiries and showing requests routed to you",
     ],
     pricingClosingDisclosure:
-      "Subsonic is $79 upfront (promo applied at checkout) plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules.",
+      "Subsonic is $79 upfront plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules.",
     mlsTitle: "Your listing can appear on major home-search sites",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "SABOR MLS"],
     faqTitle: "San Antonio flat-fee listing basics",
@@ -268,7 +268,7 @@ const SAN_ANTONIO_COPY: Record<HomeLocale, MetroRegionalCopy> = {
     pricingTransparencyTitle: "Precios transparentes—sin comisión sorpresa del listado",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% al cierre",
+      fee: "$79 + 0.50% al cierre",
       note: "Tarifa fija inicial · listado MLS con respaldo de correduría",
     },
     compareTraditional: {
@@ -284,7 +284,7 @@ const SAN_ANTONIO_COPY: Record<HomeLocale, MetroRegionalCopy> = {
       "Consultas de agentes compradores y solicitudes de visitas dirigidas a usted",
     ],
     pricingClosingDisclosure:
-      "Subsonic cuesta $79 por adelantado (promo en el checkout) más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS.",
+      "Subsonic cuesta $79 por adelantado más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS.",
     mlsTitle: "Su listado puede aparecer en los principales sitios de búsqueda",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "MLS SABOR"],
     faqTitle: "Conceptos básicos del listado tarifa fija San Antonio",

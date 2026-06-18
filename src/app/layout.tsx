@@ -5,8 +5,7 @@ import Script from "next/script";
 import { AuthSessionProvider } from "@/components/auth/session-provider";
 import { LISTQIK_LOGO_ALT, LISTQIK_LOGO_PATH } from "@/lib/brand-assets";
 
-/** Google Ads conversion tag — applied at the root layout so every route group inherits it. */
-const GOOGLE_ADS_TAG_ID = "AW-18163123085";
+import { GOOGLE_ADS_TAG_ID } from "@/lib/google-ads-config";
 
 const inter = Inter({
   variable: "--font-inter",

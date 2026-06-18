@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { GOOGLE_ADS_PURCHASE_SEND_TO } from "@/lib/google-ads-config";
 
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
   }
 }
-
-const GOOGLE_ADS_PURCHASE_SEND_TO = "AW-18163123085/xcP3CPX7j60cEI2H7dRD";
 
 type GoogleAdsPurchaseConversionProps = {
   transactionId: string;
@@ -22,7 +21,9 @@ export function GoogleAdsPurchaseConversion({
   currency = "USD",
 }: GoogleAdsPurchaseConversionProps) {
   useEffect(() => {
-    if (!transactionId || !Number.isFinite(value) || value <= 0) return;
+    if (!GOOGLE_ADS_PURCHASE_SEND_TO || !transactionId || !Number.isFinite(value) || value <= 0) {
+      return;
+    }
 
     const storageKey = `google-ads-purchase:${transactionId}`;
     try {

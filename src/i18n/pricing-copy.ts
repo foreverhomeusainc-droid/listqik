@@ -1,5 +1,6 @@
 import type { HomeLocale } from "@/i18n/home-locale";
 import type { PlanId } from "@/types/pricing-wizard";
+import { SUBSONIC_LIST_PRICE_LABEL } from "@/lib/subsonic-pricing";
 
 export type PricingPropertyTypeId =
   | "single-family"
@@ -33,7 +34,6 @@ export type PricingCopy = {
   meta: { title: string; description: string };
   languageToggle: { en: string; es: string };
   languageGroupLabel: string;
-  subsonicPromoPrice: string;
   hud: { console: string; live: string };
   header: { title: string; body: string };
   gauges: { value: string; speed: string; compliance: string; rpm: string };
@@ -121,7 +121,6 @@ const COPY: Record<HomeLocale, PricingCopy> = {
     },
     languageToggle: { en: "EN", es: "ES" },
     languageGroupLabel: "Language",
-    subsonicPromoPrice: "$79",
     hud: { console: "LISTQIK PRICING CONSOLE", live: "TEXAS · LIVE" },
     header: {
       title: "Simple pricing to help you keep more from your sale.",
@@ -212,7 +211,7 @@ const COPY: Record<HomeLocale, PricingCopy> = {
         id: "subsonic",
         name: "Subsonic",
         badge: "Basic · Essential",
-        price: "$99",
+        price: SUBSONIC_LIST_PRICE_LABEL,
         closeFee: "0.50% at closing",
         listTerm: "6 months",
         photos: "Up to 25 photos",
@@ -335,7 +334,6 @@ const COPY: Record<HomeLocale, PricingCopy> = {
     },
     languageToggle: { en: "EN", es: "ES" },
     languageGroupLabel: "Idioma",
-    subsonicPromoPrice: "$79",
     hud: { console: "CONSOLA DE PRECIOS LISTQIK", live: "TEXAS · EN VIVO" },
     header: {
       title: "Precios simples para que conserve más de su venta.",
@@ -427,7 +425,7 @@ const COPY: Record<HomeLocale, PricingCopy> = {
         id: "subsonic",
         name: "Subsonic",
         badge: "Básico · Esencial",
-        price: "$99",
+        price: SUBSONIC_LIST_PRICE_LABEL,
         closeFee: "0.50% al cierre",
         listTerm: "6 meses",
         photos: "Hasta 25 fotos",

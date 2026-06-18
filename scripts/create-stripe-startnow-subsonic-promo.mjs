@@ -25,6 +25,11 @@ function loadEnvLocal() {
 }
 
 async function main() {
+  console.warn(
+    "DEPRECATED: Subsonic is permanently $79. No landing promo coupon is required.\n" +
+      "Create a $79 Stripe price with: npm run stripe:create-catalog\n" +
+      "Then update STRIPE_PLAN_PRICE_IDS_JSON and deactivate old STARTNOW79 promo codes in Stripe.\n",
+  );
   loadEnvLocal();
   const secret = process.env.STRIPE_SECRET_KEY?.trim();
   if (!secret) throw new Error("Missing STRIPE_SECRET_KEY in .env.local");

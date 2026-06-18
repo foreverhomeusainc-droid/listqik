@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
+import type { GoogleAdsPurchasePayload } from "@/lib/google-ads-config";
+import { PlanPurchase } from "@/models/PlanPurchase";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
 import { User } from "@/models/User";
@@ -38,6 +40,26 @@ export async function GET(req: Request) {
     .sort({ purchasedAt: -1, createdAt: -1 })
     .lean();
 
+  let planPurchase: GoogleAdsPurchasePayload | null = null;
+
+  if (planPaid && session.planExternalOrderId) {
+    const externalOrderId = session.planExternalOrderId.trim();
+    const purchase = await PlanPurchase.findOne({ externalOrderId })
+      .select("externalOrderId amountTotal currency")
+      .lean();
+    const value =
+      typeof purchase?.amountTotal === "number" && purchase.amountTotal > 0
+        ? purchase.amountTotal
+        : null;
+    if (value) {
+      planPurchase = {
+        transactionId: purchase?.externalOrderId?.trim() || externalOrderId,
+        value,
+        currency: purchase?.currency?.trim()?.toUpperCase() || "USD",
+      };
+    }
+  }
+
   return NextResponse.json({
     ok: true,
     sessionId,
@@ -46,6 +68,7 @@ export async function GET(req: Request) {
     requiresUpgradePayment,
     userExists,
     setupRequired,
+    planPurchase,
     upgradesPurchase: upgradePurchase
       ? {
           transactionId: upgradePurchase.externalOrderId?.trim() || sessionId,

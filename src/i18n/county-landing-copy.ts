@@ -71,7 +71,7 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
       "Buyer-agent inquiries and showing requests routed to you",
     ],
     pricingClosingDisclosure:
-      "Subsonic is $79 upfront (promo applied at checkout) plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules. No traditional ~3% listing commission.",
+      "Subsonic is $79 upfront plus 0.50% at closing on the listing side—published before you pay. Buyer-agent compensation is separate and set by you within MLS rules. No traditional ~3% listing commission.",
     mlsTitle: "Your listing can appear on major home-search sites",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "MLS feeds"],
     infoTitle: (county) => `ListQik support in ${county} County`,
@@ -82,7 +82,7 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
     compareTitle: "Same MLS exposure—without a 6% commission stack",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% at closing",
+      fee: "$79 + 0.50% at closing",
       note: "Flat upfront fee · broker-backed MLS listing",
     },
     compareTraditional: {
@@ -139,7 +139,7 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
       "Consultas de agentes compradores y solicitudes de visitas dirigidas a usted",
     ],
     pricingClosingDisclosure:
-      "Subsonic cuesta $79 por adelantado (promo aplicada al pagar) más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS. Sin comisión tradicional de ~3% del listado.",
+      "Subsonic cuesta $79 por adelantado más 0.50% al cierre en el lado del listado—publicado antes de pagar. La compensación al agente comprador es aparte y la define usted dentro de las reglas MLS. Sin comisión tradicional de ~3% del listado.",
     mlsTitle: "Su listado puede aparecer en los principales sitios de búsqueda",
     mlsPortals: ["Zillow", "Realtor.com", "Redfin", "Trulia", "Feeds MLS"],
     infoTitle: (county) => `Apoyo ListQik en el condado de ${county}`,
@@ -150,7 +150,7 @@ const COPY: Record<HomeLocale, CountyLandingCopy> = {
     compareTitle: "La misma exposición MLS—sin una comisión del 6%",
     compareListQik: {
       label: "ListQik Subsonic",
-      fee: "$79 promo + 0.50% al cierre",
+      fee: "$79 + 0.50% al cierre",
       note: "Tarifa fija inicial · listado MLS respaldado por correduría",
     },
     compareTraditional: {

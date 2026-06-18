@@ -13,7 +13,7 @@ type PlanRow = {
 };
 
 const plans: PlanRow[] = [
-  { id: "subsonic", name: "Subsonic", price: "$99", closeFee: "0.50% at closing" },
+  { id: "subsonic", name: "Subsonic", price: "$79", closeFee: "0.50% at closing" },
   { id: "supersonic", name: "Supersonic", price: "$295", closeFee: "0.30% at closing" },
   { id: "hypersonic", name: "Hypersonic", price: "$595", closeFee: "0.25% at closing" },
 ];
