@@ -71,6 +71,7 @@ export const ES_MARKETING_SITEMAP_PATHS = [
   "/es/service-area/texas/dfw",
   "/es/service-area/texas/austin",
   "/es/service-area/texas/san-antonio",
+  "/es/service-area/texas/houston",
 ] as const;
 
 /** hreflang for dynamic location paths under `/service-area/texas/...` */

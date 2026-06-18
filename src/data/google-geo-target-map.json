@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T12:36:11.870Z",
+  "generatedAt": "2026-06-18T15:10:32.859Z",
   "sourceCsv": "/.tmp/geotargets2/third_party/devsite/developers/en/google-ads/api/data/geo/geotargets-2026-05-28.csv",
   "stats": {
     "texasCountyMappings": 254,
@@ -41,6 +41,23 @@
     "medina-county",
     "bandera-county",
     "atascosa-county"
+  ],
+  "houstonSatelliteCountySlugs": [
+    "fort-bend-county",
+    "montgomery-county",
+    "brazoria-county",
+    "galveston-county",
+    "liberty-county",
+    "waller-county",
+    "chambers-county",
+    "austin-county",
+    "walker-county",
+    "san-jacinto-county",
+    "wharton-county",
+    "colorado-county",
+    "matagorda-county",
+    "grimes-county",
+    "washington-county"
   ],
   "satelliteCountyCriteriaIds": {
     "9059442": "cherokee-county",
@@ -91,6 +108,23 @@
       "9059535": "kendall-county",
       "9059568": "medina-county",
       "9059649": "wilson-county"
+    },
+    "houston": {
+      "9059413": "austin-county",
+      "9059425": "brazoria-county",
+      "9059441": "chambers-county",
+      "9059450": "colorado-county",
+      "9059484": "fort-bend-county",
+      "9059489": "galveston-county",
+      "9059498": "grimes-county",
+      "9059551": "liberty-county",
+      "9059563": "matagorda-county",
+      "9059575": "montgomery-county",
+      "9059607": "san-jacinto-county",
+      "9059638": "walker-county",
+      "9059639": "waller-county",
+      "9059641": "washington-county",
+      "9059643": "wharton-county"
     }
   },
   "byCriteriaId": {

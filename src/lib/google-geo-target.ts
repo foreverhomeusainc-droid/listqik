@@ -27,6 +27,8 @@ const METRO_SATELLITE_CRITERIA: Record<MetroRegionalId, MetroSatelliteCriteriaId
   austin: (geoTargetMap.metroSatelliteCountyCriteriaIds?.austin ?? {}) as MetroSatelliteCriteriaIds,
   "san-antonio": (geoTargetMap.metroSatelliteCountyCriteriaIds?.["san-antonio"] ??
     {}) as MetroSatelliteCriteriaIds,
+  houston: (geoTargetMap.metroSatelliteCountyCriteriaIds?.houston ??
+    {}) as MetroSatelliteCriteriaIds,
 };
 
 /** Normalize ValueTrack `loc` / `{loc_physical_ms}` values from Google Ads clicks. */

@@ -76,6 +76,9 @@ export function classifyLandingPath(path: string): {
   if (base === "/service-area/texas/san-antonio") {
     return { pageCategory: "san_antonio_regional", countySlug: null, citySlug: null, locale };
   }
+  if (base === "/service-area/texas/houston") {
+    return { pageCategory: "houston_regional", countySlug: null, citySlug: null, locale };
+  }
 
   const countyMatch = base.match(/^\/service-area\/texas\/([^/]+)$/);
   if (countyMatch?.[1]) {
@@ -205,6 +208,7 @@ export const LANDING_PAGE_CATEGORY_LABELS: Record<LandingPageCategory, string> =
   dfw_satellite: "DFW satellite regional",
   austin_regional: "Austin regional",
   san_antonio_regional: "San Antonio regional",
+  houston_regional: "Houston regional",
   texas_index: "Texas index",
   service_area_hub: "Service area hub",
   start_now: "Start now",

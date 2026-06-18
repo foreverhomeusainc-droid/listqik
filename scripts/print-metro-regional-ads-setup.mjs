@@ -177,12 +177,74 @@ const METRO_CONFIG = {
       "Start your San Antonio MLS listing today and get maximum exposure.",
     ],
   },
+  houston: {
+    label: "Houston Area Counties",
+    landing: "/service-area/texas/houston",
+    utmCampaignEn: "houston-regional-en",
+    utmCampaignEs: "houston-regional-es",
+    mls: "HAR",
+    slugKey: "houstonSatelliteCountySlugs",
+    negatives: [
+      "san antonio",
+      "sabor",
+      "austin",
+      "actris",
+      "dfw",
+      "dallas",
+      "fort worth",
+      "ntreis",
+      "rent",
+      "rental",
+      "apartment",
+      "jobs",
+      "salary",
+      "license",
+      "course",
+      "training",
+      "free mls",
+      "craigslist",
+      "homes for sale",
+      "zillow homes",
+    ],
+    keywords: [
+      "flat fee mls houston",
+      "houston flat fee mls",
+      "har flat fee listing",
+      "flat fee mls listing houston",
+      "$79 mls listing houston",
+      "texas flat fee broker houston",
+      "discount real estate broker houston",
+      "best flat fee mls houston",
+    ],
+    headlines: [
+      "Houston Flat Fee MLS",
+      "HAR MLS Listing For $79",
+      "Flat Fee MLS Houston",
+      "List On Houston MLS Today",
+      "HAR MLS Access",
+      "Get Listed On MLS Fast",
+      "Houston MLS From Just $79",
+      "$79 MLS Listing Houston",
+      "No Hidden Listing Fees",
+      "List Your Home On MLS",
+      "Greater Houston Flat Fee",
+      "Full MLS Exposure",
+      "Fast Houston MLS Listing",
+      "Broker-Backed HAR MLS",
+    ],
+    descriptions: [
+      "List your Houston-area home on the MLS for just $79. Transparent pricing.",
+      "Get HAR MLS exposure with our affordable flat fee listing.",
+      "Fast, transparent Greater Houston MLS listings designed for homeowners.",
+      "Start your Houston MLS listing today and get maximum exposure.",
+    ],
+  },
 };
 
 function printMetroSetup(metroId) {
   const config = METRO_CONFIG[metroId];
   if (!config) {
-    console.error(`Unknown metro: ${metroId}. Use dfw, austin, or san-antonio.`);
+    console.error(`Unknown metro: ${metroId}. Use dfw, austin, san-antonio, or houston.`);
     process.exit(1);
   }
 
@@ -260,7 +322,7 @@ function printMetroSetup(metroId) {
 
 const metroArg = process.argv[2] ?? "all";
 if (metroArg === "all") {
-  for (const id of ["dfw", "austin", "san-antonio"]) {
+  for (const id of ["dfw", "austin", "san-antonio", "houston"]) {
     printMetroSetup(id);
   }
 } else {

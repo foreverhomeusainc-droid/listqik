@@ -18,7 +18,7 @@ import {
   storeHomeLocale,
   type HomeLocale,
 } from "@/i18n/home-locale";
-import { getSiteChromeCopy, type SiteChromeCopy } from "@/i18n/site-chrome-copy";
+import { getSiteShellChromeCopy, type SiteChromeCopy } from "@/i18n/site-chrome-copy";
 import { LOCALE_CHANGE_EVENT } from "@/lib/locale-events";
 
 type SiteLocaleContextValue = {
@@ -142,7 +142,7 @@ export function SiteLocaleProvider({
     [applyLocale, pathname, router, searchParams],
   );
 
-  const chrome = useMemo(() => getSiteChromeCopy(locale), [locale]);
+  const chrome = useMemo(() => getSiteShellChromeCopy(), []);
 
   const value = useMemo(
     () => ({ locale, chrome, ready, setLocale }),

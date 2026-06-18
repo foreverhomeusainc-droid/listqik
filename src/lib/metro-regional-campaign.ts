@@ -3,6 +3,7 @@ import { DFW_SATELLITE_COUNTY_NAMES, DFW_SATELLITE_COUNTY_SLUGS } from "@/lib/df
 import {
   AUSTIN_SATELLITE_COUNTY_NAMES,
   countyNamesToSlugs,
+  HOUSTON_SATELLITE_COUNTY_NAMES,
   SAN_ANTONIO_SATELLITE_COUNTY_NAMES,
 } from "@/lib/metro-regional-counties";
 import { countyPagePath } from "@/lib/texas-location-seo";
@@ -10,7 +11,7 @@ import { countyPagePath } from "@/lib/texas-location-seo";
 /** Public marketing site origin for Google Ads final URLs. */
 export const LISTQIK_MARKETING_ORIGIN = "https://listqik.com";
 
-export type MetroRegionalId = "dfw" | "austin" | "san-antonio";
+export type MetroRegionalId = "dfw" | "austin" | "san-antonio" | "houston";
 
 export type MetroRegionalCampaignConfig = {
   id: MetroRegionalId;
@@ -26,6 +27,8 @@ export type MetroRegionalCampaignConfig = {
 export {
   ACTRIS_CORE_COUNTY_NAMES,
   ACTRIS_EXTENDED_COUNTY_NAMES,
+  HAR_CORE_COUNTY_NAMES,
+  HAR_EXTENDED_COUNTY_NAMES,
   SABOR_CORE_COUNTY_NAMES,
   SABOR_EXTENDED_COUNTY_NAMES,
 } from "@/lib/metro-regional-counties";
@@ -61,12 +64,23 @@ const METRO_CONFIGS: Record<MetroRegionalId, MetroRegionalCampaignConfig> = {
     utmSource: "google",
     utmMedium: "cpc",
   },
+  houston: {
+    id: "houston",
+    landingPath: "/service-area/texas/houston",
+    satelliteCountyNames: HOUSTON_SATELLITE_COUNTY_NAMES,
+    satelliteCountySlugs: countyNamesToSlugs(HOUSTON_SATELLITE_COUNTY_NAMES),
+    utmCampaignEn: "houston-regional-en",
+    utmCampaignEs: "houston-regional-es",
+    utmSource: "google",
+    utmMedium: "cpc",
+  },
 };
 
 const SLUG_SETS: Record<MetroRegionalId, Set<string>> = {
   dfw: new Set(DFW_SATELLITE_COUNTY_SLUGS),
   austin: new Set(METRO_CONFIGS.austin.satelliteCountySlugs),
   "san-antonio": new Set(METRO_CONFIGS["san-antonio"].satelliteCountySlugs),
+  houston: new Set(METRO_CONFIGS.houston.satelliteCountySlugs),
 };
 
 export function getMetroRegionalConfig(metroId: MetroRegionalId): MetroRegionalCampaignConfig {
@@ -74,7 +88,7 @@ export function getMetroRegionalConfig(metroId: MetroRegionalId): MetroRegionalC
 }
 
 export function listMetroRegionalIds(): MetroRegionalId[] {
-  return ["dfw", "austin", "san-antonio"];
+  return ["dfw", "austin", "san-antonio", "houston"];
 }
 
 export function isMetroRegionalSatelliteCountySlug(
@@ -133,7 +147,7 @@ export function getMetroRegionalCountyLinks(metroId: MetroRegionalId, locale: Ho
   });
 }
 
-/** All satellite county slugs across DFW, Austin, and San Antonio regional campaigns. */
+/** All satellite county slugs across DFW, Austin, San Antonio, and Houston regional campaigns. */
 export function allMetroRegionalSatelliteCountySlugs(): readonly string[] {
   return listMetroRegionalIds().flatMap((id) => [...getMetroRegionalConfig(id).satelliteCountySlugs]);
 }

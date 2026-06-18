@@ -24,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/service-area/texas/dfw",
     "/service-area/texas/austin",
     "/service-area/texas/san-antonio",
+    "/service-area/texas/houston",
     "/resources",
     "/resources/blogs",
     "/resources/videos",
@@ -63,7 +64,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 path === "/service-area/texas/austin" ||
                 path === "/es/service-area/texas/austin" ||
                 path === "/service-area/texas/san-antonio" ||
-                path === "/es/service-area/texas/san-antonio"
+                path === "/es/service-area/texas/san-antonio" ||
+                path === "/service-area/texas/houston" ||
+                path === "/es/service-area/texas/houston"
               ? 0.7
               : /\/service-area\/texas\/[^/]+-county$/.test(path) ||
                   /\/es\/service-area\/texas\/[^/]+-county$/.test(path)

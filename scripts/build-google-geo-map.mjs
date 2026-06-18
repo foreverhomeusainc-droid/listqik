@@ -56,6 +56,24 @@ const SAN_ANTONIO_SATELLITE_COUNTY_SLUGS = [
   "atascosa-county",
 ];
 
+const HOUSTON_SATELLITE_COUNTY_SLUGS = [
+  "fort-bend-county",
+  "montgomery-county",
+  "brazoria-county",
+  "galveston-county",
+  "liberty-county",
+  "waller-county",
+  "chambers-county",
+  "austin-county",
+  "walker-county",
+  "san-jacinto-county",
+  "wharton-county",
+  "colorado-county",
+  "matagorda-county",
+  "grimes-county",
+  "washington-county",
+];
+
 function buildSatelliteCriteriaIds(byCriteriaId, slugs) {
   const ids = {};
   for (const slug of slugs) {
@@ -233,11 +251,16 @@ async function main() {
     byCriteriaId,
     SAN_ANTONIO_SATELLITE_COUNTY_SLUGS,
   );
+  const houstonSatelliteCountyCriteriaIds = buildSatelliteCriteriaIds(
+    byCriteriaId,
+    HOUSTON_SATELLITE_COUNTY_SLUGS,
+  );
 
   const metroSatelliteCountyCriteriaIds = {
     dfw: dfwSatelliteCountyCriteriaIds,
     austin: austinSatelliteCountyCriteriaIds,
     "san-antonio": sanAntonioSatelliteCountyCriteriaIds,
+    houston: houstonSatelliteCountyCriteriaIds,
   };
 
   const satelliteCountyCriteriaIds = dfwSatelliteCountyCriteriaIds;
@@ -254,6 +277,7 @@ async function main() {
     dfwSatelliteCountySlugs: DFW_SATELLITE_COUNTY_SLUGS,
     austinSatelliteCountySlugs: AUSTIN_SATELLITE_COUNTY_SLUGS,
     sanAntonioSatelliteCountySlugs: SAN_ANTONIO_SATELLITE_COUNTY_SLUGS,
+    houstonSatelliteCountySlugs: HOUSTON_SATELLITE_COUNTY_SLUGS,
     satelliteCountyCriteriaIds,
     metroSatelliteCountyCriteriaIds,
     byCriteriaId,
@@ -269,6 +293,9 @@ async function main() {
   console.log(`  Austin satellite county IDs: ${Object.keys(austinSatelliteCountyCriteriaIds).length}/10`);
   console.log(
     `  San Antonio satellite county IDs: ${Object.keys(sanAntonioSatelliteCountyCriteriaIds).length}/7`,
+  );
+  console.log(
+    `  Houston satellite county IDs: ${Object.keys(houstonSatelliteCountyCriteriaIds).length}/15`,
   );
 }
 

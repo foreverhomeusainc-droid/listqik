@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
-import { useSiteLocale } from "@/components/site-locale-provider";
 import { FacebookIcon, InstagramIcon, TiktokIcon, YoutubeIcon } from "@/components/social-icons";
+import { getSiteShellChromeCopy, SITE_CHROME_LOCALE } from "@/i18n/site-chrome-copy";
 import { BROKER_CONTACT, brokerFullAddressLine } from "@/lib/broker-contact";
 import { localeSitePath } from "@/lib/locale-site-path";
 import {
@@ -19,35 +19,26 @@ const socialLinkClassName =
   "inline-flex rounded-md p-1 text-white/55 transition hover:bg-white/5 hover:text-white";
 
 export function SiteFooterChrome() {
-  const { locale, chrome, ready } = useSiteLocale();
-  const t = chrome.footer;
+  const t = getSiteShellChromeCopy().footer;
   const year = new Date().getFullYear();
-  const youtubeUrl = getListQikYoutubeChannelUrl(locale);
+  const youtubeUrl = getListQikYoutubeChannelUrl(SITE_CHROME_LOCALE);
 
   return (
     <footer className="border-t border-white/10">
       <Container className="py-10">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="space-y-2">
-            <Link href={localeSitePath("/", locale)} className="inline-block">
+            <Link href={localeSitePath("/", SITE_CHROME_LOCALE)} className="inline-block">
               <ListQikLogo variant="footer" />
             </Link>
-            <p className="text-sm text-muted">
-              {ready
-                ? t.tagline
-                : "A technical utility for deploying listings fast while retaining more equity."}
-            </p>
-            <div className="text-xs text-white/50 font-mono">
-              {ready
-                ? t.brokerSupport
-                : "Local Texas broker support · 4-hour rapid deployment"}
-            </div>
+            <p className="text-sm text-muted">{t.tagline}</p>
+            <div className="text-xs text-white/50 font-mono">{t.brokerSupport}</div>
             <div className="flex items-center gap-3 pt-3">
               <a
                 href={youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={ready ? t.youtubeAriaLabel : "ListQik on YouTube"}
+                aria-label={t.youtubeAriaLabel}
                 className={socialLinkClassName}
               >
                 <YoutubeIcon />
@@ -56,7 +47,7 @@ export function SiteFooterChrome() {
                 href={LISTQIK_TIKTOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={ready ? t.tiktokAriaLabel : "ListQik on TikTok"}
+                aria-label={t.tiktokAriaLabel}
                 className={socialLinkClassName}
               >
                 <TiktokIcon />
@@ -65,7 +56,7 @@ export function SiteFooterChrome() {
                 href={LISTQIK_INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={ready ? t.instagramAriaLabel : "ListQik on Instagram"}
+                aria-label={t.instagramAriaLabel}
                 className={socialLinkClassName}
               >
                 <InstagramIcon />
@@ -74,7 +65,7 @@ export function SiteFooterChrome() {
                 href={LISTQIK_FACEBOOK_MESSENGER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={ready ? t.messengerAriaLabel : "ListQik on Messenger"}
+                aria-label={t.messengerAriaLabel}
                 className={socialLinkClassName}
               >
                 <FacebookIcon />
@@ -100,7 +91,7 @@ export function SiteFooterChrome() {
               <div className="mt-2 flex items-center gap-3">
                 <Image
                   src="/central-metro-realty-logo.svg"
-                  alt={ready ? t.centralMetroAlt : "Central Metro Realty"}
+                  alt={t.centralMetroAlt}
                   width={160}
                   height={40}
                   className="h-8 w-auto opacity-90"
@@ -112,120 +103,114 @@ export function SiteFooterChrome() {
 
           <div className="grid grid-cols-2 gap-8 md:col-span-2 md:grid-cols-3">
             <div className="space-y-2">
-              <div className="text-xs font-semibold tracking-widest text-white/70">
-                {ready ? t.product : "Product"}
-              </div>
+              <div className="text-xs font-semibold tracking-widest text-white/70">{t.product}</div>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/pricing", locale)}
+                    href={localeSitePath("/pricing", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.pricing : "Pricing"}
+                    {t.pricing}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/listings", locale)}
+                    href={localeSitePath("/listings", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.listings : "Listings"}
+                    {t.listings}
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div className="space-y-2">
-              <div className="text-xs font-semibold tracking-widest text-white/70">
-                {ready ? t.resources : "Resources"}
-              </div>
+              <div className="text-xs font-semibold tracking-widest text-white/70">{t.resources}</div>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/blogs", locale)}
+                    href={localeSitePath("/resources/blogs", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.blogs : "Blogs"}
+                    {t.blogs}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/videos", locale)}
+                    href={localeSitePath("/resources/videos", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.videos : "Videos"}
+                    {t.videos}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/listqik-university", locale)}
+                    href={localeSitePath("/listqik-university", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.university : "ListQik University"}
+                    {t.university}
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div className="space-y-2">
-              <div className="text-xs font-semibold tracking-widest text-white/70">
-                {ready ? t.legal : "Legal"}
-              </div>
+              <div className="text-xs font-semibold tracking-widest text-white/70">{t.legal}</div>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/iabs", locale)}
+                    href={localeSitePath("/resources/legal/iabs", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.iabs : "Information About Brokerage Services (IABS)"}
+                    {t.iabs}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/consumer-protection-notice", locale)}
+                    href={localeSitePath("/resources/legal/consumer-protection-notice", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.consumerProtection : "Consumer Protection Notice"}
+                    {t.consumerProtection}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/mls-rule-schedule-of-fines", locale)}
+                    href={localeSitePath("/resources/legal/mls-rule-schedule-of-fines", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.mlsFines : "MLS Rule Schedule of Fines"}
+                    {t.mlsFines}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/mls-rules-and-regulations", locale)}
+                    href={localeSitePath("/resources/legal/mls-rules-and-regulations", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.mlsRules : "MLS Rules and Regulations"}
+                    {t.mlsRules}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/fair-housing", locale)}
+                    href={localeSitePath("/resources/legal/fair-housing", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.fairHousing : "Fair Housing"}
+                    {t.fairHousing}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/privacy", locale)}
+                    href={localeSitePath("/resources/legal/privacy", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.privacy : "Privacy"}
+                    {t.privacy}
                   </Link>
                 </li>
                 <li>
                   <Link
                     className="text-white/70 hover:text-white"
-                    href={localeSitePath("/resources/legal/terms", locale)}
+                    href={localeSitePath("/resources/legal/terms", SITE_CHROME_LOCALE)}
                   >
-                    {ready ? t.terms : "Terms"}
+                    {t.terms}
                   </Link>
                 </li>
               </ul>
@@ -235,14 +220,10 @@ export function SiteFooterChrome() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            © {year} ListQik.com · Resolution Realty Group.{" "}
-            {ready ? t.copyright : "All rights reserved."}
+            © {year} ListQik.com · Resolution Realty Group. {t.copyright}
           </div>
           <div className="font-mono">
-            {ready ? t.status : "Status:"}{" "}
-            <span className="text-white/70">
-              {ready ? t.operational : "Operational"}
-            </span>
+            {t.status} <span className="text-white/70">{t.operational}</span>
           </div>
         </div>
       </Container>

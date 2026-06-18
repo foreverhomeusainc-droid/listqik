@@ -151,6 +151,13 @@ const COPY: Record<HomeLocale, SiteChromeCopy> = {
   },
 };
 
+/** Site shell (header, footer, primary nav) is always English. */
+export const SITE_CHROME_LOCALE: HomeLocale = "en";
+
 export function getSiteChromeCopy(locale: HomeLocale): SiteChromeCopy {
   return COPY[locale];
+}
+
+export function getSiteShellChromeCopy(): SiteChromeCopy {
+  return COPY[SITE_CHROME_LOCALE];
 }

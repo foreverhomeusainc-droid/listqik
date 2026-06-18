@@ -2,27 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSiteLocale } from "@/components/site-locale-provider";
+import { getSiteShellChromeCopy, SITE_CHROME_LOCALE } from "@/i18n/site-chrome-copy";
 import { localeSitePath } from "@/lib/locale-site-path";
 
 function isServicesPath(pathname: string | null): boolean {
   if (!pathname) return false;
-  const paths = [
-    "/full-service",
-    "/service-area",
-    "/es/full-service",
-    "/es/service-area",
-  ];
+  const paths = ["/full-service", "/service-area"];
   return paths.some((base) => pathname === base || pathname.startsWith(`${base}/`));
 }
 
 export function NavServicesDropdown() {
-  const { locale, chrome, ready } = useSiteLocale();
-  const t = chrome.header;
+  const t = getSiteShellChromeCopy().header;
   const pathname = usePathname();
   const active = isServicesPath(pathname);
-  const fullServiceHref = localeSitePath("/full-service", locale);
-  const serviceAreaHref = localeSitePath("/service-area", locale);
+  const fullServiceHref = localeSitePath("/full-service", SITE_CHROME_LOCALE);
+  const serviceAreaHref = localeSitePath("/service-area", SITE_CHROME_LOCALE);
 
   const triggerClass = [
     "inline-flex items-center gap-1 rounded-full border px-3 py-2 font-mono text-xs font-semibold uppercase tracking-[0.14em] transition",
@@ -30,10 +24,6 @@ export function NavServicesDropdown() {
       ? "border-emerald-300/70 bg-emerald-400/20 text-emerald-100 shadow-[0_0_12px_rgba(52,211,153,0.2)]"
       : "border-transparent text-emerald-100/85 hover:border-emerald-400/35 hover:bg-emerald-900/25 hover:text-emerald-100",
   ].join(" ");
-
-  const servicesLabel = ready ? t.services : locale === "es" ? "Servicios" : "Services";
-  const fullServiceLabel = ready ? t.fullService : locale === "es" ? "Servicio completo" : "Full Service";
-  const serviceAreaLabel = ready ? t.serviceArea : locale === "es" ? "Zona de servicio" : "Service Area";
 
   return (
     <div className="group relative">
@@ -43,7 +33,7 @@ export function NavServicesDropdown() {
         aria-expanded="false"
         aria-haspopup="true"
       >
-        {servicesLabel}
+        {t.services}
         <span aria-hidden className="text-[10px] opacity-70">
           ▾
         </span>
@@ -64,7 +54,7 @@ export function NavServicesDropdown() {
                 : "text-emerald-100/90",
             ].join(" ")}
           >
-            {fullServiceLabel}
+            {t.fullService}
           </Link>
           <Link
             href={serviceAreaHref}
@@ -76,7 +66,7 @@ export function NavServicesDropdown() {
                 : "text-emerald-100/90",
             ].join(" ")}
           >
-            {serviceAreaLabel}
+            {t.serviceArea}
           </Link>
         </div>
       </div>

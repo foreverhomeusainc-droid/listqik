@@ -6,7 +6,7 @@ import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
 import { NavLink } from "@/components/nav-link";
 import { NavServicesDropdown } from "@/components/nav-services-dropdown";
-import { useSiteLocale } from "@/components/site-locale-provider";
+import { getSiteShellChromeCopy, SITE_CHROME_LOCALE } from "@/i18n/site-chrome-copy";
 import { localeSitePath } from "@/lib/locale-site-path";
 
 type SiteHeaderChromeProps = {
@@ -14,14 +14,13 @@ type SiteHeaderChromeProps = {
 };
 
 export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
-  const { locale, chrome, ready } = useSiteLocale();
-  const t = chrome.header;
-  const homeHref = localeSitePath("/", locale);
-  const pricingHref = localeSitePath("/pricing", locale);
-  const aboutHref = localeSitePath("/about", locale);
-  const universityHref = localeSitePath("/listqik-university", locale);
-  const resourcesHref = localeSitePath("/resources/blogs", locale);
-  const listingsHref = localeSitePath("/listings", locale);
+  const t = getSiteShellChromeCopy().header;
+  const homeHref = localeSitePath("/", SITE_CHROME_LOCALE);
+  const pricingHref = localeSitePath("/pricing", SITE_CHROME_LOCALE);
+  const aboutHref = localeSitePath("/about", SITE_CHROME_LOCALE);
+  const universityHref = localeSitePath("/listqik-university", SITE_CHROME_LOCALE);
+  const resourcesHref = localeSitePath("/resources/blogs", SITE_CHROME_LOCALE);
+  const listingsHref = localeSitePath("/listings", SITE_CHROME_LOCALE);
 
   return (
     <header className="sticky top-0 z-40 border-b border-emerald-500/25 bg-black/55 backdrop-blur">
@@ -36,19 +35,12 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
           </Link>
         </div>
 
-        <nav
-          aria-label={ready ? t.navLabel : locale === "es" ? "Principal" : "Primary"}
-          className="hidden items-center gap-1 md:flex"
-        >
-          <NavLink href={pricingHref}>{ready ? t.pricing : locale === "es" ? "Precios" : "Pricing"}</NavLink>
+        <nav aria-label={t.navLabel} className="hidden items-center gap-1 md:flex">
+          <NavLink href={pricingHref}>{t.pricing}</NavLink>
           <NavServicesDropdown />
-          <NavLink href={aboutHref}>{ready ? t.about : locale === "es" ? "Nosotros" : "About"}</NavLink>
-          <NavLink href={universityHref}>
-            {ready ? t.university : locale === "es" ? "Universidad" : "University"}
-          </NavLink>
-          <NavLink href={resourcesHref}>
-            {ready ? t.resources : locale === "es" ? "Recursos" : "Resources"}
-          </NavLink>
+          <NavLink href={aboutHref}>{t.about}</NavLink>
+          <NavLink href={universityHref}>{t.university}</NavLink>
+          <NavLink href={resourcesHref}>{t.resources}</NavLink>
         </nav>
 
         <div className="flex items-center justify-end gap-2 whitespace-nowrap">
@@ -58,11 +50,9 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
                 href="/dashboard"
                 className="hidden min-h-[40px] items-center rounded-full border border-emerald-400/35 bg-emerald-950/30 px-3 text-sm font-semibold tracking-wide text-emerald-100 transition hover:border-emerald-300/70 hover:bg-emerald-900/35 sm:inline-flex"
               >
-                {ready ? t.dashboard : locale === "es" ? "Panel" : "Dashboard"}
+                {t.dashboard}
               </Link>
-              <HeaderSignOutButton
-                label={ready ? t.logOut : locale === "es" ? "Cerrar sesión" : "Log out"}
-              />
+              <HeaderSignOutButton label={t.logOut} />
             </>
           ) : (
             <>
@@ -70,19 +60,19 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
                 href="/login"
                 className="hidden min-h-[40px] items-center rounded-full border border-emerald-400/25 px-3 text-sm font-semibold tracking-wide text-emerald-100/90 transition hover:border-emerald-300/50 sm:inline-flex"
               >
-                {ready ? t.logIn : locale === "es" ? "Iniciar sesión" : "Log in"}
+                {t.logIn}
               </Link>
               <Link
                 href={listingsHref}
                 className="hidden min-h-[40px] items-center rounded-full border border-emerald-400/35 bg-emerald-950/30 px-4 text-sm font-semibold tracking-wide text-emerald-100 transition hover:border-emerald-300/70 hover:bg-emerald-900/35 lg:inline-flex"
               >
-                {ready ? t.viewListings : locale === "es" ? "Ver propiedades" : "View Listings"}
+                {t.viewListings}
               </Link>
               <Link
                 href={pricingHref}
                 className="inline-flex min-h-[40px] items-center rounded-full border border-emerald-400/70 bg-emerald-500/20 px-4 text-sm font-semibold tracking-wide text-emerald-100 transition hover:bg-emerald-400/30"
               >
-                {ready ? t.startListing : locale === "es" ? "Publicar ahora" : "Start Listing"}
+                {t.startListing}
               </Link>
             </>
           )}
