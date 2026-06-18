@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { GoogleAdsCheckoutSuccess } from "@/components/analytics/google-ads-checkout-success";
+import { GoogleAdsCheckoutSuccessServer } from "@/components/analytics/google-ads-checkout-success-server";
 import { PricingConsole } from "@/components/pricing/pricing-console";
 import { getPricingCopy } from "@/i18n/pricing-copy";
 import { buildLocalizedMetadata } from "@/lib/locale-metadata";
@@ -19,11 +20,23 @@ function PricingFallback() {
   );
 }
 
-export default function EsPricingPage() {
+export default async function EsPricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ checkout?: string; session_id?: string }>;
+}) {
+  const params = await searchParams;
+
   return (
-    <Suspense fallback={<PricingFallback />}>
-      <GoogleAdsCheckoutSuccess />
-      <PricingConsole />
-    </Suspense>
+    <>
+      <GoogleAdsCheckoutSuccessServer
+        checkout={params.checkout}
+        stripeSessionId={params.session_id}
+      />
+      <Suspense fallback={<PricingFallback />}>
+        <GoogleAdsCheckoutSuccess />
+        <PricingConsole />
+      </Suspense>
+    </>
   );
 }

@@ -21,19 +21,24 @@ export function GoogleAdsCheckoutSuccess() {
     let cancelled = false;
 
     void (async () => {
-      const res = await fetch(
-        `/api/pricing/checkout/conversion?stripeSessionId=${encodeURIComponent(stripeSessionId)}`,
-        { cache: "no-store" },
-      ).catch(() => null);
+      const url = `/api/pricing/checkout/conversion?stripeSessionId=${encodeURIComponent(stripeSessionId)}`;
 
-      if (!res?.ok || cancelled) return;
+      for (let attempt = 0; attempt < 8 && !cancelled; attempt += 1) {
+        if (attempt > 0) {
+          await new Promise((resolve) => window.setTimeout(resolve, 1500));
+        }
 
-      const data = (await res.json().catch(() => null)) as
-        | { ok?: boolean; purchase?: GoogleAdsPurchasePayload }
-        | null;
+        const res = await fetch(url, { cache: "no-store" }).catch(() => null);
+        if (!res?.ok || cancelled) continue;
 
-      if (!data?.ok || !data.purchase || cancelled) return;
-      setPurchase(data.purchase);
+        const data = (await res.json().catch(() => null)) as
+          | { ok?: boolean; purchase?: GoogleAdsPurchasePayload }
+          | null;
+
+        if (!data?.ok || !data.purchase || cancelled) continue;
+        setPurchase(data.purchase);
+        return;
+      }
     })();
 
     return () => {

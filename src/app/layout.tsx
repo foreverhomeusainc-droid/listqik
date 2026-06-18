@@ -85,18 +85,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${robotoMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full min-w-0 flex flex-col">
-        <a
-          href="#content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 rounded-full bg-black px-4 py-2 text-sm font-semibold text-white"
-        >
-          Skip to content
-        </a>
-        <AuthSessionProvider>
-          <main id="content" className="flex-1">
-            {children}
-          </main>
-        </AuthSessionProvider>
+      <head>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_TAG_ID}`}
           strategy="afterInteractive"
@@ -109,6 +98,19 @@ export default function RootLayout({
             gtag('config', '${GOOGLE_ADS_TAG_ID}');
           `}
         </Script>
+      </head>
+      <body className="min-h-full min-w-0 flex flex-col">
+        <a
+          href="#content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 rounded-full bg-black px-4 py-2 text-sm font-semibold text-white"
+        >
+          Skip to content
+        </a>
+        <AuthSessionProvider>
+          <main id="content" className="flex-1">
+            {children}
+          </main>
+        </AuthSessionProvider>
       </body>
     </html>
   );
