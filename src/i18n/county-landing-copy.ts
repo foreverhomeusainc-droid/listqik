@@ -224,6 +224,32 @@ const HERO_BY_TIER: Record<
       heroSubtitle: SUBTITLE_EN,
       mlsTrustBadge: "Broker-backed Houston HAR MLS listing",
     }),
+    "actris-core": (county) => ({
+      heroEyebrow: `ACTRIS MLS flat-fee listing · ${county} County, TX`,
+      heroTitle: `List your house on the ACTRIS MLS in ${county} County for only $79`,
+      heroSubtitle: SUBTITLE_EN,
+      mlsTrustBadge: "Broker-backed ACTRIS MLS listing",
+    }),
+    "actris-extended": (county) => ({
+      heroEyebrow: `ACTRIS MLS flat-fee listing · ${county} County, TX`,
+      heroTitle: `List your house on the ACTRIS MLS in ${county} County for only $79`,
+      heroSubtitle: SUBTITLE_EN,
+      mlsTrustBadge: "Broker-backed ACTRIS MLS listing",
+    }),
+    "sabor-core": (county) => ({
+      heroEyebrow: `San Antonio MLS flat-fee listing · ${county} County, TX`,
+      heroTitle: "Get on the San Antonio MLS for Just $79 • No High Commission",
+      heroSubtitle:
+        "Showcase your home to millions of buyers across San Antonio and satellite counties",
+      mlsTrustBadge: "Broker-backed San Antonio MLS listing",
+    }),
+    "sabor-extended": (county) => ({
+      heroEyebrow: `San Antonio MLS flat-fee listing · ${county} County, TX`,
+      heroTitle: "Get on the San Antonio MLS for Just $79 • No High Commission",
+      heroSubtitle:
+        "Showcase your home to millions of buyers across San Antonio and satellite counties",
+      mlsTrustBadge: "Broker-backed San Antonio MLS listing",
+    }),
     statewide: (county) => ({
       heroEyebrow: `Texas flat-fee MLS listing · ${county} County`,
       heroTitle: `List your home on the MLS in ${county} County—start online for $79`,
@@ -256,6 +282,32 @@ const HERO_BY_TIER: Record<
       heroTitle: `Publique su casa en el MLS de Houston en el condado de ${county} por solo $79`,
       heroSubtitle: SUBTITLE_ES,
       mlsTrustBadge: "Listado MLS HAR respaldado por correduría",
+    }),
+    "actris-core": (county) => ({
+      heroEyebrow: `Listado MLS ACTRIS tarifa fija · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el MLS ACTRIS en el condado de ${county} por solo $79`,
+      heroSubtitle: SUBTITLE_ES,
+      mlsTrustBadge: "Listado MLS ACTRIS respaldado por correduría",
+    }),
+    "actris-extended": (county) => ({
+      heroEyebrow: `Listado MLS ACTRIS tarifa fija · Condado de ${county}, TX`,
+      heroTitle: `Publique su casa en el MLS ACTRIS en el condado de ${county} por solo $79`,
+      heroSubtitle: SUBTITLE_ES,
+      mlsTrustBadge: "Listado MLS ACTRIS respaldado por correduría",
+    }),
+    "sabor-core": (county) => ({
+      heroEyebrow: `Listado MLS San Antonio tarifa fija · Condado de ${county}, TX`,
+      heroTitle: "Publique en el MLS de San Antonio por solo $79 • Sin comisión alta",
+      heroSubtitle:
+        "Muestre su casa a millones de compradores en San Antonio y condados satélite",
+      mlsTrustBadge: "Listado MLS San Antonio con respaldo de correduría",
+    }),
+    "sabor-extended": (county) => ({
+      heroEyebrow: `Listado MLS San Antonio tarifa fija · Condado de ${county}, TX`,
+      heroTitle: "Publique en el MLS de San Antonio por solo $79 • Sin comisión alta",
+      heroSubtitle:
+        "Muestre su casa a millones de compradores en San Antonio y condados satélite",
+      mlsTrustBadge: "Listado MLS San Antonio con respaldo de correduría",
     }),
     statewide: (county) => ({
       heroEyebrow: `Listado MLS tarifa fija Texas · Condado de ${county}`,
@@ -319,6 +371,62 @@ const HOW_IT_WORKS: Record<HomeLocale, Record<ServiceCoverageTier, CountyHowItWo
       {
         title: "Broker prepares MLS submission",
         body: "Licensed brokerage support handles Houston-area MLS submission after compliance review.",
+      },
+      {
+        title: "Inquiries come to you",
+        body: "Buyer-agent inquiries and offers route directly to you within MLS rules.",
+      },
+    ],
+    "actris-core": [
+      {
+        title: "Enter property details online",
+        body: "Complete seller intake with your Austin-area address and property details.",
+      },
+      {
+        title: "Broker submits to ACTRIS",
+        body: "After compliance review, your brokerage team submits through the ACTRIS MLS path for your property.",
+      },
+      {
+        title: "Inquiries come to you",
+        body: "Buyer-agent inquiries and offers route directly to you within MLS rules.",
+      },
+    ],
+    "actris-extended": [
+      {
+        title: "Enter property details online",
+        body: "Complete seller intake—we confirm the ACTRIS MLS path for your address during onboarding.",
+      },
+      {
+        title: "Broker prepares MLS submission",
+        body: "Licensed brokerage support handles Central Texas ACTRIS MLS submission after compliance review.",
+      },
+      {
+        title: "Inquiries come to you",
+        body: "Buyer-agent inquiries and offers route directly to you within MLS rules.",
+      },
+    ],
+    "sabor-core": [
+      {
+        title: "Enter property details online",
+        body: "Complete seller intake with your San Antonio-area address and property details.",
+      },
+      {
+        title: "Broker submits to SABOR",
+        body: "After compliance review, your brokerage team submits through the SABOR MLS path for your property.",
+      },
+      {
+        title: "Inquiries come to you",
+        body: "Buyer-agent inquiries and offers route directly to you within MLS rules.",
+      },
+    ],
+    "sabor-extended": [
+      {
+        title: "Enter property details online",
+        body: "Complete seller intake—we confirm the SABOR MLS path for your address during onboarding.",
+      },
+      {
+        title: "Broker prepares MLS submission",
+        body: "Licensed brokerage support handles San Antonio-area SABOR MLS submission after compliance review.",
       },
       {
         title: "Inquiries come to you",
@@ -391,6 +499,62 @@ const HOW_IT_WORKS: Record<HomeLocale, Record<ServiceCoverageTier, CountyHowItWo
       {
         title: "La correduría prepara el envío MLS",
         body: "Apoyo de corretaje con licencia para el envío MLS en el área de Houston tras revisión de cumplimiento.",
+      },
+      {
+        title: "Las consultas llegan a usted",
+        body: "Consultas y ofertas se dirigen a usted dentro de las reglas MLS.",
+      },
+    ],
+    "actris-core": [
+      {
+        title: "Ingrese los datos en línea",
+        body: "Complete el intake con la dirección de su propiedad en el área de Austin.",
+      },
+      {
+        title: "Envío al MLS ACTRIS",
+        body: "Tras la revisión de cumplimiento, su correduría envía por la ruta MLS ACTRIS para su propiedad.",
+      },
+      {
+        title: "Las consultas llegan a usted",
+        body: "Consultas y ofertas se dirigen a usted dentro de las reglas MLS.",
+      },
+    ],
+    "actris-extended": [
+      {
+        title: "Ingrese los datos en línea",
+        body: "Complete el intake—confirmamos la ruta MLS ACTRIS para su dirección durante el onboarding.",
+      },
+      {
+        title: "La correduría prepara el envío MLS",
+        body: "Apoyo de corretaje con licencia para el envío MLS ACTRIS en el centro de Texas tras revisión de cumplimiento.",
+      },
+      {
+        title: "Las consultas llegan a usted",
+        body: "Consultas y ofertas se dirigen a usted dentro de las reglas MLS.",
+      },
+    ],
+    "sabor-core": [
+      {
+        title: "Ingrese los datos en línea",
+        body: "Complete el intake con la dirección de su propiedad en el área de San Antonio.",
+      },
+      {
+        title: "Envío al MLS SABOR",
+        body: "Tras la revisión de cumplimiento, su correduría envía por la ruta MLS SABOR para su propiedad.",
+      },
+      {
+        title: "Las consultas llegan a usted",
+        body: "Consultas y ofertas se dirigen a usted dentro de las reglas MLS.",
+      },
+    ],
+    "sabor-extended": [
+      {
+        title: "Ingrese los datos en línea",
+        body: "Complete el intake—confirmamos la ruta MLS SABOR para su dirección durante el onboarding.",
+      },
+      {
+        title: "La correduría prepara el envío MLS",
+        body: "Apoyo de corretaje con licencia para el envío MLS SABOR en el área de San Antonio tras revisión de cumplimiento.",
       },
       {
         title: "Las consultas llegan a usted",

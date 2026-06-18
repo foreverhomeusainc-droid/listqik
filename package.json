@@ -22,6 +22,9 @@
     "data:texas-locations": "node scripts/generate-texas-locations.mjs",
     "data:google-geo-map": "node scripts/build-google-geo-map.mjs",
     "ads:dfw-satellite-setup": "node scripts/print-dfw-satellite-ads-setup.mjs",
+    "ads:austin-setup": "node scripts/print-metro-regional-ads-setup.mjs austin",
+    "ads:san-antonio-setup": "node scripts/print-metro-regional-ads-setup.mjs san-antonio",
+    "ads:metro-regional-setup": "node scripts/print-metro-regional-ads-setup.mjs all",
     "db:seed-blog-texas-counties": "node scripts/seed-blog-discovering-texas.mjs"
   },
   "dependencies": {

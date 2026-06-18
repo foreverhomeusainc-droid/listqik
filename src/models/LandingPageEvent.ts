@@ -6,6 +6,8 @@ export type LandingPageCategory =
   | "county_lander"
   | "city_lander"
   | "dfw_satellite"
+  | "austin_regional"
+  | "san_antonio_regional"
   | "texas_index"
   | "service_area_hub"
   | "start_now"
@@ -31,6 +33,8 @@ const landingPageEventSchema = new Schema(
         "county_lander",
         "city_lander",
         "dfw_satellite",
+        "austin_regional",
+        "san_antonio_regional",
         "texas_index",
         "service_area_hub",
         "start_now",

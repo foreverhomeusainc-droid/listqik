@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-12T12:33:37.226Z",
-  "sourceCsv": ".tmp/geotargets2/third_party/devsite/developers/en/google-ads/api/data/geo/geotargets-2026-05-28.csv",
+  "generatedAt": "2026-06-18T12:36:11.870Z",
+  "sourceCsv": "/.tmp/geotargets2/third_party/devsite/developers/en/google-ads/api/data/geo/geotargets-2026-05-28.csv",
   "stats": {
     "texasCountyMappings": 254,
     "texasCityMappings": 801,
@@ -21,6 +21,27 @@
     "cherokee-county",
     "fannin-county"
   ],
+  "austinSatelliteCountySlugs": [
+    "bastrop-county",
+    "caldwell-county",
+    "burnet-county",
+    "blanco-county",
+    "lee-county",
+    "fayette-county",
+    "llano-county",
+    "gillespie-county",
+    "lampasas-county",
+    "milam-county"
+  ],
+  "sanAntonioSatelliteCountySlugs": [
+    "comal-county",
+    "kendall-county",
+    "guadalupe-county",
+    "wilson-county",
+    "medina-county",
+    "bandera-county",
+    "atascosa-county"
+  ],
   "satelliteCountyCriteriaIds": {
     "9059442": "cherokee-county",
     "9059476": "ellis-county",
@@ -34,6 +55,43 @@
     "9059580": "navarro-county",
     "9059602": "rockwall-county",
     "9059651": "wise-county"
+  },
+  "metroSatelliteCountyCriteriaIds": {
+    "dfw": {
+      "9059442": "cherokee-county",
+      "9059476": "ellis-county",
+      "9059479": "fannin-county",
+      "9059496": "grayson-county",
+      "9059512": "henderson-county",
+      "9059516": "hood-county",
+      "9059521": "hunt-county",
+      "9059531": "johnson-county",
+      "9059534": "kaufman-county",
+      "9059580": "navarro-county",
+      "9059602": "rockwall-county",
+      "9059651": "wise-county"
+    },
+    "austin": {
+      "9059416": "bastrop-county",
+      "9059421": "blanco-county",
+      "9059432": "burnet-county",
+      "9059433": "caldwell-county",
+      "9059480": "fayette-county",
+      "9059491": "gillespie-county",
+      "9059547": "lampasas-county",
+      "9059549": "lee-county",
+      "9059555": "llano-county",
+      "9059571": "milam-county"
+    },
+    "san-antonio": {
+      "9059412": "atascosa-county",
+      "9059415": "bandera-county",
+      "9059451": "comal-county",
+      "9059499": "guadalupe-county",
+      "9059535": "kendall-county",
+      "9059568": "medina-county",
+      "9059649": "wilson-county"
+    }
   },
   "byCriteriaId": {
     "1026169": {

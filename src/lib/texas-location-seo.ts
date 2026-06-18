@@ -2,6 +2,12 @@ import texasLocations from "@/data/texas-locations.json";
 import type { HomeLocale } from "@/i18n/home-locale";
 import { localizedCoverageLabel } from "@/i18n/texas-location-copy";
 import {
+  ACTRIS_CORE_COUNTY_NAMES,
+  ACTRIS_EXTENDED_COUNTY_NAMES,
+  SABOR_CORE_COUNTY_NAMES,
+  SABOR_EXTENDED_COUNTY_NAMES,
+} from "@/lib/metro-regional-counties";
+import {
   ALL_SERVICE_COUNTIES,
   EXTENDED_SERVICE_COUNTIES,
   PRIMARY_SERVICE_COUNTIES,
@@ -14,6 +20,10 @@ export type TexasLocationCity = TexasLocationCounty["cities"][number];
 export type ServiceCoverageTier =
   | "primary"
   | "extended"
+  | "actris-core"
+  | "actris-extended"
+  | "sabor-core"
+  | "sabor-extended"
   | "har-core"
   | "har-extended"
   | "statewide";
@@ -40,6 +50,10 @@ const HAR_EXTENDED = new Set([
   "Washington",
 ]);
 
+const ACTRIS_CORE = new Set<string>(ACTRIS_CORE_COUNTY_NAMES);
+const ACTRIS_EXTENDED = new Set<string>(ACTRIS_EXTENDED_COUNTY_NAMES);
+const SABOR_CORE = new Set<string>(SABOR_CORE_COUNTY_NAMES);
+const SABOR_EXTENDED = new Set<string>(SABOR_EXTENDED_COUNTY_NAMES);
 const PRIMARY = new Set<string>(PRIMARY_SERVICE_COUNTIES);
 const EXTENDED = new Set<string>(EXTENDED_SERVICE_COUNTIES);
 const ACTIVE = new Set<string>(ALL_SERVICE_COUNTIES);
@@ -54,6 +68,10 @@ export const TEXAS_LOCATION_STATS = {
 export function countyCoverageTier(countyName: string): ServiceCoverageTier {
   if (PRIMARY.has(countyName)) return "primary";
   if (EXTENDED.has(countyName)) return "extended";
+  if (ACTRIS_CORE.has(countyName)) return "actris-core";
+  if (ACTRIS_EXTENDED.has(countyName)) return "actris-extended";
+  if (SABOR_CORE.has(countyName)) return "sabor-core";
+  if (SABOR_EXTENDED.has(countyName)) return "sabor-extended";
   if (HAR_CORE.has(countyName)) return "har-core";
   if (HAR_EXTENDED.has(countyName)) return "har-extended";
   return "statewide";
@@ -119,6 +137,12 @@ export function countySeoTitle(
     if (tier === "har-core" || tier === "har-extended") {
       return `Listado MLS Houston · Condado de ${countyName} por $79 | ListQik`;
     }
+    if (tier === "actris-core" || tier === "actris-extended") {
+      return `Listado MLS ACTRIS · Condado de ${countyName} por $79 | ListQik`;
+    }
+    if (tier === "sabor-core" || tier === "sabor-extended") {
+      return `Listado MLS San Antonio · Condado de ${countyName} por $79 | ListQik`;
+    }
     if (tier === "primary" || tier === "extended") {
       return `Listado MLS NTREIS · Condado de ${countyName} por $79 | ListQik`;
     }
@@ -130,6 +154,12 @@ export function countySeoTitle(
   }
   if (tier === "har-core" || tier === "har-extended") {
     return `List on Houston MLS in ${countyName} County for $79 | ListQik`;
+  }
+  if (tier === "actris-core" || tier === "actris-extended") {
+    return `List on ACTRIS MLS in ${countyName} County for $79 | ListQik`;
+  }
+  if (tier === "sabor-core" || tier === "sabor-extended") {
+    return `List on San Antonio MLS in ${countyName} County for $79 | ListQik`;
   }
   if (tier === "primary" || tier === "extended") {
     return `List on NTREIS MLS in ${countyName} County for $79 | ListQik`;

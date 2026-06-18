@@ -33,6 +33,40 @@ const DFW_SATELLITE_COUNTY_SLUGS = [
   "fannin-county",
 ];
 
+const AUSTIN_SATELLITE_COUNTY_SLUGS = [
+  "bastrop-county",
+  "caldwell-county",
+  "burnet-county",
+  "blanco-county",
+  "lee-county",
+  "fayette-county",
+  "llano-county",
+  "gillespie-county",
+  "lampasas-county",
+  "milam-county",
+];
+
+const SAN_ANTONIO_SATELLITE_COUNTY_SLUGS = [
+  "comal-county",
+  "kendall-county",
+  "guadalupe-county",
+  "wilson-county",
+  "medina-county",
+  "bandera-county",
+  "atascosa-county",
+];
+
+function buildSatelliteCriteriaIds(byCriteriaId, slugs) {
+  const ids = {};
+  for (const slug of slugs) {
+    const entry = Object.entries(byCriteriaId).find(
+      ([, v]) => v.countySlug === slug && v.targetType === "County",
+    );
+    if (entry) ids[entry[0]] = slug;
+  }
+  return ids;
+}
+
 function buildCityToCountyLookup() {
   const lookup = new Map();
   for (const county of texasLocations.locations) {
@@ -187,13 +221,26 @@ async function main() {
     }
   }
 
-  const satelliteCountyCriteriaIds = {};
-  for (const slug of DFW_SATELLITE_COUNTY_SLUGS) {
-    const entry = Object.entries(byCriteriaId).find(
-      ([, v]) => v.countySlug === slug && v.targetType === "County",
-    );
-    if (entry) satelliteCountyCriteriaIds[entry[0]] = slug;
-  }
+  const dfwSatelliteCountyCriteriaIds = buildSatelliteCriteriaIds(
+    byCriteriaId,
+    DFW_SATELLITE_COUNTY_SLUGS,
+  );
+  const austinSatelliteCountyCriteriaIds = buildSatelliteCriteriaIds(
+    byCriteriaId,
+    AUSTIN_SATELLITE_COUNTY_SLUGS,
+  );
+  const sanAntonioSatelliteCountyCriteriaIds = buildSatelliteCriteriaIds(
+    byCriteriaId,
+    SAN_ANTONIO_SATELLITE_COUNTY_SLUGS,
+  );
+
+  const metroSatelliteCountyCriteriaIds = {
+    dfw: dfwSatelliteCountyCriteriaIds,
+    austin: austinSatelliteCountyCriteriaIds,
+    "san-antonio": sanAntonioSatelliteCountyCriteriaIds,
+  };
+
+  const satelliteCountyCriteriaIds = dfwSatelliteCountyCriteriaIds;
 
   const output = {
     generatedAt: new Date().toISOString(),
@@ -205,7 +252,10 @@ async function main() {
       totalCriteriaIds: Object.keys(byCriteriaId).length,
     },
     dfwSatelliteCountySlugs: DFW_SATELLITE_COUNTY_SLUGS,
+    austinSatelliteCountySlugs: AUSTIN_SATELLITE_COUNTY_SLUGS,
+    sanAntonioSatelliteCountySlugs: SAN_ANTONIO_SATELLITE_COUNTY_SLUGS,
     satelliteCountyCriteriaIds,
+    metroSatelliteCountyCriteriaIds,
     byCriteriaId,
   };
 
@@ -215,7 +265,11 @@ async function main() {
   console.log(
     `  ${texasCountyCount} TX counties, ${texasCityCount} TX cities, ${Object.keys(byCriteriaId).length} total IDs`,
   );
-  console.log(`  DFW satellite county IDs: ${Object.keys(satelliteCountyCriteriaIds).length}/12`);
+  console.log(`  DFW satellite county IDs: ${Object.keys(dfwSatelliteCountyCriteriaIds).length}/12`);
+  console.log(`  Austin satellite county IDs: ${Object.keys(austinSatelliteCountyCriteriaIds).length}/10`);
+  console.log(
+    `  San Antonio satellite county IDs: ${Object.keys(sanAntonioSatelliteCountyCriteriaIds).length}/7`,
+  );
 }
 
 main().catch((err) => {

@@ -33,6 +33,10 @@ const COVERAGE: Record<HomeLocale, Record<ServiceCoverageTier, string>> = {
   en: {
     primary: "Primary ListQik service county",
     extended: "Extended ListQik service county",
+    "actris-core": "Austin ACTRIS core market county",
+    "actris-extended": "Austin ACTRIS extended market county",
+    "sabor-core": "San Antonio MLS core market county",
+    "sabor-extended": "San Antonio MLS satellite market county",
     "har-core": "Houston HAR core market county",
     "har-extended": "Houston HAR extended market county",
     statewide: "Texas statewide listing support",
@@ -40,6 +44,10 @@ const COVERAGE: Record<HomeLocale, Record<ServiceCoverageTier, string>> = {
   es: {
     primary: "Condado principal de servicio ListQik",
     extended: "Condado extendido de servicio ListQik",
+    "actris-core": "Condado núcleo ACTRIS Austin",
+    "actris-extended": "Condado extendido ACTRIS Austin",
+    "sabor-core": "Condado núcleo MLS San Antonio",
+    "sabor-extended": "Condado satélite MLS San Antonio",
     "har-core": "Condado núcleo HAR Houston",
     "har-extended": "Condado extendido HAR Houston",
     statewide: "Apoyo de listado en todo Texas",
