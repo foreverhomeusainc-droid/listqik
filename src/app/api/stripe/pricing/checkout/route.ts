@@ -229,7 +229,10 @@ export async function POST(req: Request) {
         planId: planSlug,
         selectedUpgradeSlugs,
         ...(checkoutKind === "plan"
-          ? { planCheckoutUrl: session.url || null }
+          ? {
+              planCheckoutUrl: session.url || null,
+              planExternalOrderId: session.id,
+            }
           : { upgradesCheckoutUrl: session.url || null }),
       },
     },
@@ -243,6 +246,7 @@ export async function POST(req: Request) {
     mode: "stripe-checkout",
     checkoutUrl: session.url || null,
     checkoutClientSecret: session.client_secret || null,
+    stripeCheckoutSessionId: session.id,
     warning: checkoutKind === "plan" && planPrice == null ? "Plan amount was not parsed from plan.price." : "",
   });
 }

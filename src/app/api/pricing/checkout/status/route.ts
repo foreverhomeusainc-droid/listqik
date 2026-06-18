@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import type { GoogleAdsPurchasePayload } from "@/lib/google-ads-config";
+import { resolveGoogleAdsPurchaseFromStripeSession } from "@/lib/google-ads-purchase-resolve";
 import { PlanPurchase } from "@/models/PlanPurchase";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
@@ -57,6 +58,10 @@ export async function GET(req: Request) {
         value,
         currency: purchase?.currency?.trim()?.toUpperCase() || "USD",
       };
+    } else if (externalOrderId.startsWith("cs_")) {
+      planPurchase = await resolveGoogleAdsPurchaseFromStripeSession(externalOrderId).catch(
+        () => null,
+      );
     }
   }
 

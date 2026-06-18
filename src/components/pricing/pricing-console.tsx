@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   shouldOpenSubsonicIntakeFromSearchParams,
@@ -74,6 +74,7 @@ function parseDisplayedUsdAmount(raw: string | null | undefined): number | null 
 }
 
 export function PricingConsole() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const planRequired = searchParams.get("planRequired") === "1";
   const { locale, ready } = useSiteLocale();
@@ -95,6 +96,7 @@ export function PricingConsole() {
   const [planCheckoutLoading, setPlanCheckoutLoading] = useState(false);
   const [planCheckoutUrl, setPlanCheckoutUrl] = useState<string | null>(null);
   const [planCheckoutClientSecret, setPlanCheckoutClientSecret] = useState<string | null>(null);
+  const [planStripeCheckoutSessionId, setPlanStripeCheckoutSessionId] = useState<string | null>(null);
   const [, setCheckingPlanPayment] = useState(false);
   const [planPaymentRecorded, setPlanPaymentRecorded] = useState(false);
   const [planPurchaseConversion, setPlanPurchaseConversion] =
@@ -266,9 +268,22 @@ export function PricingConsole() {
     // Stripe reports completion in the embedded frame; advance UX immediately.
     setPlanPaymentRecorded(true);
     advanceToUpgradesIfReady();
+
+    if (planStripeCheckoutSessionId) {
+      const pricingPath = localeSitePath("/pricing", locale);
+      const successUrl = `${pricingPath}?checkout=success&session_id=${encodeURIComponent(planStripeCheckoutSessionId)}`;
+      router.replace(successUrl, { scroll: false });
+    }
+
     // Keep server-side confirmation in the background for resiliency.
     void checkPlanPaymentStatus(false);
-  }, [advanceToUpgradesIfReady, checkPlanPaymentStatus]);
+  }, [
+    advanceToUpgradesIfReady,
+    checkPlanPaymentStatus,
+    locale,
+    planStripeCheckoutSessionId,
+    router,
+  ]);
 
   async function continueAfterPayment(destination: "listing-setup" | "upgrades") {
     if (!checkoutSessionId) {
@@ -347,7 +362,13 @@ export function PricingConsole() {
       return;
     }
     const data = (await res.json().catch(() => null)) as
-      | { ok?: boolean; checkoutUrl?: string | null; checkoutClientSecret?: string | null; error?: string }
+      | {
+          ok?: boolean;
+          checkoutUrl?: string | null;
+          checkoutClientSecret?: string | null;
+          stripeCheckoutSessionId?: string | null;
+          error?: string;
+        }
       | null;
     if (!res.ok || !data?.ok || (!data.checkoutClientSecret && !data.checkoutUrl)) {
       setError(data?.error || copy.errors.stripeUrlMissing);
@@ -355,6 +376,7 @@ export function PricingConsole() {
     }
     setPlanCheckoutUrl(data.checkoutUrl ?? null);
     setPlanCheckoutClientSecret(data.checkoutClientSecret ?? null);
+    setPlanStripeCheckoutSessionId(data.stripeCheckoutSessionId?.trim() || null);
     setError("");
   }
 
@@ -376,6 +398,8 @@ export function PricingConsole() {
   }, [isWizardOpen]);
 
   const landingIntakeActive = isWizardOpen && landingPromoSource === START_NOW_SUBSONIC_PROMO;
+  const checkoutSuccessTracked =
+    searchParams.get("checkout") === "success" && Boolean(searchParams.get("session_id")?.trim());
   const planPurchaseValue = useMemo(
     () => parseDisplayedUsdAmount(wizard.plan?.price),
     [wizard.plan?.price],
@@ -777,7 +801,8 @@ export function PricingConsole() {
           ) : null}
           {wizard.step === 3 ? (
             <div className="grid gap-4">
-              {(planPurchaseConversion ||
+              {!checkoutSuccessTracked &&
+              (planPurchaseConversion ||
                 (planPaymentRecorded && checkoutSessionId && planPurchaseValue)) ? (
                 <GoogleAdsPurchaseConversion
                   transactionId={
