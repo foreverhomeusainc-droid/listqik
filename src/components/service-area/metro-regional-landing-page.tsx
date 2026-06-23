@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Container } from "@/components/container";
-import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
-import { SocialLeadCtaSection } from "@/components/marketing/social-lead-cta-section";
 import { BrokerDisclosureBlock } from "@/components/marketing/broker-disclosure-block";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import type { HomeLocale } from "@/i18n/home-locale";
@@ -248,9 +246,6 @@ export function MetroRegionalLandingPage({
           </div>
         </Container>
       </section>
-
-      <SocialLeadCtaSection locale={locale} />
-      <GhlInlineFormSection locale={locale} />
     </div>
   );
 }

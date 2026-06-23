@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { GhlInlineFormSection } from "@/components/marketing/ghl-inline-form-section";
-import { SocialLeadCtaSection } from "@/components/marketing/social-lead-cta-section";
 import { SubsonicPricingLink } from "@/components/marketing/subsonic-pricing-link";
 import { LocationSeoJsonLd } from "@/components/service-area/location-seo-json-ld";
 import {
@@ -348,7 +347,6 @@ export async function TexasCountyLocationPage({
         </Container>
       </section>
 
-      <SocialLeadCtaSection locale={locale} />
       <GhlInlineFormSection locale={locale} />
     </div>
   );
