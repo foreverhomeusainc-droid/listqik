@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getSiteShellChromeCopy, SITE_CHROME_LOCALE } from "@/i18n/site-chrome-copy";
-import { localeSitePath } from "@/lib/locale-site-path";
+import { localeSitePath, stripEsSitePrefix } from "@/lib/locale-site-path";
 
-function isServicesPath(pathname: string | null): boolean {
-  if (!pathname) return false;
+function isServicesPath(pathname: string): boolean {
   const paths = ["/full-service", "/service-area"];
   return paths.some((base) => pathname === base || pathname.startsWith(`${base}/`));
 }
 
 export function NavServicesDropdown() {
   const t = getSiteShellChromeCopy().header;
-  const pathname = usePathname();
+  const pathname = stripEsSitePrefix(usePathname() ?? "");
   const active = isServicesPath(pathname);
   const fullServiceHref = localeSitePath("/full-service", SITE_CHROME_LOCALE);
   const serviceAreaHref = localeSitePath("/service-area", SITE_CHROME_LOCALE);
@@ -49,7 +48,7 @@ export function NavServicesDropdown() {
             role="menuitem"
             className={[
               "block whitespace-nowrap px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
-              pathname === fullServiceHref || pathname?.startsWith(`${fullServiceHref}/`)
+              pathname === fullServiceHref || pathname.startsWith(`${fullServiceHref}/`)
                 ? "bg-emerald-400/15 text-emerald-100"
                 : "text-emerald-100/90",
             ].join(" ")}
@@ -61,7 +60,7 @@ export function NavServicesDropdown() {
             role="menuitem"
             className={[
               "block whitespace-nowrap px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-emerald-900/40 hover:text-emerald-50",
-              pathname === serviceAreaHref || pathname?.startsWith(`${serviceAreaHref}/`)
+              pathname === serviceAreaHref || pathname.startsWith(`${serviceAreaHref}/`)
                 ? "bg-emerald-400/15 text-emerald-100"
                 : "text-emerald-100/90",
             ].join(" ")}

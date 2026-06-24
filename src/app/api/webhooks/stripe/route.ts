@@ -7,9 +7,9 @@ import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
 import { extractStripeCheckoutCouponCode } from "@/lib/stripe-purchase-details";
 import { FULL_SERVICE_STRIPE_CATALOG } from "@/data/full-service-stripe-catalog";
 import { dispatchFullServiceCheckoutEmails } from "@/lib/dispatch-full-service-checkout-email";
+import { dispatchPlanCheckoutNotifications } from "@/lib/dispatch-plan-checkout-notifications";
 import { dispatchUpgradePurchaseEmails } from "@/lib/dispatch-upgrade-purchase-emails";
 import { resolveUpgradeSlugs } from "@/lib/stripe-upgrade-slugs";
-import { dispatchPostPurchaseAccountEmail } from "@/lib/dispatch-post-purchase-account-email";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
 import { User } from "@/models/User";
@@ -170,14 +170,19 @@ export async function POST(req: Request) {
     });
 
     const email = (metadata.buyerEmail || session.customer_details?.email || "").trim();
-    const emailResult = await dispatchPostPurchaseAccountEmail({
+    const emailResult = await dispatchPlanCheckoutNotifications({
       email,
       fullName: metadata.buyerName || session.customer_details?.name || undefined,
       provision: paidOrder,
+      amountTotal: toNumCentsToDollars(session.amount_total),
+      orderRef: externalOrderId,
+      couponCode: extractStripeCheckoutCouponCode(session) ?? undefined,
     });
-    const accountEmailType = emailResult.type;
-    const accountEmailSent = emailResult.sent;
-    const accountEmailError = emailResult.error;
+    const accountEmailType = emailResult.accountEmailType;
+    const accountEmailSent = emailResult.accountEmailSent;
+    const accountEmailError = emailResult.accountEmailError;
+    const internalPlanEmailSent = emailResult.internalSent;
+    const internalPlanEmailError = emailResult.internalError;
 
     return NextResponse.json({
       ok: true,
@@ -189,6 +194,8 @@ export async function POST(req: Request) {
       accountEmailType,
       accountEmailSent,
       accountEmailError,
+      internalPlanEmailSent,
+      internalPlanEmailError,
     });
   }
 

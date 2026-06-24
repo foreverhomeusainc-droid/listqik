@@ -3,7 +3,7 @@ import { connectDb } from "@/lib/mongodb";
 import type { OrderWebhookPayload } from "@/lib/seller-order-provision";
 import { provisionSellerFromPaidOrder } from "@/lib/seller-order-provision";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
-import { dispatchPostPurchaseAccountEmail } from "@/lib/dispatch-post-purchase-account-email";
+import { dispatchPlanCheckoutNotifications } from "@/lib/dispatch-plan-checkout-notifications";
 
 type CheckoutKind = "plan" | "upgrades";
 type WebhookBody = OrderWebhookPayload & {
@@ -171,14 +171,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true, duplicate: true, checkoutKind });
     }
     const email = body.contact?.email?.trim() ?? "";
-    const emailResult = await dispatchPostPurchaseAccountEmail({
+    const emailResult = await dispatchPlanCheckoutNotifications({
       email,
       fullName: body.contact?.fullName,
       provision: result,
+      amountTotal: body.payment?.amountTotal ?? null,
+      orderRef: externalOrderId ?? null,
+      couponCode: body.payment?.couponCode ?? null,
     });
-    const accountEmailType = emailResult.type;
-    const accountEmailSent = emailResult.sent;
-    const accountEmailError = emailResult.error;
+    const accountEmailType = emailResult.accountEmailType;
+    const accountEmailSent = emailResult.accountEmailSent;
+    const accountEmailError = emailResult.accountEmailError;
+    const internalPlanEmailSent = emailResult.internalSent;
+    const internalPlanEmailError = emailResult.internalError;
     return NextResponse.json({
       ok: true,
       duplicate: false,
@@ -190,6 +195,8 @@ export async function POST(req: Request) {
       accountEmailType,
       accountEmailSent,
       accountEmailError,
+      internalPlanEmailSent,
+      internalPlanEmailError,
     });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Provision failed.";

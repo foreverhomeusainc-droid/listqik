@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { stripEsSitePrefix } from "@/lib/locale-site-path";
 
 export function NavLink({
   href,
@@ -10,8 +11,8 @@ export function NavLink({
   href: string;
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const active = pathname === href || (href !== "/" && pathname?.startsWith(href));
+  const pathname = stripEsSitePrefix(usePathname() ?? "");
+  const active = pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
     <Link

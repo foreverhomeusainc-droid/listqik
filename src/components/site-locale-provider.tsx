@@ -18,12 +18,11 @@ import {
   storeHomeLocale,
   type HomeLocale,
 } from "@/i18n/home-locale";
-import { getSiteShellChromeCopy, type SiteChromeCopy } from "@/i18n/site-chrome-copy";
 import { LOCALE_CHANGE_EVENT } from "@/lib/locale-events";
+import { stripEsSitePrefix } from "@/lib/locale-site-path";
 
 type SiteLocaleContextValue = {
   locale: HomeLocale;
-  chrome: SiteChromeCopy;
   ready: boolean;
   setLocale: (locale: HomeLocale) => void;
 };
@@ -44,12 +43,6 @@ function readLocaleFromStorage(): HomeLocale | null {
 
 function localeFromPathname(pathname: string): HomeLocale | null {
   return pathname === "/es" || pathname.startsWith("/es/") ? "es" : null;
-}
-
-function stripEsPrefix(pathname: string): string {
-  if (pathname === "/es") return "/";
-  if (pathname.startsWith("/es/")) return pathname.slice(3) || "/";
-  return pathname;
 }
 
 export function SiteLocaleProvider({
@@ -136,17 +129,17 @@ export function SiteLocaleProvider({
       params.delete("lang");
       const qs = params.toString();
 
-      const nextPathname = wantsEs ? `/es${stripEsPrefix(pathname)}`.replace(/\/$/, "") || "/es" : stripEsPrefix(pathname);
+      const nextPathname = wantsEs
+        ? `/es${stripEsSitePrefix(pathname)}`.replace(/\/$/, "") || "/es"
+        : stripEsSitePrefix(pathname);
       router.push(qs ? `${nextPathname}?${qs}` : nextPathname);
     },
     [applyLocale, pathname, router, searchParams],
   );
 
-  const chrome = useMemo(() => getSiteShellChromeCopy(), []);
-
   const value = useMemo(
-    () => ({ locale, chrome, ready, setLocale }),
-    [locale, chrome, ready, setLocale],
+    () => ({ locale, ready, setLocale }),
+    [locale, ready, setLocale],
   );
 
   return (

@@ -5,6 +5,7 @@ export const EMAIL_TEMPLATE_KEYS = [
   "seller_listing_finalized_active",
   "seller_listing_finalized_scheduled",
   "internal_listing_finalized",
+  "internal_plan_purchase",
   "upgrade_purchase_confirmation",
   "internal_upgrade_purchase",
 ] as const;
@@ -202,6 +203,42 @@ Open in admin: {{adminProfileUrl}}
 
 — ListQik (automated notification)`,
     htmlBody: "",
+  },
+  internal_plan_purchase: {
+    key: "internal_plan_purchase",
+    label: "Internal — plan purchase",
+    description: "Sent to internal notification recipients after a plan checkout completes.",
+    variables: [
+      "purchaserName",
+      "purchaserEmail",
+      "planName",
+      "propertyAddress",
+      "amount",
+      "orderRef",
+      "couponCode",
+      "accountStatus",
+    ],
+    subject: "Plan purchase — {{planName}} — {{purchaserEmail}}",
+    textBody: `New plan purchase on ListQik.
+
+Buyer: {{purchaserName}} <{{purchaserEmail}}>
+Plan: {{planName}}
+Property: {{propertyAddress}}
+Amount: {{amount}}
+Coupon: {{couponCode}}
+Order reference: {{orderRef}}
+Account: {{accountStatus}}
+
+— ListQik (automated notification)`,
+    htmlBody: `<p>New plan purchase on ListQik.</p>
+<p><strong>Buyer:</strong> {{purchaserName}} &lt;{{purchaserEmail}}&gt;</p>
+<p><strong>Plan:</strong> {{planName}}</p>
+<p><strong>Property:</strong> {{propertyAddress}}</p>
+<p><strong>Amount:</strong> {{amount}}</p>
+<p><strong>Coupon:</strong> {{couponCode}}</p>
+<p><strong>Order reference:</strong> {{orderRef}}</p>
+<p><strong>Account:</strong> {{accountStatus}}</p>
+<p style="color:#6b7280;font-size:12px;">Automated notification from ListQik.</p>`,
   },
   upgrade_purchase_confirmation: {
     key: "upgrade_purchase_confirmation",

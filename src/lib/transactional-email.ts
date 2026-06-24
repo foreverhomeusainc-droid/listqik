@@ -292,6 +292,58 @@ export async function sendSellerListingFinalizedEmail(
   return sendSmtpMessage({ to: input.to, ...rendered });
 }
 
+export type PlanPurchaseInternalEmailInput = {
+  purchaserEmail: string;
+  purchaserName?: string | null;
+  planName: string;
+  propertyAddress: string;
+  amountTotal?: number | null;
+  orderRef?: string | null;
+  couponCode?: string | null;
+  createdUser: boolean;
+  listingCreated: boolean;
+};
+
+export async function sendInternalPlanPurchaseEmail(
+  input: PlanPurchaseInternalEmailInput,
+): Promise<SendResult> {
+  if (!smtpConfig()) {
+    return { sent: false, error: "SMTP is not fully configured." };
+  }
+
+  const recipients = resolveInternalNotificationRecipients();
+  if (recipients.length === 0) {
+    return { sent: false, error: "No internal notification recipients configured." };
+  }
+
+  const email = input.purchaserEmail.trim().toLowerCase();
+  if (!email) {
+    return { sent: false, error: "Purchaser email is required." };
+  }
+
+  const amountLabel =
+    typeof input.amountTotal === "number" ? fmtMoneyForEmail(input.amountTotal) : "—";
+  const accountStatus = input.createdUser
+    ? input.listingCreated
+      ? "New account created; draft listing started"
+      : "New account created"
+    : input.listingCreated
+      ? "Existing account; draft listing started"
+      : "Existing account";
+
+  const rendered = await renderStoredEmail("internal_plan_purchase", {
+    purchaserName: input.purchaserName?.trim() ?? "—",
+    purchaserEmail: email,
+    planName: input.planName,
+    propertyAddress: input.propertyAddress,
+    amount: amountLabel,
+    orderRef: input.orderRef?.trim() ?? "—",
+    couponCode: input.couponCode?.trim() || "—",
+    accountStatus,
+  });
+  return sendSmtpMessage({ to: recipients, ...rendered });
+}
+
 export type UpgradePurchaseEmailInput = {
   purchaserEmail: string;
   purchaserName?: string | null;
