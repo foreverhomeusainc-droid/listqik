@@ -28,7 +28,7 @@ export default async function AdminListingsPage({
 
   await connectDb();
   const [listings, users, documents] = await Promise.all([
-    Listing.find().sort({ updatedAt: -1 }).lean(),
+    Listing.find().sort({ priorityLevel: -1, updatedAt: -1 }).lean(),
     User.find().select("_id email name").lean(),
     ListingDocument.find().select("listingId fileName").lean(),
   ]);
@@ -108,7 +108,12 @@ export default async function AdminListingsPage({
                     <span className="text-white/50">Unknown</span>
                   )}
                 </td>
-                <td className="px-3 py-2">{listing.status}</td>
+                <td className="px-3 py-2">
+                  {listing.status}
+                  {listing.priorityLevel === 1 ? (
+                    <p className="mt-1 text-xs font-semibold text-lime-300">Fast-track</p>
+                  ) : null}
+                </td>
                 <td className="px-3 py-2">
                   <span className="font-semibold text-emerald-200">{progress.pct}%</span>
                   <span className="text-white/50"> ({progress.completed}/{progress.total})</span>

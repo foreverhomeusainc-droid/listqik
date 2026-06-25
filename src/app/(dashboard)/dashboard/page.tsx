@@ -1,5 +1,10 @@
-import { ListingDashboard } from "@/components/dashboard/listing-dashboard";
+import { Suspense } from "react";
+import { DashboardHome } from "@/components/dashboard/dashboard-home";
 
 export default function DashboardListingsPage() {
-  return <ListingDashboard />;
+  return (
+    <Suspense fallback={<p className="text-sm text-white/50">Loading dashboard...</p>}>
+      <DashboardHome />
+    </Suspense>
+  );
 }

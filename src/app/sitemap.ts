@@ -4,6 +4,7 @@ import { listAllBlogSlugsForSitemap } from "@/lib/blog-service";
 import { listings } from "@/data/listings";
 import { portfolioItems } from "@/data/portfolio";
 import { legalPages } from "@/data/resources";
+import { CALCULATOR_CATALOG } from "@/lib/calculators/types";
 import { ES_MARKETING_SITEMAP_PATHS } from "@/lib/locale-metadata";
 import { allLocationSitemapPaths } from "@/lib/texas-location-seo";
 
@@ -30,7 +31,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/resources/videos",
     "/listqik-university",
     "/upgrades",
+    "/calculators",
   ];
+
+  const calculatorRoutes = CALCULATOR_CATALOG.map((c) => `/calculators/${c.slug}`);
 
   const listingRoutes = listings.map((l) => `/listings/${l.slug}`);
   const blogRoutes = blogEntries.map((entry) => blogPublicPath(entry.slug, entry.locale));
@@ -42,6 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
+    ...calculatorRoutes,
     ...ES_MARKETING_SITEMAP_PATHS,
     ...listingRoutes,
     ...blogRoutes,

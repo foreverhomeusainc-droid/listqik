@@ -19,6 +19,11 @@ const listingSchema = new Schema(
       enum: ["SINGLE_FAMILY", "CONDOMINIUM"],
       default: "SINGLE_FAMILY",
     },
+    listingKind: {
+      type: String,
+      enum: ["sale", "rental"],
+      default: "sale",
+    },
     parcelId: { type: String, trim: true },
     sellerNames: { type: String, trim: true },
     contactPhone: { type: String, trim: true },
@@ -119,6 +124,9 @@ const listingSchema = new Schema(
     setupFinalizedAt: { type: Date, default: null },
     /** True when status is PENDING solely because listingStartOn is in the future. */
     scheduledActivationPending: { type: Boolean, default: false },
+    /** 1 = Velocity Club fast-track compliance queue */
+    priorityLevel: { type: Number, enum: [0, 1], default: 0, index: true },
+    redeemedListingCreditId: { type: Schema.Types.ObjectId, ref: "ListingCredit", default: null },
   },
   { timestamps: true },
 );

@@ -544,3 +544,73 @@ export async function sendTestEmail(input: TestEmailInput): Promise<SendResult> 
   });
   return result;
 }
+
+export type VelocityClubOnboardingEmailInput = {
+  to: string;
+  fullName?: string;
+  dashboardUrl: string;
+};
+
+export async function sendVelocityClubDay2Email(
+  input: VelocityClubOnboardingEmailInput,
+): Promise<SendResult> {
+  const greeting = input.fullName?.trim() ? `Hi ${input.fullName.trim()},` : "Hi there,";
+  const text = [
+    greeting,
+    "",
+    "What's your current pipeline looking like?",
+    "",
+    "Tell us whether you're primarily flipping, wholesaling, or holding rentals so we can tailor your Velocity Club perks.",
+    "",
+    `Open your investor snapshot: ${input.dashboardUrl}`,
+    "",
+    "— ListQik Velocity Club",
+  ].join("\n");
+
+  return sendSmtpMessage({
+    to: input.to,
+    subject: "Quick question about your deal pipeline",
+    text,
+    html: [
+      `<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;line-height:1.5;">`,
+      `<p>${escapeHtml(greeting)}</p>`,
+      `<p><strong>What's your current pipeline looking like?</strong></p>`,
+      `<p>Tell us whether you're primarily flipping, wholesaling, or holding rentals so we can tailor your Velocity Club perks.</p>`,
+      `<p><a href="${escapeHtml(input.dashboardUrl)}">Open your investor snapshot</a></p>`,
+      `<p style="color:#6b7280;font-size:12px;">— ListQik Velocity Club</p>`,
+      `</div>`,
+    ].join(""),
+  });
+}
+
+export async function sendVelocityClubDay3Email(
+  input: VelocityClubOnboardingEmailInput,
+): Promise<SendResult> {
+  const greeting = input.fullName?.trim() ? `Hi ${input.fullName.trim()},` : "Hi there,";
+  const text = [
+    greeting,
+    "",
+    "You are 4 effective listings away from unlocking Volume Velocity Syndicate fast-track perks.",
+    "",
+    "Effective count = rolling 12-month listings + unused credits in your bank.",
+    "",
+    `See your tier progress: ${input.dashboardUrl}`,
+    "",
+    "— ListQik Velocity Club",
+  ].join("\n");
+
+  return sendSmtpMessage({
+    to: input.to,
+    subject: "You're 1 listing away from Syndicate perks",
+    text,
+    html: [
+      `<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;line-height:1.5;">`,
+      `<p>${escapeHtml(greeting)}</p>`,
+      `<p><strong>You are 4 effective listings away from unlocking Volume Velocity Syndicate fast-track perks.</strong></p>`,
+      `<p>Effective count = rolling 12-month listings + unused credits in your bank.</p>`,
+      `<p><a href="${escapeHtml(input.dashboardUrl)}">See your tier progress</a></p>`,
+      `<p style="color:#6b7280;font-size:12px;">— ListQik Velocity Club</p>`,
+      `</div>`,
+    ].join(""),
+  });
+}

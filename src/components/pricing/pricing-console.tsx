@@ -104,6 +104,58 @@ export function PricingConsole() {
   const [, setPlanAutoAdvanced] = useState(false);
   const [handoffBusy, setHandoffBusy] = useState<"listing-setup" | "upgrades" | null>(null);
   const [pendingUpgradesWaiting, setPendingUpgradesWaiting] = useState(false);
+  const calcDraftHandled = useRef(false);
+
+  useEffect(() => {
+    const draftId = searchParams.get("calcDraft")?.trim();
+    if (!draftId || calcDraftHandled.current) return;
+    calcDraftHandled.current = true;
+
+    void (async () => {
+      try {
+        const res = await fetch(`/api/calculators/draft/${encodeURIComponent(draftId)}`, {
+          cache: "no-store",
+        });
+        const data = (await res.json()) as {
+          ok?: boolean;
+          draft?: {
+            street?: string;
+            unit?: string;
+            city?: string;
+            state?: string;
+            zip?: string;
+            price?: number | null;
+            propertyType?: string;
+          };
+        };
+        if (!res.ok || !data.ok || !data.draft) return;
+
+        const d = data.draft;
+        const subsonic = plans.find((p) => p.id === "subsonic") ?? plans[0];
+        if (!subsonic) return;
+
+        setWizard((s) => ({
+          ...s,
+          step: 2,
+          plan: subsonic,
+          propertyAddress: d.street ?? s.propertyAddress,
+          unit: d.unit ?? s.unit,
+          city: d.city ?? s.city,
+          state: d.state ?? s.state,
+          zip: d.zip ?? s.zip,
+          propertyType:
+            (d.propertyType?.toLowerCase().includes("condo")
+              ? "condo"
+              : d.propertyType?.toLowerCase().includes("multi")
+                ? "multi-family"
+                : "single-family") as PricingPropertyTypeId,
+        }));
+        setIsWizardOpen(true);
+      } catch {
+        // Non-blocking: user can still complete pricing manually.
+      }
+    })();
+  }, [searchParams, plans]);
 
   useEffect(() => {
     setPendingUpgradesWaiting(hasPendingUpgradeSlugs());

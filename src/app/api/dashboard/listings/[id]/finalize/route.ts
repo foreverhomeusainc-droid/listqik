@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
+import { resolveListingPriorityLevel } from "@/lib/loyalty/fast-track";
 import { connectDb } from "@/lib/mongodb";
 import { validateListingForFinalize } from "@/lib/listing-compliance";
 import { Listing } from "@/models/Listing";
@@ -83,6 +84,31 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
   if (listing.status === "ACTIVE" && !listing.listedOn) {
     listing.listedOn = new Date();
   }
+
+  if (wasIncomplete) {
+    const owner = await User.findById(userId);
+    if (owner) {
+      const trialActive = Boolean(owner.loyaltyFastTrackTrialActive);
+      listing.priorityLevel = await resolveListingPriorityLevel({
+        userId,
+        fastTrackTrialActive: trialActive,
+      });
+
+      if (trialActive) {
+        owner.loyaltyFastTrackTrialActive = false;
+      }
+
+      const firstTimeLive = listing.status === "ACTIVE" && !owner.loyaltyFirstListingLiveAt;
+      if (firstTimeLive) {
+        owner.loyaltyFirstListingLiveAt = new Date();
+        owner.loyaltyFastTrackTrialActive = true;
+        owner.loyaltyFastTrackTrialGrantedAt = new Date();
+      }
+
+      await owner.save();
+    }
+  }
+
   await listing.save();
 
   /**

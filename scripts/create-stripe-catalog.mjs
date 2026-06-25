@@ -64,7 +64,12 @@ const UPGRADE_CATALOG = [
   { slug: "open-house-announcement", name: "Open House Announcement", amountUsd: 25 },
 ];
 
-/** One-time onboarding fee at checkout; listing commission % is due at closing (see product metadata). */
+const CREDIT_BUNDLE_CATALOG = [
+  { slug: "pipeline-5", name: "Velocity Club — 5-Pack Pipeline Bundle", amountUsd: 335 },
+  { slug: "pipeline-10", name: "Velocity Club — 10-Pack Pipeline Bundle", amountUsd: 630 },
+  { slug: "pipeline-25", name: "Velocity Club — 25-Pack Pipeline Bundle", amountUsd: 1487 },
+];
+
 const FULL_SERVICE_CATALOG = [
   {
     slug: "market-expert",
@@ -141,6 +146,7 @@ async function main() {
   const planMap = {};
   const upgradeMap = {};
   const fullServiceMap = {};
+  const creditBundleMap = {};
 
   for (const row of PLAN_CATALOG) {
     const ids = await ensureProductAndPrice(stripe, row, "plan");
@@ -157,12 +163,19 @@ async function main() {
     fullServiceMap[row.slug] = ids.priceId;
   }
 
+  for (const row of CREDIT_BUNDLE_CATALOG) {
+    const ids = await ensureProductAndPrice(stripe, row, "credit-bundle");
+    creditBundleMap[row.slug] = ids.priceId;
+  }
+
   console.log("\nSTRIPE_PLAN_PRICE_IDS_JSON=");
   console.log(JSON.stringify(planMap));
   console.log("\nSTRIPE_UPGRADE_PRICE_IDS_JSON=");
   console.log(JSON.stringify(upgradeMap));
   console.log("\nSTRIPE_FULL_SERVICE_PRICE_IDS_JSON=");
   console.log(JSON.stringify(fullServiceMap));
+  console.log("\nSTRIPE_CREDIT_BUNDLE_PRICE_IDS_JSON=");
+  console.log(JSON.stringify(creditBundleMap));
 }
 
 main().catch((err) => {

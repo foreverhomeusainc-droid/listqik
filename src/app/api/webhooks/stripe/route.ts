@@ -13,6 +13,7 @@ import { resolveUpgradeSlugs } from "@/lib/stripe-upgrade-slugs";
 import { PricingCheckoutSession } from "@/models/PricingCheckoutSession";
 import { UpgradePurchase } from "@/models/UpgradePurchase";
 import { User } from "@/models/User";
+import { fulfillListingCreditBundle } from "@/lib/loyalty/fulfill-credit-bundle";
 
 function parseStringMap(raw: string | undefined): Record<string, string> {
   if (!raw?.trim()) return {};
@@ -93,6 +94,34 @@ export async function POST(req: Request) {
   await connectDb();
 
   const externalOrderId = session.id;
+
+  if (checkoutKindRaw === "credit-bundle") {
+    const bundleSlug = (metadata.bundleSlug || "").trim();
+    const externalUserId = (metadata.externalUserId || "").trim();
+    if (!bundleSlug || !externalUserId || !Types.ObjectId.isValid(externalUserId)) {
+      return NextResponse.json(
+        { ok: false, error: "credit-bundle requires bundleSlug and externalUserId." },
+        { status: 400 },
+      );
+    }
+
+    const result = await fulfillListingCreditBundle({
+      userId: new Types.ObjectId(externalUserId),
+      bundleSlug,
+      externalOrderId,
+      checkoutSessionId: checkoutSessionId || undefined,
+      amountTotalUsd: toNumCentsToDollars(session.amount_total),
+    });
+
+    return NextResponse.json({
+      ok: true,
+      event: event.type,
+      checkoutKind: "credit-bundle",
+      externalOrderId,
+      duplicate: result.status === "duplicate",
+      creditsAdded: result.creditsAdded,
+    });
+  }
 
   if (checkoutKindRaw === "full-service") {
     const tierId = (metadata.fullServiceTierId || "").trim();

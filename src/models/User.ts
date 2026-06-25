@@ -22,6 +22,25 @@ const userSchema = new Schema(
      * Required before they can access /dashboard listing flows.
      */
     userAgreementAcknowledgedAt: { type: Date, default: null },
+    /** Velocity Club — first portal visit */
+    velocityClubJoinedAt: { type: Date, default: null },
+    investorPersona: {
+      type: String,
+      enum: ["flipper", "wholesaler", "landlord"],
+      default: null,
+    },
+    loyaltyOnboarding: {
+      welcomeComplete: { type: Boolean, default: false },
+      personaComplete: { type: Boolean, default: false },
+      progressSeen: { type: Boolean, default: false },
+      fastTrackUnlockSeen: { type: Boolean, default: false },
+    },
+    loyaltyEmailDay2SentAt: { type: Date, default: null },
+    loyaltyEmailDay3SentAt: { type: Date, default: null },
+    /** Granted after first listing goes live; consumed on next finalize */
+    loyaltyFastTrackTrialActive: { type: Boolean, default: false },
+    loyaltyFastTrackTrialGrantedAt: { type: Date, default: null },
+    loyaltyFirstListingLiveAt: { type: Date, default: null },
   },
   { timestamps: true },
 );

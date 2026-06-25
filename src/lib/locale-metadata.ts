@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import type { HomeLocale } from "@/i18n/home-locale";
 import { homeOpenGraphLocale } from "@/lib/site-locale-server";
 import { localeSitePath } from "@/lib/locale-site-path";
+import { CALCULATOR_CATALOG } from "@/lib/calculators/types";
+
+const CALCULATOR_ES_SITEMAP_SLUGS = CALCULATOR_CATALOG.map((c) => `/es/calculators/${c.slug}` as const);
 
 /** EN path (e.g. `/pricing`) → hreflang alternates for EN + ES URL namespace. */
 export function localeAlternates(enPath: string): NonNullable<Metadata["alternates"]> {
@@ -67,6 +70,8 @@ export const ES_MARKETING_SITEMAP_PATHS = [
   "/es/resources",
   "/es/resources/blogs",
   "/es/resources/videos",
+  "/es/calculators",
+  ...CALCULATOR_ES_SITEMAP_SLUGS,
   "/es/service-area/texas",
   "/es/service-area/texas/dfw",
   "/es/service-area/texas/austin",

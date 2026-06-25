@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { HomeLocale } from "@/i18n/home-locale";
 import { getHomepageCopy } from "@/i18n/homepage-copy";
@@ -154,6 +155,14 @@ export function NetProceedsCalculator({ locale = "en" }: { locale?: HomeLocale }
           </div>
 
           <p className="text-xs text-emerald-100/55">{t.disclaimer}</p>
+          <p className="text-center">
+            <Link
+              href="/calculators/fix-and-flip"
+              className="text-sm font-semibold text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 hover:text-emerald-200"
+            >
+              Open full Fix &amp; Flip analyzer →
+            </Link>
+          </p>
         </div>
       </div>
     </div>

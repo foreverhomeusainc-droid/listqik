@@ -21,6 +21,7 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
   const universityHref = localeSitePath("/listqik-university", SITE_CHROME_LOCALE);
   const resourcesHref = localeSitePath("/resources/blogs", SITE_CHROME_LOCALE);
   const listingsHref = localeSitePath("/listings", SITE_CHROME_LOCALE);
+  const calculatorsHref = localeSitePath("/calculators", SITE_CHROME_LOCALE);
 
   return (
     <header className="sticky top-0 z-40 border-b border-emerald-500/25 bg-black/55 backdrop-blur">
@@ -40,6 +41,7 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
           <NavServicesDropdown />
           <NavLink href={aboutHref}>{t.about}</NavLink>
           <NavLink href={universityHref}>{t.university}</NavLink>
+          <NavLink href={calculatorsHref}>{t.calculators}</NavLink>
           <NavLink href={resourcesHref}>{t.resources}</NavLink>
         </nav>
 
