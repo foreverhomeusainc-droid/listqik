@@ -31,6 +31,12 @@ export function DashboardShell({
               </summary>
               <div className="absolute right-0 top-[calc(100%+0.5rem)] z-40 w-52 rounded-xl border border-emerald-500/25 bg-black/95 p-2 shadow-[0_12px_30px_rgba(2,6,3,0.5)]">
                 <Link
+                  href="/dashboard/buyers"
+                  className="block rounded-lg px-3 py-2 text-sm text-emerald-100/90 transition hover:bg-emerald-900/35 hover:text-emerald-50"
+                >
+                  Buyer Deals
+                </Link>
+                <Link
                   href="/dashboard/calculators"
                   className="block rounded-lg px-3 py-2 text-sm text-emerald-100/90 transition hover:bg-emerald-900/35 hover:text-emerald-50"
                 >

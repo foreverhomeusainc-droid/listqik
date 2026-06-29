@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateWholesale } from "@/lib/calculators/wholesale";
+import { calculateWholesale } from "@/lib/calculators/legacy/wholesale";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,

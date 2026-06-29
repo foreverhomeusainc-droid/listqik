@@ -127,6 +127,24 @@ const listingSchema = new Schema(
     /** 1 = Velocity Club fast-track compliance queue */
     priorityLevel: { type: Number, enum: [0, 1], default: 0, index: true },
     redeemedListingCreditId: { type: Schema.Types.ObjectId, ref: "ListingCredit", default: null },
+    /** Public marketing URL slug for listqik.com/listings/[slug] */
+    slug: { type: String, trim: true, unique: true, sparse: true, index: true },
+    /** Marketing headline; falls back to street/city if empty */
+    title: { type: String, trim: true, default: "" },
+    neighborhood: { type: String, trim: true, default: "" },
+    beds: { type: Number, default: null },
+    baths: { type: Number, default: null },
+    sqft: { type: Number, default: null },
+    tags: { type: [String], default: [] },
+    /** Visible on https://listqik.com/listings */
+    publishedOnSite: { type: Boolean, default: false, index: true },
+    publishedAt: { type: Date, default: null },
+    /** Deals of the Week carousel / featured sort */
+    dealOfTheWeek: { type: Boolean, default: false, index: true },
+    dealOfTheWeekRank: { type: Number, default: 0 },
+    dealOfTheWeekUntil: { type: Date, default: null },
+    /** Admin-created inventory (lighter compliance path) */
+    createdByAdmin: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

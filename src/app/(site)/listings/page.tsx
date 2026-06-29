@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ListingsPageContent } from "@/components/listings/listings-page-content";
-import { listings } from "@/data/listings";
+import { listDealsOfTheWeek, listPublishedListings } from "@/lib/listings/public-listings-service";
 import { getSitePageMeta } from "@/i18n/site-page-meta";
 import { localeAlternates } from "@/lib/locale-metadata";
 
@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   alternates: localeAlternates("/listings"),
 };
 
-export default function ListingsPage() {
-  return <ListingsPageContent listings={listings} />;
+export const revalidate = 60;
+
+export default async function ListingsPage() {
+  const [listings, dealsOfTheWeek] = await Promise.all([
+    listPublishedListings(),
+    listDealsOfTheWeek(4),
+  ]);
+
+  return <ListingsPageContent listings={listings} dealsOfTheWeek={dealsOfTheWeek} />;
 }

@@ -10,16 +10,21 @@ import { CockpitHudFrame } from "@/components/marketing/cockpit-hud-frame";
 import { MarketingPageScrim } from "@/components/marketing/marketing-page-scrim";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import { getHomepageCopy } from "@/i18n/homepage-copy";
+import type { Listing } from "@/data/types";
 import { ListingCard } from "@/components/listing-card";
+import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
 import { NetProceedsCalculator } from "@/components/net-proceeds-calculator";
-import { listings } from "@/data/listings";
+import { listings as staticListings } from "@/data/listings";
 
 const MISSION_HREFS = ["/pricing", "/pricing", "/listings"] as const;
 
-export function HomePageContent() {
+export function HomePageContent({ featuredListings }: { featuredListings?: Listing[] }) {
   const { locale, ready } = useSiteLocale();
   const copy = getHomepageCopy(locale);
-  const featured = listings.filter((l) => l.featured).slice(0, 3);
+  const featured =
+    featuredListings && featuredListings.length > 0
+      ? featuredListings.slice(0, 3)
+      : staticListings.filter((l) => l.featured).slice(0, 3);
 
   if (!ready) {
     return (
@@ -153,6 +158,12 @@ export function HomePageContent() {
               </article>
             ))}
           </div>
+        </Container>
+      </section>
+
+      <section className="pt-8 sm:pt-10 lg:pt-14">
+        <Container>
+          <BuyerDealsTeaser limit={4} />
         </Container>
       </section>
 

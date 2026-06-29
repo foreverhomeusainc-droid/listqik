@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { blogPublicPath } from "@/lib/blog-locale";
 import { listAllBlogSlugsForSitemap } from "@/lib/blog-service";
-import { listings } from "@/data/listings";
+import { listPublishedListings } from "@/lib/listings/public-listings-service";
 import { portfolioItems } from "@/data/portfolio";
 import { legalPages } from "@/data/resources";
-import { CALCULATOR_CATALOG } from "@/lib/calculators/types";
+import { LEGACY_CALCULATOR_CATALOG } from "@/lib/calculators/types";
 import { ES_MARKETING_SITEMAP_PATHS } from "@/lib/locale-metadata";
 import { allLocationSitemapPaths } from "@/lib/texas-location-seo";
 
@@ -32,11 +32,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/listqik-university",
     "/upgrades",
     "/calculators",
+    "/buyers",
   ];
 
-  const calculatorRoutes = CALCULATOR_CATALOG.map((c) => `/calculators/${c.slug}`);
+  const calculatorRoutes = [
+    "/calculators",
+    "/calculators/legacy",
+    ...LEGACY_CALCULATOR_CATALOG.map((c) => `/calculators/legacy/${c.slug}`),
+  ];
 
-  const listingRoutes = listings.map((l) => `/listings/${l.slug}`);
+  const publishedListings = await listPublishedListings();
+  const listingRoutes = publishedListings.map((l) => `/listings/${l.slug}`);
   const blogRoutes = blogEntries.map((entry) => blogPublicPath(entry.slug, entry.locale));
   const legalRoutes = legalPages.map((p) => `/resources/legal/${p.slug}`);
   const portfolioRoutes = Array.from(new Set(portfolioItems.map((p) => p.category))).map(

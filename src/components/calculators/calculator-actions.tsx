@@ -8,6 +8,7 @@ import { exportDealMemoPdf, pushDealToListing, type PushListingPayload } from "@
 
 export function CalculatorActions({
   calculatorSlug,
+  loginCallbackPath,
   access,
   listingKind = "sale",
   price,
@@ -18,6 +19,7 @@ export function CalculatorActions({
   pdfOutputs,
 }: {
   calculatorSlug: string;
+  loginCallbackPath?: string;
   access: CalculatorAccess | null;
   listingKind?: "sale" | "rental";
   price?: number;
@@ -84,7 +86,7 @@ export function CalculatorActions({
           </button>
         ) : (
           <Link
-            href={`/login?callbackUrl=${encodeURIComponent(`/calculators/${calculatorSlug}`)}`}
+            href={`/login?callbackUrl=${encodeURIComponent(loginCallbackPath ?? `/calculators/${calculatorSlug}`)}`}
             className="inline-flex justify-center rounded-full border border-emerald-400/50 px-5 py-2.5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-900/30"
           >
             Sign in to push to live listing

@@ -1,5 +1,5 @@
 import type { Types } from "mongoose";
-import { calculatorBySlug } from "@/lib/calculators/types";
+import { resolveLegacyCalculator } from "@/lib/calculators/types";
 import { redeemOneListingCredit } from "@/lib/loyalty/fulfill-credit-bundle";
 import { sumUnusedCredits } from "@/lib/loyalty/compute-loyalty-snapshot";
 import {
@@ -89,7 +89,7 @@ export async function createListingFromCalculatorDraft(
     return { ok: false, error: "A complete property address is required.", needsAddress: true };
   }
 
-  const calc = calculatorBySlug(draft.calculatorId);
+  const calc = resolveLegacyCalculator(draft.calculatorId);
   const calculatorName = calc?.name ?? draft.calculatorId;
   const price =
     typeof draft.price === "number" && draft.price > 0 ? Math.round(draft.price) : 0;
@@ -131,7 +131,7 @@ export async function fulfillCalculatorPush(
   listingId?: string;
   creditRedeemed?: boolean;
 }> {
-  const calc = calculatorBySlug(input.calculatorSlug);
+  const calc = resolveLegacyCalculator(input.calculatorSlug);
   if (!calc) {
     throw new Error("Unknown calculator.");
   }

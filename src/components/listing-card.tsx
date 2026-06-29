@@ -38,6 +38,7 @@ export function ListingCard({
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
           priority={Boolean(listing.featured)}
+          unoptimized={listing.heroImage.src.startsWith("/api/listing-images/")}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
         <div className="absolute left-4 top-4 flex items-center gap-2">

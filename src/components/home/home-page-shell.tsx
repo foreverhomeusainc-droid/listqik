@@ -1,8 +1,6 @@
-"use client";
-
+import type { Listing } from "@/data/types";
 import { HomePageContent } from "@/components/home/home-page-content";
 
-/** Locale is provided by `SiteLocaleProvider` in the site layout (`?lang=`, saved preference, or browser). */
-export function HomePageShell() {
-  return <HomePageContent />;
+export function HomePageShell({ featuredListings }: { featuredListings: Listing[] }) {
+  return <HomePageContent featuredListings={featuredListings} />;
 }

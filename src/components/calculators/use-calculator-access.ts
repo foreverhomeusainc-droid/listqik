@@ -102,10 +102,16 @@ export async function exportDealMemoPdf(input: {
 
 export function calculatorIdFromSlug(slug: string): CalculatorId | null {
   const map: Record<string, CalculatorId> = {
+    mortgage: "mortgage",
+    "reverse-invest": "reverse-invest",
+    "note-buyer": "note-buyer",
+    "present-value": "present-value",
+    "rent-home": "rent-home",
+    multifamily: "multifamily",
+    "legacy-multifamily": "legacy-multifamily",
+    "legacy-mortgage": "legacy-mortgage",
     "fix-and-flip": "fix-and-flip",
     rental: "rental",
-    multifamily: "multifamily",
-    mortgage: "mortgage",
     brrrr: "brrrr",
     wholesale: "wholesale",
   };

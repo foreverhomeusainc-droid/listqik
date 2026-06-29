@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminListingSiteControls } from "@/components/admin/admin-listing-site-controls";
 import { connectDb } from "@/lib/mongodb";
 import {
   estimateSetupProgress,
@@ -10,7 +11,7 @@ import { Listing } from "@/models/Listing";
 import { ListingDocument } from "@/models/ListingDocument";
 import { User } from "@/models/User";
 
-const FILTERS = ["all", "stuck", "incomplete", "active", "pending"] as const;
+const FILTERS = ["all", "stuck", "incomplete", "active", "pending", "published", "deals"] as const;
 type Filter = (typeof FILTERS)[number];
 
 function parseFilter(raw: string | undefined): Filter {
@@ -54,14 +55,26 @@ export default async function AdminListingsPage({
       if (filter === "incomplete") return row.listing.status === "INCOMPLETE";
       if (filter === "active") return row.listing.status === "ACTIVE";
       if (filter === "pending") return row.listing.status === "PENDING";
+      if (filter === "published") return Boolean(row.listing.publishedOnSite);
+      if (filter === "deals") return Boolean(row.listing.dealOfTheWeek);
       return true;
     });
 
   return (
     <div className="space-y-4">
-      <header>
-        <h2 className="text-lg font-semibold text-emerald-50">Listings</h2>
-        <p className="mt-1 text-sm text-white/65">Setup progress and finalize blockers for every listing.</p>
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-emerald-50">Listings</h2>
+          <p className="mt-1 text-sm text-white/65">
+            Setup progress, public site publishing, and Deals of the Week.
+          </p>
+        </div>
+        <Link
+          href="/dashboard/admin/listings/new"
+          className="inline-flex shrink-0 items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+        >
+          + Add public listing
+        </Link>
       </header>
 
       <nav className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
@@ -87,6 +100,7 @@ export default async function AdminListingsPage({
               <th className="px-3 py-2">Address</th>
               <th className="px-3 py-2">Owner</th>
               <th className="px-3 py-2">Status</th>
+              <th className="px-3 py-2">Site</th>
               <th className="px-3 py-2">Setup</th>
               <th className="px-3 py-2">Blockers</th>
               <th className="px-3 py-2">Updated</th>
@@ -113,6 +127,22 @@ export default async function AdminListingsPage({
                   {listing.priorityLevel === 1 ? (
                     <p className="mt-1 text-xs font-semibold text-lime-300">Fast-track</p>
                   ) : null}
+                </td>
+                <td className="px-3 py-2">
+                  {listing.createdByAdmin ? (
+                    <p className="mb-1 text-xs text-sky-300/80">Admin</p>
+                  ) : null}
+                  <AdminListingSiteControls
+                    listingId={String(listing._id)}
+                    slug={listing.slug as string | undefined}
+                    publishedOnSite={Boolean(listing.publishedOnSite)}
+                    dealOfTheWeek={Boolean(listing.dealOfTheWeek)}
+                    dealOfTheWeekRank={
+                      typeof listing.dealOfTheWeekRank === "number"
+                        ? listing.dealOfTheWeekRank
+                        : 0
+                    }
+                  />
                 </td>
                 <td className="px-3 py-2">
                   <span className="font-semibold text-emerald-200">{progress.pct}%</span>

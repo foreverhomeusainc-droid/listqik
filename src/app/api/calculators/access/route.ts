@@ -8,14 +8,14 @@ import {
   recordMemberCalculatorRun,
   resolveCalculatorAccess,
 } from "@/lib/calculators/access";
-import { calculatorBySlug } from "@/lib/calculators/types";
+import { calculatorByAccessKey } from "@/lib/calculators/types";
 import { connectDb } from "@/lib/mongodb";
 import { User } from "@/models/User";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get("tool")?.trim() ?? "";
-  const calc = calculatorBySlug(slug);
+  const calc = calculatorByAccessKey(slug);
   if (!calc) {
     return NextResponse.json({ ok: false, error: "Unknown calculator." }, { status: 400 });
   }
@@ -55,7 +55,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get("tool")?.trim() ?? "";
-  const calc = calculatorBySlug(slug);
+  const calc = calculatorByAccessKey(slug);
   if (!calc) {
     return NextResponse.json({ ok: false, error: "Unknown calculator." }, { status: 400 });
   }

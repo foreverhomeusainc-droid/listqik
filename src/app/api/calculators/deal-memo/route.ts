@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
 import { resolveCalculatorAccess, fingerprintFromRequest } from "@/lib/calculators/access";
 import { buildDealMemoPdf } from "@/lib/calculators/deal-memo-pdf";
-import { calculatorBySlug } from "@/lib/calculators/types";
+import { resolveLegacyCalculator } from "@/lib/calculators/types";
 import { connectDb } from "@/lib/mongodb";
 import { LOYALTY_TIERS } from "@/lib/loyalty/tiers";
 import { User } from "@/models/User";
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   }
 
   const slug = body.calculatorSlug?.trim() ?? "";
-  const calc = calculatorBySlug(slug);
+  const calc = resolveLegacyCalculator(slug);
   if (!calc) {
     return NextResponse.json({ ok: false, error: "Unknown calculator." }, { status: 400 });
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateBrrrr } from "@/lib/calculators/brrrr";
+import { calculateBrrrr } from "@/lib/calculators/legacy/brrrr";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,

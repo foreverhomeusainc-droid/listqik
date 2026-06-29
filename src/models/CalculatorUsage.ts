@@ -1,5 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import type { CalculatorId } from "@/lib/calculators/types";
+import { ALL_CALCULATOR_IDS } from "@/lib/calculators/types";
 
 const calculatorUsageSchema = new Schema(
   {
@@ -8,7 +9,7 @@ const calculatorUsageSchema = new Schema(
     calculatorId: {
       type: String,
       required: true,
-      enum: ["fix-and-flip", "rental", "multifamily", "mortgage", "brrrr", "wholesale"],
+      enum: ALL_CALCULATOR_IDS,
     },
     usageDate: { type: String, required: true, index: true },
     count: { type: Number, default: 0, min: 0 },

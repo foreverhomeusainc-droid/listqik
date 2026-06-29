@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
-import { calculatorBySlug } from "@/lib/calculators/types";
+import { resolveLegacyCalculator } from "@/lib/calculators/types";
 import { fulfillCalculatorPush } from "@/lib/calculators/fulfill-calculator-push";
 import { connectDb } from "@/lib/mongodb";
 
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
   }
 
   const slug = body.calculatorSlug?.trim() ?? "";
-  const calc = calculatorBySlug(slug);
+  const calc = resolveLegacyCalculator(slug);
   if (!calc) {
     return NextResponse.json({ ok: false, error: "Unknown calculator." }, { status: 400 });
   }

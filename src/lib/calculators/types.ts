@@ -1,66 +1,106 @@
-export type CalculatorId =
-  | "fix-and-flip"
-  | "rental"
-  | "multifamily"
+import {
+  LEGACY_CALCULATOR_CATALOG,
+  legacyCalculatorBySlug,
+  legacyCalculatorById,
+  resolveLegacyCalculator,
+  type LegacyCalculatorId,
+  type LegacyCalculatorMeta,
+} from "@/lib/calculators/legacy/types";
+
+export type InvestmentCalculatorId =
   | "mortgage"
-  | "brrrr"
-  | "wholesale";
+  | "reverse-invest"
+  | "note-buyer"
+  | "present-value"
+  | "rent-home"
+  | "multifamily";
+
+export type CalculatorId = InvestmentCalculatorId | LegacyCalculatorId;
 
 export type CalculatorAccessLevel = "anonymous" | "scout" | "syndicate";
 
-export type CalculatorMeta = {
-  id: CalculatorId;
+export type InvestmentCalculatorMeta = {
+  id: InvestmentCalculatorId;
   slug: string;
   name: string;
   description: string;
   investorFocus: string;
+  tabLabel: string;
 };
 
-export const CALCULATOR_CATALOG: CalculatorMeta[] = [
+export type CalculatorMeta = InvestmentCalculatorMeta | LegacyCalculatorMeta;
+
+export const INVESTMENT_CALCULATOR_CATALOG: InvestmentCalculatorMeta[] = [
   {
-    id: "fix-and-flip",
-    slug: "fix-and-flip",
-    name: "Fix & Flip Profit",
-    description: "ARV, rehab, holding costs, and margin vs traditional 3% listing commission.",
-    investorFocus: "Flippers",
+    id: "mortgage",
+    slug: "mortgage",
+    name: "Mortgage",
+    tabLabel: "Mortgage",
+    description: "Forward P&I, back-calculate home price from payment, and balloon terms.",
+    investorFocus: "Purchase financing",
   },
   {
-    id: "rental",
-    slug: "rental",
-    name: "SFR Rental",
-    description: "Cash flow, cap rate, cash-on-cash, DSCR, and 5/10-year projections.",
-    investorFocus: "Buy & hold",
+    id: "reverse-invest",
+    slug: "reverse-invest",
+    name: "Reverse Invest",
+    tabLabel: "Reverse Invest",
+    description: "Private reverse mortgage investor analysis with scenarios and charts.",
+    investorFocus: "Note investors",
+  },
+  {
+    id: "note-buyer",
+    slug: "note-buyer",
+    name: "Note Buyer",
+    tabLabel: "Note Buyer",
+    description: "Seasoned note pricing from yield or target profit.",
+    investorFocus: "Note buyers",
+  },
+  {
+    id: "present-value",
+    slug: "present-value",
+    name: "Present Value",
+    tabLabel: "Present Value",
+    description: "Discount future cash flows to present value.",
+    investorFocus: "Cash flow modeling",
+  },
+  {
+    id: "rent-home",
+    slug: "rent-home",
+    name: "Rent Home",
+    tabLabel: "Rent Home",
+    description: "SFR cap-rate valuation (NOI ÷ cap rate).",
+    investorFocus: "SFR valuation",
   },
   {
     id: "multifamily",
     slug: "multifamily",
-    name: "Multifamily",
-    description: "Unit-scaled NOI, cap rate, DSCR, and rent-growth scenarios.",
-    investorFocus: "Small multifamily",
-  },
-  {
-    id: "mortgage",
-    slug: "mortgage",
-    name: "Mortgage & Leverage",
-    description: "P&I, LTV, DSCR, and full amortization schedule.",
-    investorFocus: "Capital planning",
-  },
-  {
-    id: "brrrr",
-    slug: "brrrr",
-    name: "BRRRR",
-    description: "Cash left in deal, equity created, and infinite-return indicator.",
-    investorFocus: "BRRRR operators",
-  },
-  {
-    id: "wholesale",
-    slug: "wholesale",
-    name: "Wholesale",
-    description: "Maximum allowable offer, spread, and buyer profit estimate.",
-    investorFocus: "Wholesalers",
+    name: "Multi-Family",
+    tabLabel: "Multi-Family",
+    description: "Cap-rate valuation with in-operation unit adjustment.",
+    investorFocus: "Multifamily valuation",
   },
 ];
 
-export function calculatorBySlug(slug: string): CalculatorMeta | null {
-  return CALCULATOR_CATALOG.find((c) => c.slug === slug) ?? null;
+export const CALCULATOR_CATALOG = INVESTMENT_CALCULATOR_CATALOG;
+
+export const ALL_CALCULATOR_IDS: CalculatorId[] = [
+  ...INVESTMENT_CALCULATOR_CATALOG.map((c) => c.id),
+  ...LEGACY_CALCULATOR_CATALOG.map((c) => c.id),
+];
+
+export function investmentCalculatorBySlug(slug: string): InvestmentCalculatorMeta | null {
+  return INVESTMENT_CALCULATOR_CATALOG.find((c) => c.slug === slug) ?? null;
 }
+
+export function calculatorBySlug(slug: string): CalculatorMeta | null {
+  return investmentCalculatorBySlug(slug) ?? legacyCalculatorBySlug(slug);
+}
+
+/** Access API key — investment slugs or legacy catalog ids. */
+export function calculatorByAccessKey(key: string): CalculatorMeta | null {
+  const inv = investmentCalculatorBySlug(key);
+  if (inv) return inv;
+  return legacyCalculatorById(key);
+}
+
+export { LEGACY_CALCULATOR_CATALOG, legacyCalculatorBySlug, legacyCalculatorById, resolveLegacyCalculator };

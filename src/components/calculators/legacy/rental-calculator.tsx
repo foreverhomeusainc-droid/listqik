@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateRental } from "@/lib/calculators/rental";
+import { calculateRental } from "@/lib/calculators/legacy/rental";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,

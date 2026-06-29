@@ -157,7 +157,7 @@ export function NetProceedsCalculator({ locale = "en" }: { locale?: HomeLocale }
           <p className="text-xs text-emerald-100/55">{t.disclaimer}</p>
           <p className="text-center">
             <Link
-              href="/calculators/fix-and-flip"
+              href="/calculators/legacy/fix-and-flip"
               className="text-sm font-semibold text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 hover:text-emerald-200"
             >
               Open full Fix &amp; Flip analyzer →

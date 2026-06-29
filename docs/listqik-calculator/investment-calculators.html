@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListQik — Investment Calculators</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        input[type="number"], select {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f1f5f9;
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.875rem;
+            width: 100%;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+        }
+        input[type="range"] { accent-color: #6366f1; }
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            min-width: 0;
+        }
+        .input-group.flex-1 { flex: 1; }
+        .input-prefix,
+        .input-suffix {
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #64748b;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .input-prefix {
+            border-right: none;
+            border-radius: 0.5rem 0 0 0.5rem;
+        }
+        .input-suffix {
+            border-left: none;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .input-group .input-field {
+            flex: 1;
+            min-width: 0;
+            width: auto;
+            border-radius: 0;
+        }
+        .input-group > .input-prefix:not(.hidden) + .input-field {
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .input-group > .input-prefix.hidden + .input-field {
+            border-radius: 0.5rem 0 0 0.5rem;
+            border-right: none;
+        }
+        .input-group > .input-field:only-child {
+            border-radius: 0.5rem;
+        }
+        .input-group.has-suffix > .input-field {
+            border-radius: 0.5rem 0 0 0.5rem;
+            border-right: none;
+        }
+        .input-group.has-suffix > .input-suffix {
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .tab-btn { transition: color 0.2s, background 0.2s; }
+        .tab-btn.active { color: #fff; }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 2px 2px 0 0;
+        }
+        .panel { animation: fadeIn 0.25s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-highlight {
+            background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+            border-color: rgba(99,102,241,0.35);
+        }
+        .risk-badge-green { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.35); color: #34d399; }
+        .risk-badge-yellow { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fbbf24; }
+        .risk-badge-red { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #f87171; }
+        .chart-wrap { position: relative; height: 260px; }
+        @media (min-width: 1024px) { .chart-wrap { height: 280px; } }
+        .scenario-col-conservative { border-top: 3px solid #64748b; }
+        .scenario-col-expected { border-top: 3px solid #6366f1; }
+        .scenario-col-optimistic { border-top: 3px solid #10b981; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-indigo-500/25">L</div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight flex items-center gap-2 flex-wrap">
+                        ListQik
+                        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20 font-bold uppercase tracking-wider">Investment Calculators</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Mortgage, reverse invest, note buying, rent home &amp; multi-family — updated live</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 rounded-full text-xs font-semibold">
+                <span class="material-icons text-sm">calculate</span>
+                Real-time math
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+
+            <!-- Tabs -->
+            <div class="border-b border-slate-800 bg-slate-950/50 flex overflow-x-auto" role="tablist">
+                <button type="button" role="tab" aria-selected="true" data-tab="mortgage"
+                    class="tab-btn active relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">home</span> Mortgage
+                    </span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-tab="reverse"
+                    class="tab-btn relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">analytics</span> Reverse Invest
+                    </span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-tab="note"
+                    class="tab-btn relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">description</span> Note Buyer
+                    </span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-tab="pv"
+                    class="tab-btn relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">payments</span> Present Value
+                    </span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-tab="rental"
+                    class="tab-btn relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">house</span> Rent Home
+                    </span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-tab="multifamily"
+                    class="tab-btn relative shrink-0 px-5 py-4 text-sm font-semibold text-slate-400 hover:text-slate-200">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-icons text-base">apartment</span> Multi-Family
+                    </span>
+                </button>
+            </div>
+
+            <!-- Mortgage -->
+            <section id="panel-mortgage" class="panel p-6 sm:p-8" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-2xl"><strong class="text-slate-300">Purpose:</strong> Model a forward purchase mortgage — monthly P&amp;I, total interest, and loan cost. Edit monthly payment to back into an affordable home price, or enable balloon terms for investor financing.</p>
+                <div class="grid gap-8 lg:grid-cols-2">
+                    <div class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="m-home-price">Home Price</label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="m-home-price" min="0" value="450000" class="input-field">
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Down Payment</label>
+                            <div class="flex gap-2">
+                                <div class="input-group flex-1">
+                                    <span id="m-dp-prefix" class="input-prefix hidden">$</span>
+                                    <input type="number" id="m-down-payment" min="0" value="20" class="input-field">
+                                    <span id="m-dp-suffix" class="input-suffix">%</span>
+                                </div>
+                                <select id="m-dp-mode" class="w-20 shrink-0">
+                                    <option value="percent">%</option>
+                                    <option value="dollar">$</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Loan Term (Years)</label>
+                            <div class="flex gap-2" id="m-term-btns">
+                                <button type="button" data-term="15" class="term-btn flex-1 rounded-lg border border-slate-700 px-3 py-2 text-sm font-medium text-slate-400 hover:bg-slate-800">15 yr</button>
+                                <button type="button" data-term="20" class="term-btn flex-1 rounded-lg border border-slate-700 px-3 py-2 text-sm font-medium text-slate-400 hover:bg-slate-800">20 yr</button>
+                                <button type="button" data-term="30" class="term-btn flex-1 rounded-lg border border-indigo-500 bg-indigo-600 text-white px-3 py-2 text-sm font-medium">30 yr</button>
+                            </div>
+                            <input type="range" id="m-term-slider" min="15" max="30" step="1" value="30" class="w-full mt-2">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="m-rate">Interest Rate</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="m-rate" min="0" step="0.01" value="6.5" placeholder="e.g. 6.5" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="m-payment">Monthly Payment (P&amp;I)</label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="m-payment" min="0" step="0.01" class="input-field">
+                            </div>
+                            <p class="text-xs text-slate-500">Calculated from loan details above, or edit to back-calculate home price.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 space-y-4">
+                            <label class="flex items-center gap-3 cursor-pointer select-none">
+                                <input type="checkbox" id="m-balloon-enabled" class="w-4 h-4 rounded accent-indigo-500 shrink-0">
+                                <span class="text-sm font-medium text-slate-200">Balloon note</span>
+                                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Optional</span>
+                            </label>
+                            <div id="m-balloon-fields" class="space-y-1.5 hidden">
+                                <label class="text-sm font-medium text-slate-200" for="m-balloon-years">Balloon due after</label>
+                                <select id="m-balloon-years" class="w-full">
+                                    <option value="3">3 years</option>
+                                    <option value="5" selected>5 years</option>
+                                    <option value="7">7 years</option>
+                                    <option value="10">10 years</option>
+                                </select>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Monthly payments are amortized over the full loan term; the remaining balance is due in one lump sum at the balloon date.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Results</h3>
+                        <p id="m-error" class="text-sm text-amber-400 hidden"></p>
+                        <div class="rounded-xl border p-4 result-highlight">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Monthly Principal &amp; Interest</p>
+                            <p id="m-monthly" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Interest Paid</p>
+                            <p id="m-interest" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Loan Cost</p>
+                            <p id="m-total" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-400 space-y-1">
+                            <p>Loan amount: <span id="m-loan" class="text-slate-200 mono">—</span></p>
+                            <p>Down payment: <span id="m-down-dollar" class="text-slate-200 mono">—</span></p>
+                        </div>
+                        <div id="m-balloon-results" class="hidden space-y-4 pt-2 border-t border-slate-800">
+                            <h4 class="text-xs font-bold text-amber-500/90 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-icons text-sm">event</span> Balloon Note Summary
+                            </h4>
+                            <p id="m-balloon-error" class="text-sm text-amber-400 hidden"></p>
+                            <div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+                                <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Balloon Payment Due</p>
+                                <p id="m-balloon-amount" class="mono text-2xl font-bold text-amber-300 mt-1">—</p>
+                                <p id="m-balloon-when" class="text-xs text-slate-500 mt-1">—</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Interest Paid Before Balloon</p>
+                                <p id="m-balloon-interest" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Cost Before Balloon</p>
+                                <p id="m-balloon-total" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                <p class="text-xs text-slate-500 mt-1">Monthly payments + balloon lump sum</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                    <p><strong class="text-slate-400">Monthly P&amp;I</strong> = Principal and interest payment amortized over the loan term.</p>
+                    <p><strong class="text-slate-400">Total Interest</strong> = Sum of all interest paid over the life of the loan.</p>
+                    <p><strong class="text-slate-400">Total Loan Cost</strong> = All monthly payments plus any balloon lump sum due.</p>
+                </div>
+                <blockquote class="mt-6 text-xs text-slate-500 leading-relaxed border-l-2 border-slate-700 pl-4 italic">
+                    Estimates principal and interest only. Taxes, insurance, PMI, HOA fees, and closing costs are not included.
+                </blockquote>
+            </section>
+
+            <!-- Reverse Mortgage Investor Analysis -->
+            <section id="panel-reverse" class="panel p-6 sm:p-8 hidden" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-3xl"><strong class="text-slate-300">Purpose:</strong> Underwrite a private reverse mortgage investment — project loan accrual, property appreciation, equity cushion, and investor returns at payoff. Built for lenders and note investors, not consumer borrowing estimates.</p>
+
+                <div class="grid gap-8 xl:grid-cols-12">
+                    <!-- Inputs -->
+                    <div class="xl:col-span-4 space-y-6">
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-5 space-y-4">
+                            <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-icons text-sm">home_work</span> Property Information
+                            </h3>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-property-value">Current Property Value</label>
+                                <div class="input-group">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rm-property-value" min="0" step="1000" value="500000" class="input-field">
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-appreciation">Annual Property Appreciation</label>
+                                <div class="input-group has-suffix">
+                                    <input type="number" id="rm-appreciation" min="-10" step="0.1" value="3" class="input-field">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-5 space-y-4">
+                            <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-icons text-sm">person</span> Borrower Information
+                            </h3>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-age">Youngest Borrower Age</label>
+                                <input type="number" id="rm-age" min="62" max="100" step="1" value="70" class="w-full">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-years">Expected Years Until Payoff</label>
+                                <input type="number" id="rm-years" min="1" max="40" step="1" value="12" class="w-full">
+                                <p class="text-xs text-slate-500">Estimated hold period until repayment event (sale, maturity, or estate).</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-5 space-y-4">
+                            <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-icons text-sm">account_balance</span> Existing Debt
+                            </h3>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-balance">Existing Mortgage Balance</label>
+                                <div class="input-group">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rm-balance" min="0" step="1000" value="75000" class="input-field">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-5 space-y-4">
+                            <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-icons text-sm">gavel</span> Loan Terms
+                            </h3>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-rate">Interest Rate</label>
+                                <div class="input-group has-suffix">
+                                    <input type="number" id="rm-rate" min="0" step="0.01" value="6.5" class="input-field">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-origination">Origination Fees</label>
+                                <div class="input-group">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rm-origination" min="0" step="100" value="5000" class="input-field">
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="rm-closing">Closing Costs</label>
+                                <div class="input-group">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rm-closing" min="0" step="100" value="3500" class="input-field">
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between gap-2">
+                                    <label class="text-sm font-medium text-slate-200" for="rm-ltv">Maximum Loan-to-Value</label>
+                                    <button type="button" id="rm-ltv-reset" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 uppercase tracking-wider hidden">Reset to age default</button>
+                                </div>
+                                <div class="input-group has-suffix">
+                                    <input type="number" id="rm-ltv" min="1" max="100" step="0.1" value="50" class="input-field">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                                <p id="rm-ltv-hint" class="text-xs text-slate-500">Auto-set by borrower age. Edit to override.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard -->
+                    <div class="xl:col-span-8 space-y-6">
+                        <p id="rm-error" class="text-sm text-amber-400 hidden"></p>
+
+                        <div id="rm-risk-badge" class="rounded-xl border p-4 flex items-start gap-3 risk-badge-green">
+                            <span id="rm-risk-icon" class="material-icons text-xl mt-0.5">shield</span>
+                            <div>
+                                <p id="rm-risk-title" class="text-sm font-bold uppercase tracking-wider">Low Risk</p>
+                                <p id="rm-risk-desc" class="text-xs mt-1 opacity-90">Property value comfortably exceeds projected loan balance.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Investment Summary</h3>
+                            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Principal Limit</p>
+                                    <p id="rm-kpi-principal" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Available Cash to Borrower</p>
+                                    <p id="rm-kpi-cash" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border p-4 result-highlight">
+                                    <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Initial Advance</p>
+                                    <p id="rm-kpi-advance" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                                    <p class="text-xs text-slate-500 mt-1">Principal limit funded at closing.</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Projected Loan Balance</p>
+                                    <p id="rm-kpi-future-balance" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Projected Property Value</p>
+                                    <p id="rm-kpi-future-value" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+                                    <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Investor Interest Earned</p>
+                                    <p id="rm-kpi-interest" class="mono text-xl font-bold text-emerald-400 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Remaining Home Equity</p>
+                                    <p id="rm-kpi-equity" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Equity Cushion</p>
+                                    <p id="rm-kpi-cushion" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Expected Annual Return</p>
+                                    <p id="rm-kpi-annual" class="mono text-xl font-bold text-indigo-300 mt-1">—</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-3 sm:grid-cols-3">
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ROI (Gross)</p>
+                                <p id="rm-kpi-roi" class="mono text-lg font-bold text-slate-100 mt-1">—</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Net Profit</p>
+                                <p id="rm-kpi-net" class="mono text-lg font-bold text-slate-100 mt-1">—</p>
+                                <p class="text-xs text-slate-500 mt-1">After origination &amp; closing costs.</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Net ROI</p>
+                                <p id="rm-kpi-net-roi" class="mono text-lg font-bold text-slate-100 mt-1">—</p>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Projections Over Time</h3>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                                <p class="text-xs font-semibold text-slate-400 mb-3">Loan Balance vs. Property Value</p>
+                                <div class="chart-wrap"><canvas id="rm-chart-balance"></canvas></div>
+                            </div>
+                            <div class="grid gap-4 lg:grid-cols-2">
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                                    <p class="text-xs font-semibold text-slate-400 mb-3">Remaining Equity</p>
+                                    <div class="chart-wrap"><canvas id="rm-chart-equity"></canvas></div>
+                                </div>
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                                    <p class="text-xs font-semibold text-slate-400 mb-3">Investor ROI Over Time</p>
+                                    <div class="chart-wrap"><canvas id="rm-chart-roi"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario Analysis -->
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Scenario Analysis</h3>
+                            <p class="text-xs text-slate-500 mb-4">Compare conservative, expected, and optimistic assumptions for appreciation, hold period, and interest rate.</p>
+                            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                                <table class="w-full text-sm min-w-[640px]">
+                                    <thead>
+                                        <tr class="border-b border-slate-800 bg-slate-950/60 text-left">
+                                            <th class="p-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Metric</th>
+                                            <th class="p-3 text-xs font-bold text-slate-400 uppercase tracking-wider scenario-col-conservative">Conservative</th>
+                                            <th class="p-3 text-xs font-bold text-indigo-400 uppercase tracking-wider scenario-col-expected">Expected</th>
+                                            <th class="p-3 text-xs font-bold text-emerald-400 uppercase tracking-wider scenario-col-optimistic">Optimistic</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rm-scenario-body" class="divide-y divide-slate-800/80 text-slate-300">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2">Conservative: lower appreciation, longer hold, higher rate · Optimistic: higher appreciation, shorter hold, lower rate.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                    <p><strong class="text-slate-400">Principal Limit</strong> = Property value × maximum LTV.</p>
+                    <p><strong class="text-slate-400">Available Cash</strong> = Principal limit minus existing mortgage balance (floored at zero).</p>
+                    <p><strong class="text-slate-400">Future Loan Balance</strong> = Principal limit × (1 + interest rate)<sup>years</sup>.</p>
+                    <p><strong class="text-slate-400">Future Property Value</strong> = Current value × (1 + appreciation)<sup>years</sup>.</p>
+                    <p><strong class="text-slate-400">Investor Return</strong> = Future loan balance − principal limit. <strong class="text-slate-400">Equity Cushion</strong> = Remaining equity ÷ future property value.</p>
+                </div>
+                <blockquote class="mt-6 text-xs text-slate-500 leading-relaxed border-l-2 border-slate-700 pl-4 italic">
+                    This calculator provides simplified estimates for educational and investment analysis purposes only. Actual reverse mortgage structures, legal requirements, repayment timing, interest accrual, taxes, insurance obligations, and borrower protections vary by jurisdiction and transaction structure. Consult qualified legal and financial professionals before entering into any reverse mortgage or private lending arrangement.
+                </blockquote>
+            </section>
+
+            <!-- Note Buyer -->
+            <section id="panel-note" class="panel p-6 sm:p-8 hidden" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-2xl"><strong class="text-slate-300">Purpose:</strong> Price seasoned mortgage notes when you know the payment stream — not the original UPB. Enter payment, term, and either your required yield or a target dollar profit.</p>
+                <div class="grid gap-8 lg:grid-cols-2">
+                    <div class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="n-payment">Monthly Payment (P&amp;I)</label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="n-payment" min="0" step="0.01" value="850" class="input-field">
+                            </div>
+                            <p class="text-xs text-slate-500">Contracted monthly payment on the note — the figure you see on a seasoned deal.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Payments Remaining</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="n-remaining" min="1" value="120" class="flex-1">
+                                <select id="n-remaining-unit" class="w-28 shrink-0">
+                                    <option value="months" selected>Months</option>
+                                    <option value="years">Years</option>
+                                </select>
+                            </div>
+                            <p class="text-xs text-slate-500">Number of monthly payments left on the note you are acquiring.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="n-note-rate">Note Interest Rate</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="n-note-rate" min="0" step="0.01" value="8" placeholder="e.g. 8.25" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Stated contract rate on the note. Used to estimate remaining balance from the payment stream.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="n-yield">Your Required Yield / Discount Rate</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="n-yield" min="0" step="0.01" value="10" placeholder="e.g. 10.5" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Return you require as the buyer. Drives recommended purchase price when Target Profit is blank.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200 flex items-center gap-2" for="n-target-profit">
+                                Target Profit ($)
+                                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Optional</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="n-target-profit" min="0" step="1" value="" placeholder="Leave blank to use yield" class="input-field">
+                            </div>
+                            <p class="text-xs text-slate-500">Work backwards: purchase price = total cash received minus this profit. Shows implied yield.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Note Analysis</h3>
+                        <p id="n-error" class="text-sm text-amber-400 hidden"></p>
+                        <div class="rounded-xl border p-4 result-highlight">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Recommended Purchase Price</p>
+                            <p id="n-purchase-price" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Present value of the remaining payment stream discounted at your required yield.</p>
+                        </div>
+                        <div id="n-implied-yield-block" class="rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-4 hidden">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Implied Yield (Target Profit Mode)</p>
+                            <p id="n-implied-yield" class="mono text-xl font-bold text-indigo-300 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Annual yield produced by your target-profit purchase price.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Estimated Remaining Note Balance</p>
+                            <p id="n-est-principal" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Estimated balance implied by the remaining payment stream using the note's contract rate.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Cash Received</p>
+                            <p id="n-nominal" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Scheduled payments collected over the remaining term.</p>
+                        </div>
+                        <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+                            <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Purchase Discount</p>
+                            <p id="n-discount" class="mono text-2xl font-bold text-emerald-400 mt-1">—</p>
+                            <p id="n-discount-pct" class="text-xs text-slate-500 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gross Cash Spread</p>
+                            <p id="n-gross-spread" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Total payments received minus your purchase price before servicing, taxes, defaults, or other costs.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Estimated ROI</p>
+                            <p id="n-roi" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Simple return if every scheduled payment is collected. Does not account for timing or servicing costs.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                            <p><strong class="text-slate-400">Recommended Purchase Price</strong> = Present value of the remaining payment stream at your required yield.</p>
+                            <p><strong class="text-slate-400">Estimated Remaining Note Balance</strong> = Estimated balance implied by the payment stream using the note's contract interest rate.</p>
+                            <p><strong class="text-slate-400">Purchase Discount</strong> = Dollar and percentage discount from the estimated remaining balance.</p>
+                            <p><strong class="text-slate-400">Gross Cash Spread</strong> = Scheduled payments minus purchase price before servicing costs, taxes, defaults, or prepayments.</p>
+                            <p><strong class="text-slate-400">Estimated ROI</strong> = Gross Cash Spread divided by purchase price.</p>
+                        </div>
+                    </div>
+                </div>
+                <blockquote class="mt-6 text-xs text-slate-500 leading-relaxed border-l-2 border-slate-700 pl-4 italic">
+                    Simplified note pricing for analysis only. Does not model default risk, prepayment, servicing costs, payment timing, or borrower credit quality. Consult qualified professionals before purchasing or selling notes.
+                </blockquote>
+            </section>
+
+            <!-- Present Value -->
+            <section id="panel-pv" class="panel p-6 sm:p-8 hidden" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-2xl"><strong class="text-slate-300">Purpose:</strong> Discount a recurring cash flow to today's dollars at your required return — useful for comparing income streams, notes, or investment alternatives.</p>
+                <div class="grid gap-8 lg:grid-cols-2">
+                    <div class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="pv-amount">Cash Flow Amount</label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="pv-amount" min="0" value="1000" class="input-field">
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="pv-frequency">Frequency of Cash Flow</label>
+                            <select id="pv-frequency">
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="annually">Annually</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="pv-rate">Discount Rate / Required Return</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="pv-rate" min="0" step="0.01" value="8" placeholder="e.g. 8" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Enter as percent (8.25 = 8.25%); compounding matches cash flow frequency.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Number of Periods / Time</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="pv-time" min="0" value="10" class="flex-1">
+                                <select id="pv-time-unit" class="w-28 shrink-0">
+                                    <option value="years">Years</option>
+                                    <option value="months">Months</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Results</h3>
+                        <div class="rounded-xl border p-4 result-highlight">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Total Present Value (PV)</p>
+                            <p id="pv-result" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Nominal Cash Distributed</p>
+                            <p id="pv-nominal" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p class="text-xs text-slate-500 mt-1">Undiscounted sum of all payments over the period.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                            <p><strong class="text-slate-400">Present Value</strong> = Discounted value of the cash flow stream at your required return.</p>
+                            <p><strong class="text-slate-400">Nominal Cash</strong> = Undiscounted total of all payments (no time-value adjustment).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rent Home Valuation -->
+            <section id="panel-rental" class="panel p-6 sm:p-8 hidden" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-2xl"><strong class="text-slate-300">Purpose:</strong> Value a single-family rental using income, expenses, and cap rate — the standard approach for buy-and-hold residential investors.</p>
+                <div class="grid gap-8 lg:grid-cols-2">
+                    <div class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Gross Rental Income</label>
+                            <div class="flex gap-2">
+                                <div class="input-group flex-1">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rh-gross" min="0" value="2500" class="input-field">
+                                </div>
+                                <select id="rh-gross-period" class="w-32 shrink-0">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Operating Expenses</label>
+                            <div class="flex gap-2">
+                                <div class="input-group flex-1">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="rh-expenses" min="0" value="800" class="input-field">
+                                </div>
+                                <select id="rh-expense-period" class="w-32 shrink-0">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="rh-cap">Capitalization Rate (Cap Rate)</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="rh-cap" min="0.01" step="0.01" value="6" placeholder="e.g. 6" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Results</h3>
+                        <p id="rh-error" class="text-sm text-amber-400 hidden"></p>
+                        <div class="rounded-xl border p-4 result-highlight">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Net Operating Income (Annual)</p>
+                            <p id="rh-noi" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Estimated Property Valuation</p>
+                            <p id="rh-value" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gross Rent Multiplier (GRM)</p>
+                            <p id="rh-grm" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                            <p><strong class="text-slate-400">Net Operating Income (NOI)</strong> = Annual gross rent minus operating expenses.</p>
+                            <p><strong class="text-slate-400">Property Valuation</strong> = NOI divided by cap rate.</p>
+                            <p><strong class="text-slate-400">Gross Rent Multiplier (GRM)</strong> = Property value divided by annual gross rent.</p>
+                        </div>
+                    </div>
+                </div>
+                <blockquote class="mt-6 text-xs text-slate-500 leading-relaxed border-l-2 border-slate-700 pl-4 italic">
+                    Cap rate valuation is a simplified income approach — not an appraisal or substitute for professional due diligence, market comps, or inspection.
+                </blockquote>
+            </section>
+
+            <!-- Multi-Family Valuation -->
+            <section id="panel-multifamily" class="panel p-6 sm:p-8 hidden" role="tabpanel">
+                <p class="text-sm text-slate-400 mb-6 max-w-2xl"><strong class="text-slate-300">Purpose:</strong> Value a multi-family property with unit count and in-op (need repairs) units adjusting effective income — built for small multifamily investors.</p>
+                <div class="grid gap-8 lg:grid-cols-2">
+                    <div class="space-y-5">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="mf-units">Number of Units</label>
+                                <input type="number" id="mf-units" min="1" step="1" value="4" class="w-full">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-200" for="mf-inop">In-Op Units (Need Repairs)</label>
+                                <input type="number" id="mf-inop" min="0" step="1" value="0" class="w-full">
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Gross Rental Income (Total Property)</label>
+                            <div class="flex gap-2">
+                                <div class="input-group flex-1">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="mf-gross" min="0" value="10000" class="input-field">
+                                </div>
+                                <select id="mf-gross-period" class="w-32 shrink-0">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                            <p class="text-xs text-slate-500">Full-property gross at 100% occupancy; in-op units reduce income proportionally.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200">Operating Expenses</label>
+                            <div class="flex gap-2">
+                                <div class="input-group flex-1">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="mf-expenses" min="0" value="3200" class="input-field">
+                                </div>
+                                <select id="mf-expense-period" class="w-32 shrink-0">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-200" for="mf-cap">Capitalization Rate (Cap Rate)</label>
+                            <div class="input-group has-suffix">
+                                <input type="number" id="mf-cap" min="0.01" step="0.01" value="6" placeholder="e.g. 6" class="input-field">
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Results</h3>
+                        <p id="mf-error" class="text-sm text-amber-400 hidden"></p>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Operating Units</p>
+                            <p id="mf-operating-units" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border p-4 result-highlight">
+                            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Net Operating Income (Annual)</p>
+                            <p id="mf-noi" class="mono text-2xl font-bold text-indigo-300 mt-1">—</p>
+                            <p id="mf-noi-per-unit" class="text-xs text-slate-500 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Estimated Property Valuation</p>
+                            <p id="mf-value" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                            <p id="mf-value-per-unit" class="text-xs text-slate-500 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gross Rent Multiplier (GRM)</p>
+                            <p id="mf-grm" class="mono text-xl font-bold text-slate-100 mt-1">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-500 space-y-1">
+                            <p><strong class="text-slate-400">Effective Gross Income</strong> = Total gross rent × (operating units ÷ total units).</p>
+                            <p><strong class="text-slate-400">Net Operating Income (NOI)</strong> = Effective gross income minus operating expenses (annualized).</p>
+                            <p><strong class="text-slate-400">Property Valuation</strong> = NOI divided by cap rate.</p>
+                            <p><strong class="text-slate-400">Gross Rent Multiplier (GRM)</strong> = Property value divided by annual gross rent.</p>
+                        </div>
+                    </div>
+                </div>
+                <blockquote class="mt-6 text-xs text-slate-500 leading-relaxed border-l-2 border-slate-700 pl-4 italic">
+                    Cap rate valuation is a simplified income approach — not an appraisal or substitute for professional due diligence, market comps, or inspection.
+                </blockquote>
+            </section>
+        </div>
+
+        <p class="mt-6 text-center text-xs text-slate-600">
+            Embed this page on your ListQik site, or open the file directly in any browser — no build step required.
+        </p>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950/80 px-6 py-4 text-center text-xs text-slate-500 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span>&copy; 2026 ListQik — Investment calculators</span>
+            <span class="text-slate-600">For educational purposes · Not financial advice</span>
+        </div>
+    </footer>
+
+    <script>
+        /* ── Utilities ── */
+        function parseNum(val) {
+            const n = parseFloat(val);
+            return Number.isFinite(n) ? n : 0;
+        }
+        function clamp0(n) { return Math.max(0, n); }
+
+        function formatCurrency(value, decimals) {
+            if (!Number.isFinite(value)) return '—';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals,
+            }).format(value);
+        }
+
+        function toAnnual(amount, period) {
+            if (period === 'weekly') return amount * 52;
+            if (period === 'monthly') return amount * 12;
+            return amount;
+        }
+
+        function remainingBalance(principal, monthlyRate, monthlyPayment, paymentsMade) {
+            if (principal <= 0 || paymentsMade <= 0) return principal;
+            if (monthlyRate <= 0) return Math.max(0, principal - monthlyPayment * paymentsMade);
+            const factor = Math.pow(1 + monthlyRate, paymentsMade);
+            return Math.max(0, principal * factor - monthlyPayment * ((factor - 1) / monthlyRate));
+        }
+
+        function paymentFromLoan(loanAmount, rate, termYears) {
+            if (loanAmount <= 0) return 0;
+            if (rate <= 0) return loanAmount / (termYears * 12);
+            const r = rate / 100 / 12;
+            const n = termYears * 12;
+            const factor = Math.pow(1 + r, n);
+            return (loanAmount * r * factor) / (factor - 1);
+        }
+
+        function loanFromPayment(monthly, rate, termYears) {
+            if (monthly <= 0) return 0;
+            if (rate <= 0) return monthly * termYears * 12;
+            const r = rate / 100 / 12;
+            const n = termYears * 12;
+            return monthly * ((Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n)));
+        }
+
+        function pvOfAnnuity(pmt, annualRate, periods) {
+            if (pmt <= 0 || periods <= 0) return 0;
+            const r = annualRate / 100 / 12;
+            if (r <= 0) return pmt * periods;
+            return pmt * ((1 - Math.pow(1 + r, -periods)) / r);
+        }
+
+        function formatPercent(value, decimals) {
+            if (!Number.isFinite(value)) return '—';
+            return value.toFixed(decimals ?? 1) + '%';
+        }
+
+        function yieldFromPurchasePrice(pmt, months, purchasePrice) {
+            if (pmt <= 0 || months <= 0 || purchasePrice <= 0) return null;
+            const nominal = pmt * months;
+            if (purchasePrice >= nominal) return 0;
+            let lo = 0;
+            let hi = 0.06;
+            for (let i = 0; i < 80; i++) {
+                const mid = (lo + hi) / 2;
+                const pv = mid <= 1e-12 ? nominal : pmt * ((1 - Math.pow(1 + mid, -months)) / mid);
+                if (pv > purchasePrice) lo = mid;
+                else hi = mid;
+            }
+            return ((lo + hi) / 2) * 12 * 100;
+        }
+
+        /* ── Tabs ── */
+        const tabs = document.querySelectorAll('[data-tab]');
+        const panels = {
+            mortgage: document.getElementById('panel-mortgage'),
+            reverse: document.getElementById('panel-reverse'),
+            note: document.getElementById('panel-note'),
+            pv: document.getElementById('panel-pv'),
+            rental: document.getElementById('panel-rental'),
+            multifamily: document.getElementById('panel-multifamily'),
+        };
+
+        tabs.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.tab;
+                tabs.forEach((t) => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                Object.entries(panels).forEach(([key, el]) => {
+                    el.classList.toggle('hidden', key !== id);
+                });
+                if (id === 'reverse') {
+                    requestAnimationFrame(() => {
+                        if (typeof calcReverse === 'function') calcReverse();
+                    });
+                }
+            });
+        });
+
+        /* ── Mortgage ── */
+        const mHome = document.getElementById('m-home-price');
+        const mDown = document.getElementById('m-down-payment');
+        const mDpMode = document.getElementById('m-dp-mode');
+        const mDpPrefix = document.getElementById('m-dp-prefix');
+        const mDpSuffix = document.getElementById('m-dp-suffix');
+        const mTermSlider = document.getElementById('m-term-slider');
+        const mRate = document.getElementById('m-rate');
+        const mPayment = document.getElementById('m-payment');
+        const mError = document.getElementById('m-error');
+        const mBalloonEnabled = document.getElementById('m-balloon-enabled');
+        const mBalloonFields = document.getElementById('m-balloon-fields');
+        const mBalloonYears = document.getElementById('m-balloon-years');
+        const mBalloonResults = document.getElementById('m-balloon-results');
+        const mBalloonError = document.getElementById('m-balloon-error');
+        const BALLOON_TERM_OPTIONS = [3, 5, 7, 10];
+        let mTerm = 30;
+        let mUpdating = false;
+
+        function downPaymentDollar(price, dpRaw) {
+            return mDpMode.value === 'percent'
+                ? Math.min(price, price * (dpRaw / 100))
+                : Math.min(price, dpRaw);
+        }
+
+        function homePriceFromLoan(loanAmount, dpRaw) {
+            if (mDpMode.value === 'percent') {
+                if (dpRaw >= 100) return 0;
+                return loanAmount / (1 - dpRaw / 100);
+            }
+            return loanAmount + dpRaw;
+        }
+
+        function syncBalloonOptions() {
+            const prev = parseInt(mBalloonYears.value, 10) || 5;
+            const valid = BALLOON_TERM_OPTIONS.filter((y) => y < mTerm);
+            mBalloonYears.innerHTML = '';
+            if (valid.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No term available';
+                opt.disabled = true;
+                mBalloonYears.appendChild(opt);
+                return;
+            }
+            valid.forEach((y) => {
+                const opt = document.createElement('option');
+                opt.value = String(y);
+                opt.textContent = y + ' years';
+                mBalloonYears.appendChild(opt);
+            });
+            const pick = valid.includes(prev) ? prev : valid[valid.length - 1];
+            mBalloonYears.value = String(pick);
+        }
+
+        function syncBalloonUI() {
+            const on = mBalloonEnabled.checked;
+            mBalloonFields.classList.toggle('hidden', !on);
+            mBalloonResults.classList.toggle('hidden', !on);
+            if (on) syncBalloonOptions();
+        }
+
+        function syncDpModeUI() {
+            const isDollar = mDpMode.value === 'dollar';
+            mDpPrefix.classList.toggle('hidden', !isDollar);
+            mDpSuffix.classList.toggle('hidden', isDollar);
+            if (isDollar) mDown.removeAttribute('max');
+            else mDown.setAttribute('max', '100');
+        }
+
+        function syncTermButtons() {
+            document.querySelectorAll('.term-btn').forEach((btn) => {
+                const t = parseInt(btn.dataset.term, 10);
+                const active = t === mTerm;
+                btn.className = 'term-btn flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ' +
+                    (active
+                        ? 'border-indigo-500 bg-indigo-600 text-white'
+                        : 'border-slate-700 text-slate-400 hover:bg-slate-800');
+            });
+            mTermSlider.value = mTerm;
+        }
+
+        function calcMortgage(source) {
+            if (mUpdating) return;
+            mUpdating = true;
+
+            const rate = clamp0(parseNum(mRate.value));
+            let price = clamp0(parseNum(mHome.value));
+            let dpRaw = clamp0(parseNum(mDown.value));
+            let loanAmount = 0;
+            let downDollar = 0;
+            let monthly = 0;
+
+            mError.classList.add('hidden');
+
+            if (source === 'payment') {
+                monthly = clamp0(parseNum(mPayment.value));
+                if (monthly <= 0) {
+                    mUpdating = false;
+                    return;
+                }
+                if (mDpMode.value === 'percent' && dpRaw >= 100) {
+                    mError.textContent = 'Down payment must be less than 100% to back-calculate home price.';
+                    mError.classList.remove('hidden');
+                    mUpdating = false;
+                    return;
+                }
+                if (rate <= 0 && monthly > 0) {
+                    mError.textContent = 'Enter an interest rate greater than 0% to back-calculate from payment.';
+                    mError.classList.remove('hidden');
+                }
+                loanAmount = loanFromPayment(monthly, rate, mTerm);
+                price = homePriceFromLoan(loanAmount, dpRaw);
+                downDollar = downPaymentDollar(price, dpRaw);
+                loanAmount = Math.max(0, price - downDollar);
+                mHome.value = Math.round(price);
+            } else {
+                downDollar = downPaymentDollar(price, dpRaw);
+                loanAmount = Math.max(0, price - downDollar);
+                monthly = paymentFromLoan(loanAmount, rate, mTerm);
+                if (loanAmount > 0 && rate <= 0) {
+                    mError.textContent = 'Enter an interest rate greater than 0%.';
+                    mError.classList.remove('hidden');
+                }
+                mPayment.value = monthly > 0 ? monthly.toFixed(2) : '';
+            }
+
+            let totalInterest = 0;
+            let totalCost = loanAmount;
+            if (loanAmount > 0) {
+                const n = mTerm * 12;
+                totalCost = monthly * n;
+                totalInterest = totalCost - loanAmount;
+            }
+
+            document.getElementById('m-monthly').textContent = formatCurrency(monthly, 2);
+            document.getElementById('m-interest').textContent = formatCurrency(totalInterest, 0);
+            document.getElementById('m-total').textContent = formatCurrency(totalCost, 0);
+            document.getElementById('m-loan').textContent = formatCurrency(loanAmount, 0);
+            document.getElementById('m-down-dollar').textContent = formatCurrency(downDollar, 0);
+
+            mBalloonError.classList.add('hidden');
+
+            if (mBalloonEnabled.checked && loanAmount > 0) {
+                const balloonYears = parseInt(mBalloonYears.value, 10);
+                const validBalloon = Number.isFinite(balloonYears) && balloonYears > 0 && balloonYears < mTerm;
+
+                if (!validBalloon) {
+                    mBalloonError.textContent = 'Balloon term must be shorter than the loan term (' + mTerm + ' years).';
+                    mBalloonError.classList.remove('hidden');
+                    document.getElementById('m-balloon-amount').textContent = '—';
+                    document.getElementById('m-balloon-when').textContent = '—';
+                    document.getElementById('m-balloon-interest').textContent = '—';
+                    document.getElementById('m-balloon-total').textContent = '—';
+                } else {
+                    const balloonMonths = balloonYears * 12;
+                    const r = rate / 100 / 12;
+                    const balloonBalance = remainingBalance(loanAmount, r, monthly, balloonMonths);
+                    const paymentsBeforeBalloon = monthly * balloonMonths;
+                    const totalBeforeBalloon = paymentsBeforeBalloon + balloonBalance;
+                    const interestBeforeBalloon = totalBeforeBalloon - loanAmount;
+
+                    document.getElementById('m-balloon-amount').textContent = formatCurrency(balloonBalance, 0);
+                    document.getElementById('m-balloon-when').textContent =
+                        'Due at month ' + balloonMonths + ' (' + balloonYears + '-year balloon on a ' + mTerm + '-year amortization)';
+                    document.getElementById('m-balloon-interest').textContent = formatCurrency(interestBeforeBalloon, 0);
+                    document.getElementById('m-balloon-total').textContent = formatCurrency(totalBeforeBalloon, 0);
+                }
+            }
+
+            mUpdating = false;
+        }
+
+        mDpMode.addEventListener('change', () => { syncDpModeUI(); calcMortgage('loan'); });
+        [mHome, mDown, mRate].forEach((el) => el.addEventListener('input', () => calcMortgage('loan')));
+        mPayment.addEventListener('input', () => calcMortgage('payment'));
+        mBalloonEnabled.addEventListener('change', () => { syncBalloonUI(); calcMortgage('loan'); });
+        mBalloonYears.addEventListener('change', () => calcMortgage('loan'));
+        mTermSlider.addEventListener('input', () => {
+            mTerm = parseInt(mTermSlider.value, 10);
+            syncTermButtons();
+            syncBalloonOptions();
+            calcMortgage('loan');
+        });
+        document.querySelectorAll('.term-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                mTerm = parseInt(btn.dataset.term, 10);
+                syncTermButtons();
+                syncBalloonOptions();
+                calcMortgage('loan');
+            });
+        });
+        syncDpModeUI();
+        syncTermButtons();
+        syncBalloonUI();
+        calcMortgage('loan');
+
+        /* ── Reverse Mortgage Investor Analysis ── */
+        const rmPropertyValue = document.getElementById('rm-property-value');
+        const rmAppreciation = document.getElementById('rm-appreciation');
+        const rmAge = document.getElementById('rm-age');
+        const rmYears = document.getElementById('rm-years');
+        const rmBalance = document.getElementById('rm-balance');
+        const rmRate = document.getElementById('rm-rate');
+        const rmOrigination = document.getElementById('rm-origination');
+        const rmClosing = document.getElementById('rm-closing');
+        const rmLtv = document.getElementById('rm-ltv');
+        const rmLtvReset = document.getElementById('rm-ltv-reset');
+        const rmLtvHint = document.getElementById('rm-ltv-hint');
+        const rmError = document.getElementById('rm-error');
+        const rmScenarioBody = document.getElementById('rm-scenario-body');
+
+        let rmLtvManual = false;
+        let rmCharts = { balance: null, equity: null, roi: null };
+
+        const LTV_ANCHORS = [
+            [62, 40],
+            [65, 45],
+            [70, 50],
+            [75, 55],
+            [80, 60],
+            [85, 65],
+        ];
+
+        function defaultLtvForAge(age) {
+            age = Math.max(62, Math.min(100, age));
+            if (age >= 85) return 65;
+            for (let i = 0; i < LTV_ANCHORS.length - 1; i++) {
+                const [a1, l1] = LTV_ANCHORS[i];
+                const [a2, l2] = LTV_ANCHORS[i + 1];
+                if (age >= a1 && age <= a2) {
+                    return l1 + ((age - a1) / (a2 - a1)) * (l2 - l1);
+                }
+            }
+            return 65;
+        }
+
+        function syncLtvFromAge() {
+            if (rmLtvManual) return;
+            const ltv = defaultLtvForAge(parseNum(rmAge.value) || 70);
+            rmLtv.value = ltv.toFixed(1);
+            rmLtvHint.textContent = 'Auto-set to ' + ltv.toFixed(1) + '% for age ' + Math.round(parseNum(rmAge.value) || 70) + '. Edit to override.';
+            rmLtvReset.classList.add('hidden');
+        }
+
+        function analyzeReverseInvestment(params) {
+            const propertyValue = clamp0(params.propertyValue);
+            const appreciation = params.appreciation / 100;
+            const years = Math.max(1, Math.floor(params.years));
+            const existingBalance = clamp0(params.existingBalance);
+            const rate = params.rate / 100;
+            const origination = clamp0(params.origination);
+            const closing = clamp0(params.closing);
+            const ltv = clamp0(params.ltv) / 100;
+
+            const principalLimit = propertyValue * ltv;
+            const availableCash = Math.max(0, principalLimit - existingBalance);
+            const futureLoanBalance = principalLimit * Math.pow(1 + rate, years);
+            const futurePropertyValue = propertyValue * Math.pow(1 + appreciation, years);
+            const remainingEquity = futurePropertyValue - futureLoanBalance;
+            const investorReturn = futureLoanBalance - principalLimit;
+            const equityCushion = futurePropertyValue > 0 ? (remainingEquity / futurePropertyValue) * 100 : 0;
+            const grossRoi = principalLimit > 0 ? (investorReturn / principalLimit) * 100 : 0;
+            const netProfit = investorReturn - origination - closing;
+            const totalInvested = principalLimit + origination + closing;
+            const netRoi = totalInvested > 0 ? (netProfit / totalInvested) * 100 : 0;
+            const annualizedReturn = principalLimit > 0 && years > 0
+                ? (Math.pow(futureLoanBalance / principalLimit, 1 / years) - 1) * 100
+                : 0;
+
+            const labels = [];
+            const loanSeries = [];
+            const valueSeries = [];
+            const equitySeries = [];
+            const roiSeries = [];
+
+            for (let y = 0; y <= years; y++) {
+                labels.push('Yr ' + y);
+                const loan = principalLimit * Math.pow(1 + rate, y);
+                const prop = propertyValue * Math.pow(1 + appreciation, y);
+                loanSeries.push(loan);
+                valueSeries.push(prop);
+                equitySeries.push(prop - loan);
+                roiSeries.push(principalLimit > 0 ? ((loan - principalLimit) / principalLimit) * 100 : 0);
+            }
+
+            let risk = 'green';
+            if (remainingEquity <= 0) risk = 'red';
+            else if (equityCushion < 20) risk = 'yellow';
+
+            return {
+                propertyValue,
+                appreciation: params.appreciation,
+                years,
+                rate: params.rate,
+                principalLimit,
+                availableCash,
+                futureLoanBalance,
+                futurePropertyValue,
+                remainingEquity,
+                investorReturn,
+                equityCushion,
+                grossRoi,
+                netProfit,
+                netRoi,
+                annualizedReturn,
+                labels,
+                loanSeries,
+                valueSeries,
+                equitySeries,
+                roiSeries,
+                risk,
+            };
+        }
+
+        function readReverseInputs() {
+            return {
+                propertyValue: parseNum(rmPropertyValue.value),
+                appreciation: parseNum(rmAppreciation.value),
+                years: parseNum(rmYears.value) || 12,
+                existingBalance: parseNum(rmBalance.value),
+                rate: parseNum(rmRate.value),
+                origination: parseNum(rmOrigination.value),
+                closing: parseNum(rmClosing.value),
+                ltv: parseNum(rmLtv.value),
+            };
+        }
+
+        function scenarioVariants(base) {
+            return {
+                conservative: {
+                    ...base,
+                    appreciation: base.appreciation - 1.5,
+                    years: base.years + 3,
+                    rate: base.rate + 1,
+                },
+                expected: { ...base },
+                optimistic: {
+                    ...base,
+                    appreciation: base.appreciation + 1.5,
+                    years: Math.max(1, base.years - 2),
+                    rate: Math.max(0, base.rate - 0.75),
+                },
+            };
+        }
+
+        function updateRiskBadge(result) {
+            const badge = document.getElementById('rm-risk-badge');
+            const title = document.getElementById('rm-risk-title');
+            const desc = document.getElementById('rm-risk-desc');
+            const icon = document.getElementById('rm-risk-icon');
+
+            badge.classList.remove('risk-badge-green', 'risk-badge-yellow', 'risk-badge-red');
+
+            if (result.risk === 'red') {
+                badge.classList.add('risk-badge-red');
+                title.textContent = 'High Risk';
+                desc.textContent = 'Projected loan exceeds estimated property value — negative equity at payoff.';
+                icon.textContent = 'warning';
+            } else if (result.risk === 'yellow') {
+                badge.classList.add('risk-badge-yellow');
+                title.textContent = 'Moderate Risk';
+                desc.textContent = 'Loan balance approaches future property value — limited equity cushion.';
+                icon.textContent = 'report_problem';
+            } else {
+                badge.classList.add('risk-badge-green');
+                title.textContent = 'Low Risk';
+                desc.textContent = 'Property value comfortably exceeds projected loan balance.';
+                icon.textContent = 'verified_user';
+            }
+        }
+
+        function chartDefaults() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 600, easing: 'easeOutQuart' },
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', boxWidth: 12, font: { size: 11, family: 'Plus Jakarta Sans' } },
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#cbd5e1',
+                        callbacks: {
+                            label(ctx) {
+                                const v = ctx.parsed.y;
+                                if (ctx.dataset.yAxisID === 'y1' || ctx.dataset.label.includes('ROI')) {
+                                    return ctx.dataset.label + ': ' + v.toFixed(1) + '%';
+                                }
+                                return ctx.dataset.label + ': ' + formatCurrency(v, 0);
+                            },
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(51,65,85,0.35)' },
+                        ticks: { color: '#64748b', maxTicksLimit: 13, font: { size: 10 } },
+                    },
+                    y: {
+                        grid: { color: 'rgba(51,65,85,0.35)' },
+                        ticks: {
+                            color: '#64748b',
+                            font: { size: 10 },
+                            callback: (v) => '$' + (v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : (v >= 1e3 ? (v / 1e3).toFixed(0) + 'k' : v)),
+                        },
+                    },
+                },
+            };
+        }
+
+        function updateReverseCharts(result) {
+            if (typeof Chart === 'undefined') return;
+
+            const balanceCtx = document.getElementById('rm-chart-balance');
+            const equityCtx = document.getElementById('rm-chart-equity');
+            const roiCtx = document.getElementById('rm-chart-roi');
+
+            if (rmCharts.balance) rmCharts.balance.destroy();
+            if (rmCharts.equity) rmCharts.equity.destroy();
+            if (rmCharts.roi) rmCharts.roi.destroy();
+
+            const balanceOpts = chartDefaults();
+            rmCharts.balance = new Chart(balanceCtx, {
+                type: 'line',
+                data: {
+                    labels: result.labels,
+                    datasets: [
+                        {
+                            label: 'Loan Balance',
+                            data: result.loanSeries,
+                            borderColor: '#f87171',
+                            backgroundColor: 'rgba(248,113,113,0.08)',
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            borderWidth: 2,
+                        },
+                        {
+                            label: 'Property Value',
+                            data: result.valueSeries,
+                            borderColor: '#34d399',
+                            backgroundColor: 'rgba(52,211,153,0.06)',
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            borderWidth: 2,
+                        },
+                    ],
+                },
+                options: balanceOpts,
+            });
+
+            const equityOpts = chartDefaults();
+            rmCharts.equity = new Chart(equityCtx, {
+                type: 'line',
+                data: {
+                    labels: result.labels,
+                    datasets: [{
+                        label: 'Remaining Equity',
+                        data: result.equitySeries,
+                        borderColor: '#818cf8',
+                        backgroundColor: 'rgba(129,140,248,0.12)',
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        borderWidth: 2,
+                    }],
+                },
+                options: equityOpts,
+            });
+
+            rmCharts.roi = new Chart(roiCtx, {
+                type: 'line',
+                data: {
+                    labels: result.labels,
+                    datasets: [{
+                        label: 'Investor ROI',
+                        data: result.roiSeries,
+                        borderColor: '#a78bfa',
+                        backgroundColor: 'rgba(167,139,250,0.12)',
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        borderWidth: 2,
+                    }],
+                },
+                options: {
+                    ...chartDefaults(),
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(51,65,85,0.35)' },
+                            ticks: { color: '#64748b', maxTicksLimit: 13, font: { size: 10 } },
+                        },
+                        y: {
+                            grid: { color: 'rgba(51,65,85,0.35)' },
+                            ticks: {
+                                color: '#64748b',
+                                font: { size: 10 },
+                                callback: (v) => v.toFixed(0) + '%',
+                            },
+                        },
+                    },
+                },
+            });
+        }
+
+        function renderScenarioTable(scenarios) {
+            const rows = [
+                { label: 'Assumptions', fmt: (r) => r.appreciation.toFixed(1) + '% appr · ' + r.years + ' yr · ' + r.rate.toFixed(2) + '% rate', raw: true },
+                { label: 'Projected Loan Balance', fmt: (r) => formatCurrency(r.futureLoanBalance, 0) },
+                { label: 'Projected Property Value', fmt: (r) => formatCurrency(r.futurePropertyValue, 0) },
+                { label: 'Remaining Equity', fmt: (r) => formatCurrency(r.remainingEquity, 0), color: (r) => r.remainingEquity < 0 ? 'text-red-400' : '' },
+                { label: 'Equity Cushion', fmt: (r) => formatPercent(r.equityCushion, 1) },
+                { label: 'Investor Interest Earned', fmt: (r) => formatCurrency(r.investorReturn, 0) },
+                { label: 'Net Profit', fmt: (r) => formatCurrency(r.netProfit, 0) },
+                { label: 'Expected Annual Return', fmt: (r) => formatPercent(r.annualizedReturn, 1) },
+                { label: 'ROI (Gross)', fmt: (r) => formatPercent(r.grossRoi, 1) },
+            ];
+
+            rmScenarioBody.innerHTML = rows.map((row) => {
+                const cells = ['conservative', 'expected', 'optimistic'].map((key) => {
+                    const r = scenarios[key];
+                    const cls = row.color ? row.color(r) : '';
+                    const val = row.fmt(r);
+                    return '<td class="p-3 mono text-sm ' + cls + '">' + val + '</td>';
+                }).join('');
+                return '<tr><td class="p-3 text-slate-400 font-medium">' + row.label + '</td>' + cells + '</tr>';
+            }).join('');
+        }
+
+        function clearReverseDashboard() {
+            [
+                'rm-kpi-principal', 'rm-kpi-cash', 'rm-kpi-advance', 'rm-kpi-future-balance',
+                'rm-kpi-future-value', 'rm-kpi-interest', 'rm-kpi-equity', 'rm-kpi-cushion',
+                'rm-kpi-annual', 'rm-kpi-roi', 'rm-kpi-net', 'rm-kpi-net-roi',
+            ].forEach((id) => { document.getElementById(id).textContent = '—'; });
+            rmScenarioBody.innerHTML = '';
+            if (rmCharts.balance) { rmCharts.balance.destroy(); rmCharts.balance = null; }
+            if (rmCharts.equity) { rmCharts.equity.destroy(); rmCharts.equity = null; }
+            if (rmCharts.roi) { rmCharts.roi.destroy(); rmCharts.roi = null; }
+        }
+
+        function calcReverse() {
+            rmError.classList.add('hidden');
+            const inputs = readReverseInputs();
+
+            if (inputs.propertyValue <= 0) {
+                clearReverseDashboard();
+                rmError.textContent = 'Enter a current property value greater than $0.';
+                rmError.classList.remove('hidden');
+                return;
+            }
+
+            if (inputs.ltv <= 0 || inputs.ltv > 100) {
+                clearReverseDashboard();
+                rmError.textContent = 'Maximum LTV must be between 0% and 100%.';
+                rmError.classList.remove('hidden');
+                return;
+            }
+
+            if (inputs.existingBalance > inputs.propertyValue) {
+                rmError.textContent = 'Existing mortgage balance exceeds property value — verify inputs.';
+                rmError.classList.remove('hidden');
+            }
+
+            const result = analyzeReverseInvestment(inputs);
+            updateRiskBadge(result);
+
+            document.getElementById('rm-kpi-principal').textContent = formatCurrency(result.principalLimit, 0);
+            document.getElementById('rm-kpi-cash').textContent = formatCurrency(result.availableCash, 0);
+            document.getElementById('rm-kpi-advance').textContent = formatCurrency(result.principalLimit, 0);
+            document.getElementById('rm-kpi-future-balance').textContent = formatCurrency(result.futureLoanBalance, 0);
+            document.getElementById('rm-kpi-future-value').textContent = formatCurrency(result.futurePropertyValue, 0);
+            document.getElementById('rm-kpi-interest').textContent = formatCurrency(result.investorReturn, 0);
+            document.getElementById('rm-kpi-equity').textContent = formatCurrency(result.remainingEquity, 0);
+
+            const equityEl = document.getElementById('rm-kpi-equity');
+            equityEl.classList.toggle('text-red-400', result.remainingEquity < 0);
+            equityEl.classList.toggle('text-slate-100', result.remainingEquity >= 0);
+
+            const cushionEl = document.getElementById('rm-kpi-cushion');
+            cushionEl.textContent = formatPercent(result.equityCushion, 1);
+            cushionEl.classList.toggle('text-red-400', result.equityCushion < 0);
+            cushionEl.classList.toggle('text-amber-400', result.equityCushion >= 0 && result.equityCushion < 20);
+            cushionEl.classList.toggle('text-emerald-400', result.equityCushion >= 20);
+
+            document.getElementById('rm-kpi-annual').textContent = formatPercent(result.annualizedReturn, 1);
+            document.getElementById('rm-kpi-roi').textContent = formatPercent(result.grossRoi, 1);
+            document.getElementById('rm-kpi-net').textContent = formatCurrency(result.netProfit, 0);
+            document.getElementById('rm-kpi-net-roi').textContent = formatPercent(result.netRoi, 1);
+
+            const variants = scenarioVariants(inputs);
+            const scenarios = {
+                conservative: analyzeReverseInvestment(variants.conservative),
+                expected: result,
+                optimistic: analyzeReverseInvestment(variants.optimistic),
+            };
+            renderScenarioTable(scenarios);
+            updateReverseCharts(result);
+        }
+
+        rmAge.addEventListener('input', () => {
+            syncLtvFromAge();
+            calcReverse();
+        });
+        rmAge.addEventListener('change', () => {
+            syncLtvFromAge();
+            calcReverse();
+        });
+
+        rmLtv.addEventListener('input', () => {
+            rmLtvManual = true;
+            rmLtvReset.classList.remove('hidden');
+            rmLtvHint.textContent = 'Manual LTV override active.';
+            calcReverse();
+        });
+
+        rmLtvReset.addEventListener('click', () => {
+            rmLtvManual = false;
+            syncLtvFromAge();
+            calcReverse();
+        });
+
+        [rmPropertyValue, rmAppreciation, rmYears, rmBalance, rmRate, rmOrigination, rmClosing].forEach((el) => {
+            el.addEventListener('input', calcReverse);
+            el.addEventListener('change', calcReverse);
+        });
+
+        syncLtvFromAge();
+        calcReverse();
+
+        /* ── Note Buyer ── */
+        const nNoteRate = document.getElementById('n-note-rate');
+        const nRemaining = document.getElementById('n-remaining');
+        const nRemainingUnit = document.getElementById('n-remaining-unit');
+        const nPayment = document.getElementById('n-payment');
+        const nYield = document.getElementById('n-yield');
+        const nTargetProfit = document.getElementById('n-target-profit');
+        const nError = document.getElementById('n-error');
+        const nImpliedYieldBlock = document.getElementById('n-implied-yield-block');
+
+        function noteRemainingMonths() {
+            const val = clamp0(parseNum(nRemaining.value));
+            return nRemainingUnit.value === 'years' ? Math.floor(val * 12) : Math.floor(val);
+        }
+
+        function clearNoteResults() {
+            ['n-purchase-price', 'n-est-principal', 'n-nominal', 'n-discount', 'n-gross-spread', 'n-roi', 'n-implied-yield'].forEach((id) => {
+                document.getElementById(id).textContent = '—';
+            });
+            document.getElementById('n-discount-pct').textContent = '—';
+            nImpliedYieldBlock.classList.add('hidden');
+        }
+
+        function calcNote() {
+            const noteRate = clamp0(parseNum(nNoteRate.value));
+            const buyerYield = clamp0(parseNum(nYield.value));
+            const months = noteRemainingMonths();
+            const pmt = clamp0(parseNum(nPayment.value));
+            const useTargetProfit = nTargetProfit.value.trim() !== '';
+            const targetProfit = useTargetProfit ? clamp0(parseNum(nTargetProfit.value)) : 0;
+
+            nError.classList.add('hidden');
+            nImpliedYieldBlock.classList.add('hidden');
+
+            if (months <= 0 || pmt <= 0) {
+                clearNoteResults();
+                nError.textContent = 'Enter a monthly payment and number of payments remaining.';
+                nError.classList.remove('hidden');
+                return;
+            }
+
+            const estPrincipal = pvOfAnnuity(pmt, noteRate, months);
+            const nominal = pmt * months;
+            let purchasePrice;
+
+            if (useTargetProfit) {
+                if (targetProfit <= 0) {
+                    nError.textContent = 'Enter a target profit greater than $0, or leave blank to use required yield.';
+                    nError.classList.remove('hidden');
+                    clearNoteResults();
+                    return;
+                }
+                if (targetProfit >= nominal) {
+                    nError.textContent = 'Target profit cannot equal or exceed total cash received.';
+                    nError.classList.remove('hidden');
+                    clearNoteResults();
+                    return;
+                }
+                purchasePrice = nominal - targetProfit;
+                if (purchasePrice <= 0) {
+                    nError.textContent = 'Target profit produces an invalid purchase price.';
+                    nError.classList.remove('hidden');
+                    clearNoteResults();
+                    return;
+                }
+                const impliedYield = yieldFromPurchasePrice(pmt, months, purchasePrice);
+                if (impliedYield !== null) {
+                    nImpliedYieldBlock.classList.remove('hidden');
+                    document.getElementById('n-implied-yield').textContent = formatPercent(impliedYield, 2);
+                }
+            } else {
+                if (buyerYield <= 0) {
+                    nError.textContent = 'Required yield must be greater than 0%, or enter a target profit.';
+                    nError.classList.remove('hidden');
+                    clearNoteResults();
+                    return;
+                }
+                purchasePrice = pvOfAnnuity(pmt, buyerYield, months);
+            }
+
+            const spread = estPrincipal - purchasePrice;
+            const spreadPct = estPrincipal > 0 ? (spread / estPrincipal) * 100 : 0;
+            const grossSpread = nominal - purchasePrice;
+            const roi = purchasePrice > 0 ? (grossSpread / purchasePrice) * 100 : 0;
+
+            document.getElementById('n-purchase-price').textContent = formatCurrency(purchasePrice, 0);
+            document.getElementById('n-est-principal').textContent = formatCurrency(estPrincipal, 0);
+            document.getElementById('n-nominal').textContent = formatCurrency(nominal, 0);
+            document.getElementById('n-discount').textContent = formatCurrency(spread, 0);
+            document.getElementById('n-discount-pct').textContent =
+                spread >= 0
+                    ? spreadPct.toFixed(2) + '% below estimated remaining balance'
+                    : Math.abs(spreadPct).toFixed(2) + '% premium above estimated remaining balance';
+            document.getElementById('n-gross-spread').textContent = formatCurrency(grossSpread, 0);
+            document.getElementById('n-roi').textContent = formatPercent(roi, 1);
+
+            const discountEl = document.getElementById('n-discount');
+            if (spread < 0) {
+                discountEl.classList.remove('text-emerald-400');
+                discountEl.classList.add('text-amber-400');
+            } else {
+                discountEl.classList.add('text-emerald-400');
+                discountEl.classList.remove('text-amber-400');
+            }
+        }
+
+        [nPayment, nNoteRate, nRemaining, nRemainingUnit, nYield, nTargetProfit].forEach((el) => {
+            el.addEventListener('input', calcNote);
+            el.addEventListener('change', calcNote);
+        });
+        calcNote();
+
+        /* ── Present Value ── */
+        const pvAmount = document.getElementById('pv-amount');
+        const pvFreq = document.getElementById('pv-frequency');
+        const pvRate = document.getElementById('pv-rate');
+        const pvTime = document.getElementById('pv-time');
+        const pvTimeUnit = document.getElementById('pv-time-unit');
+
+        function calcPV() {
+            const pmt = clamp0(parseNum(pvAmount.value));
+            const annualRate = clamp0(parseNum(pvRate.value));
+            const time = clamp0(parseNum(pvTime.value));
+            const freq = pvFreq.value;
+
+            const periodsPerYear = freq === 'monthly' ? 12 : freq === 'quarterly' ? 4 : 1;
+            const periodRate = annualRate / 100 / periodsPerYear;
+
+            let n;
+            if (pvTimeUnit.value === 'years') {
+                n = time * periodsPerYear;
+            } else {
+                n = freq === 'monthly' ? time : freq === 'quarterly' ? time / 3 : time / 12;
+            }
+            n = Math.max(0, Math.floor(n));
+
+            let pv = 0, nominal = 0;
+            if (pmt > 0 && n > 0) {
+                nominal = pmt * n;
+                if (periodRate <= 0) pv = nominal;
+                else pv = pmt * ((1 - Math.pow(1 + periodRate, -n)) / periodRate);
+            }
+
+            document.getElementById('pv-result').textContent = formatCurrency(pv, 0);
+            document.getElementById('pv-nominal').textContent = formatCurrency(nominal, 0);
+        }
+
+        [pvAmount, pvFreq, pvRate, pvTime, pvTimeUnit].forEach((el) => {
+            el.addEventListener('input', calcPV);
+            el.addEventListener('change', calcPV);
+        });
+
+        /* ── Rent Home & Multi-Family Valuation ── */
+        function calcRentValuation(grossEl, grossPeriodEl, expEl, expPeriodEl, capEl, errorEl, noiEl, valueEl, grmEl) {
+            const gross = clamp0(parseNum(grossEl.value));
+            const exp = clamp0(parseNum(expEl.value));
+            const cap = clamp0(parseNum(capEl.value));
+            const annualGross = toAnnual(gross, grossPeriodEl.value);
+            const annualExp = toAnnual(exp, expPeriodEl.value);
+            const noi = annualGross - annualExp;
+
+            errorEl.classList.add('hidden');
+            document.getElementById(noiEl).textContent = formatCurrency(noi, 0);
+
+            if (cap <= 0) {
+                errorEl.textContent = 'Cap rate must be greater than 0%.';
+                errorEl.classList.remove('hidden');
+                document.getElementById(valueEl).textContent = '—';
+                document.getElementById(grmEl).textContent = '—';
+                return { noi: 0, annualGross: 0, valuation: null, grm: null };
+            }
+
+            const valuation = noi / (cap / 100);
+            const grm = annualGross > 0 ? valuation / annualGross : null;
+            document.getElementById(valueEl).textContent = formatCurrency(valuation, 0);
+            document.getElementById(grmEl).textContent = grm !== null ? grm.toFixed(2) + '×' : '—';
+            return { noi, annualGross, valuation, grm };
+        }
+
+        const rhGross = document.getElementById('rh-gross');
+        const rhGrossPeriod = document.getElementById('rh-gross-period');
+        const rhExpenses = document.getElementById('rh-expenses');
+        const rhExpensePeriod = document.getElementById('rh-expense-period');
+        const rhCap = document.getElementById('rh-cap');
+        const rhError = document.getElementById('rh-error');
+
+        function calcRentHome() {
+            calcRentValuation(rhGross, rhGrossPeriod, rhExpenses, rhExpensePeriod, rhCap, rhError, 'rh-noi', 'rh-value', 'rh-grm');
+        }
+
+        [rhGross, rhGrossPeriod, rhExpenses, rhExpensePeriod, rhCap].forEach((el) => {
+            el.addEventListener('input', calcRentHome);
+            el.addEventListener('change', calcRentHome);
+        });
+
+        const mfUnits = document.getElementById('mf-units');
+        const mfInOp = document.getElementById('mf-inop');
+        const mfGross = document.getElementById('mf-gross');
+        const mfGrossPeriod = document.getElementById('mf-gross-period');
+        const mfExpenses = document.getElementById('mf-expenses');
+        const mfExpensePeriod = document.getElementById('mf-expense-period');
+        const mfCap = document.getElementById('mf-cap');
+        const mfError = document.getElementById('mf-error');
+
+        function calcMultiFamily() {
+            const totalUnits = Math.max(1, Math.floor(parseNum(mfUnits.value)));
+            let inOpUnits = Math.max(0, Math.floor(parseNum(mfInOp.value)));
+
+            mfError.classList.add('hidden');
+
+            if (inOpUnits > totalUnits) {
+                mfError.textContent = 'In-op units cannot exceed total number of units.';
+                mfError.classList.remove('hidden');
+                inOpUnits = totalUnits;
+            }
+
+            const operatingUnits = totalUnits - inOpUnits;
+            const occupancyFactor = operatingUnits / totalUnits;
+
+            const gross = clamp0(parseNum(mfGross.value));
+            const exp = clamp0(parseNum(mfExpenses.value));
+            const cap = clamp0(parseNum(mfCap.value));
+            const annualGrossFull = toAnnual(gross, mfGrossPeriod.value);
+            const annualGrossEffective = annualGrossFull * occupancyFactor;
+            const annualExp = toAnnual(exp, mfExpensePeriod.value);
+            const noi = annualGrossEffective - annualExp;
+
+            document.getElementById('mf-operating-units').textContent =
+                operatingUnits + ' of ' + totalUnits + (inOpUnits > 0 ? ' (' + inOpUnits + ' in-op)' : '');
+
+            document.getElementById('mf-noi').textContent = formatCurrency(noi, 0);
+            document.getElementById('mf-noi-per-unit').textContent =
+                operatingUnits > 0 ? formatCurrency(noi / operatingUnits, 0) + ' NOI per operating unit' : '—';
+
+            if (cap <= 0) {
+                mfError.textContent = 'Cap rate must be greater than 0%.';
+                mfError.classList.remove('hidden');
+                document.getElementById('mf-value').textContent = '—';
+                document.getElementById('mf-value-per-unit').textContent = '—';
+                document.getElementById('mf-grm').textContent = '—';
+                return;
+            }
+
+            const valuation = noi / (cap / 100);
+            const grm = annualGrossEffective > 0 ? valuation / annualGrossEffective : null;
+
+            document.getElementById('mf-value').textContent = formatCurrency(valuation, 0);
+            document.getElementById('mf-value-per-unit').textContent =
+                totalUnits > 0 ? formatCurrency(valuation / totalUnits, 0) + ' per unit (all units)' : '—';
+            document.getElementById('mf-grm').textContent = grm !== null ? grm.toFixed(2) + '×' : '—';
+        }
+
+        [mfUnits, mfInOp, mfGross, mfGrossPeriod, mfExpenses, mfExpensePeriod, mfCap].forEach((el) => {
+            el.addEventListener('input', calcMultiFamily);
+            el.addEventListener('change', calcMultiFamily);
+        });
+
+        /* ── Initial render ── */
+        calcPV();
+        calcRentHome();
+        calcMultiFamily();
+    </script>
+</body>
+</html>

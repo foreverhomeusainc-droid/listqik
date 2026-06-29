@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { CALCULATOR_CATALOG } from "@/lib/calculators/types";
+import { INVESTMENT_CALCULATOR_CATALOG } from "@/lib/calculators/types";
 
+/** @deprecated Use InvestmentCalculatorsApp on /calculators instead. */
 export function CalculatorHub({ basePath }: { basePath: string }) {
   return (
     <div className="space-y-8">
@@ -12,17 +13,21 @@ export function CalculatorHub({ basePath }: { basePath: string }) {
         </p>
         <h1 className="mt-2 text-3xl font-semibold text-emerald-50 sm:text-4xl">Calculator Center</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/70 sm:text-base">
-          Institutional-grade deal analyzers for flippers, wholesalers, and buy-and-hold investors.
-          Anonymous visitors get a limited sandbox; members get unlimited runs, Push to Live Listing,
-          and Syndicate+ Deal Memo PDF export.
+          Open the tabbed investment suite or browse individual calculator entry points.
         </p>
+        <Link
+          href={basePath === "/dashboard/calculators" ? "/dashboard/calculators" : "/calculators"}
+          className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+        >
+          Open Investment Calculators
+        </Link>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {CALCULATOR_CATALOG.map((calc) => (
+        {INVESTMENT_CALCULATOR_CATALOG.map((calc) => (
           <Link
             key={calc.id}
-            href={`${basePath}/${calc.slug}`}
+            href={`${basePath}?tab=${calc.slug}`}
             className="group rounded-2xl border border-white/10 bg-black/40 p-5 transition hover:border-emerald-400/40 hover:bg-emerald-950/20"
           >
             <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300/70">

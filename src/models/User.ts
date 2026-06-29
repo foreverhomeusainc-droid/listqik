@@ -41,6 +41,8 @@ const userSchema = new Schema(
     loyaltyFastTrackTrialActive: { type: Boolean, default: false },
     loyaltyFastTrackTrialGrantedAt: { type: Date, default: null },
     loyaltyFirstListingLiveAt: { type: Date, default: null },
+    /** Buyer representation agreement — required for full MLS buyer deals access */
+    buyerRepAcknowledgedAt: { type: Date, default: null },
   },
   { timestamps: true },
 );

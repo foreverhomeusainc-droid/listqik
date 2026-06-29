@@ -1,4 +1,4 @@
-import { monthlyPrincipalAndInterest } from "@/lib/calculators/mortgage-math";
+import { monthlyPrincipalAndInterest } from "@/lib/calculators/legacy/mortgage-math";
 
 export type RentalInputs = {
   purchasePrice: number;

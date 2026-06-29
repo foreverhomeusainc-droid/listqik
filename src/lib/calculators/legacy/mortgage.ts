@@ -2,7 +2,7 @@ import {
   buildAmortizationSchedule,
   monthlyPrincipalAndInterest,
   type AmortizationRow,
-} from "@/lib/calculators/mortgage-math";
+} from "@/lib/calculators/legacy/mortgage-math";
 import { listQikSavingsUsd } from "@/lib/calculators/listqik-fees";
 
 export type MortgageInputs = {

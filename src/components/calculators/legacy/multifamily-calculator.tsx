@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateMultifamily } from "@/lib/calculators/multifamily";
+import { calculateMultifamily } from "@/lib/calculators/legacy/multifamily";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,
@@ -15,7 +15,7 @@ import {
 import { useCalculatorAccess } from "@/components/calculators/use-calculator-access";
 import type { CalculatorAccess } from "@/lib/calculators/access";
 
-const SLUG = "multifamily";
+const SLUG = "legacy-multifamily";
 
 export function MultifamilyCalculator({ access: accessProp }: { access?: CalculatorAccess | null }) {
   const hook = useCalculatorAccess(SLUG);
@@ -118,6 +118,7 @@ export function MultifamilyCalculator({ access: accessProp }: { access?: Calcula
       <CalculatorAddressFields {...address} />
       <CalculatorActions
         calculatorSlug={SLUG}
+        loginCallbackPath="/calculators/legacy/multifamily"
         access={access}
         listingKind="rental"
         price={purchasePrice}

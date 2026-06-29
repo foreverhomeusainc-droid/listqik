@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateFixAndFlip } from "@/lib/calculators/fix-and-flip";
+import { calculateFixAndFlip } from "@/lib/calculators/legacy/fix-and-flip";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,

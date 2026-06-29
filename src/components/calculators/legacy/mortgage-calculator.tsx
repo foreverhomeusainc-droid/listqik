@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { calculateMortgage } from "@/lib/calculators/mortgage";
+import { calculateMortgage } from "@/lib/calculators/legacy/mortgage";
 import { CalculatorActions } from "@/components/calculators/calculator-actions";
 import {
   CalcField,
@@ -15,7 +15,7 @@ import {
 import { useCalculatorAccess } from "@/components/calculators/use-calculator-access";
 import type { CalculatorAccess } from "@/lib/calculators/access";
 
-const SLUG = "mortgage";
+const SLUG = "legacy-mortgage";
 
 export function MortgageCalculator({ access: accessProp }: { access?: CalculatorAccess | null }) {
   const hook = useCalculatorAccess(SLUG);
@@ -97,6 +97,7 @@ export function MortgageCalculator({ access: accessProp }: { access?: Calculator
       <CalculatorAddressFields {...address} />
       <CalculatorActions
         calculatorSlug={SLUG}
+        loginCallbackPath="/calculators/legacy/mortgage"
         access={access}
         price={propertyValue}
         address={address}

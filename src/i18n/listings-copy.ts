@@ -26,6 +26,9 @@ export type ListingsCopy = {
   bedsAbbr: string;
   bathsAbbr: string;
   sqftAbbr: string;
+  dealsEyebrow: string;
+  dealsTitle: string;
+  dealsIntro: string;
 };
 
 const COPY: Record<HomeLocale, ListingsCopy> = {
@@ -56,6 +59,9 @@ const COPY: Record<HomeLocale, ListingsCopy> = {
     bedsAbbr: "bd",
     bathsAbbr: "ba",
     sqftAbbr: "sqft",
+    dealsEyebrow: "Deals of the Week",
+    dealsTitle: "Curated picks for buyers & investors",
+    dealsIntro: "Hand-selected listings with strong value — updated by the ListQik team.",
   },
   es: {
     eyebrow: "ÍNDICE DE PROPIEDADES",
@@ -84,6 +90,9 @@ const COPY: Record<HomeLocale, ListingsCopy> = {
     bedsAbbr: "rec",
     bathsAbbr: "baños",
     sqftAbbr: "pies²",
+    dealsEyebrow: "Ofertas de la semana",
+    dealsTitle: "Selección curada para compradores e inversionistas",
+    dealsIntro: "Propiedades elegidas por el equipo ListQik con valor destacado.",
   },
 };
 

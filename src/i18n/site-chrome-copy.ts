@@ -13,6 +13,7 @@ export type SiteChromeCopy = {
     resources: string;
     university: string;
     calculators: string;
+    buyers: string;
     dashboard: string;
     logIn: string;
     viewListings: string;
@@ -63,6 +64,7 @@ const SITE_CHROME_COPY: SiteChromeCopy = {
     resources: "Resources",
     university: "University",
     calculators: "Calculators",
+    buyers: "Buyer Deals",
     dashboard: "Dashboard",
     logIn: "Log in",
     viewListings: "View Listings",

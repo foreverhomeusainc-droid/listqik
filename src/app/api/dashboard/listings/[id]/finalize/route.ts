@@ -9,6 +9,7 @@ import { Listing } from "@/models/Listing";
 import { ListingDocument } from "@/models/ListingDocument";
 import { User } from "@/models/User";
 import { isListingStartInFuture, statusForListingStartDate } from "@/lib/listing-status";
+import { publishListingOnSite } from "@/lib/listings/public-listings-service";
 import {
   sendInternalListingFinalizedEmail,
   sendSellerListingFinalizedEmail,
@@ -110,6 +111,14 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
   }
 
   await listing.save();
+
+  if (wasIncomplete && listing.status === "ACTIVE") {
+    const hasHero =
+      typeof listing.heroImageUrl === "string" && listing.heroImageUrl.trim().length > 0;
+    if (hasHero) {
+      await publishListingOnSite(listing._id);
+    }
+  }
 
   /**
    * Fire an internal notification once per listing finalize. We rely on the

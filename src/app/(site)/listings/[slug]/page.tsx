@@ -3,7 +3,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { LeadCaptureForm } from "@/components/lead-capture-form";
-import { listings } from "@/data/listings";
+import {
+  getPublishedListingBySlug,
+  listPublishedListings,
+} from "@/lib/listings/public-listings-service";
+
+export const revalidate = 60;
 
 function formatMoney(n: number) {
   return n.toLocaleString(undefined, {
@@ -13,7 +18,8 @@ function formatMoney(n: number) {
   });
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const listings = await listPublishedListings();
   return listings.map((l) => ({ slug: l.slug }));
 }
 
@@ -23,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const listing = listings.find((l) => l.slug === slug);
+  const listing = await getPublishedListingBySlug(slug);
   if (!listing) return {};
 
   const title = `${listing.title} in ${listing.city}, ${listing.state}`;
@@ -60,7 +66,7 @@ export default async function ListingDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const listing = listings.find((l) => l.slug === slug);
+  const listing = await getPublishedListingBySlug(slug);
   if (!listing) return notFound();
 
   return (
@@ -77,11 +83,13 @@ export default async function ListingDetailPage({
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   className="object-cover"
                   priority
+                  unoptimized={listing.heroImage.src.startsWith("/api/listing-images/")}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                 <div className="absolute left-5 top-5 flex flex-wrap gap-2">
                   <span className="chip">{listing.status.toUpperCase()}</span>
                   <span className="chip">{listing.type.replace("-", " ")}</span>
+                  {listing.featured ? <span className="chip">Deal of the Week</span> : null}
                   {listing.tags.slice(0, 2).map((t) => (
                     <span key={t} className="chip">
                       {t}
@@ -160,17 +168,6 @@ export default async function ListingDetailPage({
                 </li>
               </ul>
             </div>
-
-            <div className="glass-surface p-6">
-              <div className="text-xs font-semibold tracking-widest text-white/60">
-                NOTE
-              </div>
-              <p className="mt-2 text-sm text-muted">
-                This detail page is rendered from typed local data. Swap the
-                datasource later (CMS/DB) without changing the route shape:
-                <span className="font-mono text-white/70"> /listings/[slug]</span>.
-              </p>
-            </div>
           </aside>
         </div>
       </Container>
@@ -186,4 +183,3 @@ function Kpi({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

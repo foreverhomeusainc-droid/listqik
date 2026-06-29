@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { HomePageShell } from "@/components/home/home-page-shell";
+import { listDealsOfTheWeek } from "@/lib/listings/public-listings-service";
 import { getHomepageCopy } from "@/i18n/homepage-copy";
 import { localeAlternates } from "@/lib/locale-metadata";
 import { getRequestHomeLocale, homeOpenGraphLocale } from "@/lib/site-locale-server";
@@ -25,6 +26,7 @@ export async function generateMetadata({
   };
 }
 
-export default function HomePage() {
-  return <HomePageShell />;
+export default async function HomePage() {
+  const featuredListings = await listDealsOfTheWeek(3);
+  return <HomePageShell featuredListings={featuredListings} />;
 }
