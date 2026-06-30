@@ -17,11 +17,11 @@ export function LegacyCalculatorHub({ basePath }: { basePath: string }) {
             </h1>
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/70 sm:text-base">
               Previous deal analyzers (fix &amp; flip, BRRRR, wholesale, cash-flow rental, etc.).
-              Kept for reference — the main{" "}
-              <Link href="/calculators" className="text-emerald-300 underline-offset-2 hover:underline">
-                Investment Calculators
+              Kept for reference — see the{" "}
+              <Link href="/investors#calculators" className="text-emerald-300 underline-offset-2 hover:underline">
+                Investors page
               </Link>{" "}
-              are now the primary tools.
+              for the primary investment tools.
             </p>
           </div>
           <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-200">

@@ -1,7 +1,7 @@
 "use client";
 
 import { Container } from "@/components/container";
-import { ListingCard } from "@/components/listing-card";
+import { DealsOfTheWeekSection } from "@/components/listings/deals-of-the-week-section";
 import { ListingsExplorer } from "@/components/listings-explorer";
 import { useSiteLocale } from "@/components/site-locale-provider";
 import type { Listing } from "@/data/types";
@@ -36,22 +36,14 @@ export function ListingsPageContent({
         </div>
 
         {dealsOfTheWeek.length > 0 ? (
-          <section className="mt-10 space-y-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300/80">
-                {copy.dealsEyebrow}
-              </p>
-              <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">
-                {copy.dealsTitle}
-              </h2>
-              <p className="mt-1 text-sm text-white/55">{copy.dealsIntro}</p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {dealsOfTheWeek.map((l) => (
-                <ListingCard key={`deal-${l.slug}`} listing={l} locale={locale} />
-              ))}
-            </div>
-          </section>
+          <DealsOfTheWeekSection
+            className="mt-10"
+            deals={dealsOfTheWeek}
+            locale={locale}
+            eyebrow={copy.dealsEyebrow}
+            title={copy.dealsTitle}
+            intro={copy.dealsIntro}
+          />
         ) : null}
 
         <div className="mt-8">

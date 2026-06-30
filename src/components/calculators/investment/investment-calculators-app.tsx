@@ -26,6 +26,7 @@ import {
 import {
   INVESTMENT_CALCULATOR_CATALOG,
   type InvestmentCalculatorId,
+  type InvestmentCalculatorMeta,
 } from "@/lib/calculators/types";
 
 const BALLOON_TERM_OPTIONS = [3, 5, 7, 10];
@@ -67,18 +68,39 @@ export function InvestmentCalculatorsApp({
   memberBasePath = "/dashboard",
   initialTab = "mortgage",
   showLegacyLink = true,
+  legacyLinkHref = "/calculators/legacy",
+  catalogIds,
+  showHeader = true,
+  headerEyebrow = "Investor tools",
+  headerTitle = "Investment Calculators",
+  headerSubtitle = "Mortgage, reverse invest, note buying, present value, rent home, and multi-family valuation — updated live as you edit inputs.",
 }: {
   memberBasePath?: string;
   initialTab?: InvestmentCalculatorId;
   showLegacyLink?: boolean;
+  legacyLinkHref?: string;
+  catalogIds?: InvestmentCalculatorId[];
+  showHeader?: boolean;
+  headerEyebrow?: string;
+  headerTitle?: string;
+  headerSubtitle?: string;
 }) {
-  const validTab = INVESTMENT_CALCULATOR_CATALOG.some((c) => c.id === initialTab)
-    ? initialTab
-    : "mortgage";
+  const catalog = useMemo((): InvestmentCalculatorMeta[] => {
+    if (!catalogIds?.length) return INVESTMENT_CALCULATOR_CATALOG;
+    const allowed = new Set(catalogIds);
+    return INVESTMENT_CALCULATOR_CATALOG.filter((c) => allowed.has(c.id));
+  }, [catalogIds]);
+
+  const defaultTab = catalog[0]?.id ?? "mortgage";
+  const validTab = catalog.some((c) => c.id === initialTab) ? initialTab : defaultTab;
   const [tab, setTab] = useState<InvestmentCalculatorId>(validTab);
-  const activeSlug = INVESTMENT_CALCULATOR_CATALOG.find((c) => c.id === tab)?.slug ?? "mortgage";
+  const activeSlug = catalog.find((c) => c.id === tab)?.slug ?? catalog[0]?.slug ?? "mortgage";
   const { access, loading, blocked, recordRun } = useCalculatorAccess(activeSlug);
   const [ran, setRan] = useState(false);
+
+  useEffect(() => {
+    setTab(validTab);
+  }, [validTab]);
 
   useEffect(() => {
     setRan(false);
@@ -284,30 +306,29 @@ export function InvestmentCalculatorsApp({
 
   return (
     <div className="space-y-6">
-      <header className="rounded-2xl border border-emerald-500/25 bg-black/45 p-6 sm:p-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">
-              Investor tools
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold text-emerald-50 sm:text-4xl">
-              Investment Calculators
-            </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/70 sm:text-base">
-              Mortgage, reverse invest, note buying, present value, rent home, and multi-family
-              valuation — updated live as you edit inputs.
-            </p>
+      {showHeader ? (
+        <header className="rounded-2xl border border-emerald-500/25 bg-black/45 p-6 sm:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">
+                {headerEyebrow}
+              </p>
+              <h2 className="mt-2 text-3xl font-semibold text-emerald-50 sm:text-4xl">{headerTitle}</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/70 sm:text-base">
+                {headerSubtitle}
+              </p>
+            </div>
+            {showLegacyLink ? (
+              <Link
+                href={legacyLinkHref}
+                className="shrink-0 rounded-lg border border-white/15 px-3 py-2 text-xs font-medium text-white/55 hover:border-white/30 hover:text-white/80"
+              >
+                Legacy calculators (OLD)
+              </Link>
+            ) : null}
           </div>
-          {showLegacyLink ? (
-            <Link
-              href="/calculators/legacy"
-              className="shrink-0 rounded-lg border border-white/15 px-3 py-2 text-xs font-medium text-white/55 hover:border-white/30 hover:text-white/80"
-            >
-              Legacy calculators (OLD)
-            </Link>
-          ) : null}
-        </div>
-      </header>
+        </header>
+      ) : null}
 
       {!loading ? <CalculatorGatingBanner access={access} memberBasePath={memberBasePath} /> : null}
 
@@ -316,7 +337,7 @@ export function InvestmentCalculatorsApp({
           className="flex overflow-x-auto border-b border-white/10 bg-black/50"
           role="tablist"
         >
-          {INVESTMENT_CALCULATOR_CATALOG.map((calc) => (
+          {catalog.map((calc) => (
             <TabButton key={calc.id} active={tab === calc.id} onClick={() => setTab(calc.id)}>
               {calc.tabLabel}
             </TabButton>

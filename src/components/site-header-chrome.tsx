@@ -21,7 +21,7 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
   const universityHref = localeSitePath("/listqik-university", SITE_CHROME_LOCALE);
   const resourcesHref = localeSitePath("/resources/blogs", SITE_CHROME_LOCALE);
   const listingsHref = localeSitePath("/listings", SITE_CHROME_LOCALE);
-  const calculatorsHref = localeSitePath("/calculators", SITE_CHROME_LOCALE);
+  const investorsHref = localeSitePath("/investors", SITE_CHROME_LOCALE);
   const buyersHref = localeSitePath("/buyers", SITE_CHROME_LOCALE);
 
   return (
@@ -42,7 +42,7 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
           <NavServicesDropdown />
           <NavLink href={aboutHref}>{t.about}</NavLink>
           <NavLink href={universityHref}>{t.university}</NavLink>
-          <NavLink href={calculatorsHref}>{t.calculators}</NavLink>
+          <NavLink href={investorsHref}>{t.investors}</NavLink>
           <NavLink href={buyersHref}>{t.buyers}</NavLink>
           <NavLink href={resourcesHref}>{t.resources}</NavLink>
         </nav>

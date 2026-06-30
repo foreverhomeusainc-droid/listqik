@@ -83,6 +83,20 @@ export const INVESTMENT_CALCULATOR_CATALOG: InvestmentCalculatorMeta[] = [
 
 export const CALCULATOR_CATALOG = INVESTMENT_CALCULATOR_CATALOG;
 
+/** Mortgage + present value — surfaced on Buyer Deals for retail buyers. */
+export const BUYER_INVESTMENT_CALCULATOR_IDS: InvestmentCalculatorId[] = [
+  "mortgage",
+  "present-value",
+];
+
+/** Note, valuation, and cash-flow tools — surfaced on the Investors page. */
+export const INVESTOR_INVESTMENT_CALCULATOR_IDS: InvestmentCalculatorId[] = [
+  "reverse-invest",
+  "note-buyer",
+  "rent-home",
+  "multifamily",
+];
+
 export const ALL_CALCULATOR_IDS: CalculatorId[] = [
   ...INVESTMENT_CALCULATOR_CATALOG.map((c) => c.id),
   ...LEGACY_CALCULATOR_CATALOG.map((c) => c.id),

@@ -33,10 +33,10 @@ export function LegacyCalculatorToolPage({
           {calc.name}
         </p>
         <Link
-          href="/calculators"
+          href="/investors#calculators"
           className="text-xs font-medium text-emerald-300 hover:text-emerald-200"
         >
-          ← Main calculators
+          ← Investors calculators
         </Link>
       </div>
       {!loading ? <CalculatorGatingBanner access={access} memberBasePath={memberBasePath} /> : null}

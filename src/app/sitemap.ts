@@ -31,12 +31,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/resources/videos",
     "/listqik-university",
     "/upgrades",
-    "/calculators",
+    "/investors",
     "/buyers",
   ];
 
   const calculatorRoutes = [
-    "/calculators",
+    "/investors",
     "/calculators/legacy",
     ...LEGACY_CALCULATOR_CATALOG.map((c) => `/calculators/legacy/${c.slug}`),
   ];

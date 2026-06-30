@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { legacyCalculatorBySlug } from "@/lib/calculators/types";
+import {
+  BUYER_INVESTMENT_CALCULATOR_IDS,
+  legacyCalculatorBySlug,
+  investmentCalculatorBySlug,
+} from "@/lib/calculators/types";
 
 export const metadata: Metadata = {
   title: "Investor Calculators",
@@ -23,5 +27,13 @@ export default async function PublicCalculatorsSlugRedirectPage({
     redirect(`/calculators/legacy/${slug}`);
   }
 
-  redirect(`/calculators?tab=${slug}`);
+  const meta = investmentCalculatorBySlug(slug);
+  if (meta) {
+    if (BUYER_INVESTMENT_CALCULATOR_IDS.includes(meta.id)) {
+      redirect(`/buyers?tab=${slug}#buyer-calculators`);
+    }
+    redirect(`/investors?tab=${slug}#calculators`);
+  }
+
+  redirect("/investors#calculators");
 }
