@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function BuyerRepAcknowledge() {
+export function BuyerRepAcknowledge({ nextUrl = "/dashboard/buyers" }: { nextUrl?: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,14 +15,18 @@ export function BuyerRepAcknowledge() {
     setBusy(true);
     setError(null);
     try {
-      const res = await fetch("/api/auth/acknowledge-buyer-rep", { method: "POST" });
+      const res = await fetch("/api/auth/acknowledge-buyer-rep", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nextUrl }),
+      });
       const data = (await res.json()) as { ok?: boolean; error?: string; nextUrl?: string };
       if (!res.ok || !data.ok) {
         setError(data.error ?? "Could not record your acknowledgment.");
         setBusy(false);
         return;
       }
-      router.push(data.nextUrl ?? "/dashboard/buyers");
+      router.push(data.nextUrl ?? nextUrl);
       router.refresh();
     } catch {
       setError("Network error. Please try again.");

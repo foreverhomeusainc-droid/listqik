@@ -5,7 +5,21 @@ import { authOptions } from "@/lib/auth-options";
 import { connectDb } from "@/lib/mongodb";
 import { User } from "@/models/User";
 
-export async function POST() {
+const DEFAULT_NEXT_URL = "/dashboard/buyers";
+
+function sanitizeBuyerRepNextUrl(url: unknown): string {
+  if (typeof url !== "string" || !url.startsWith("/") || url.startsWith("//")) {
+    return DEFAULT_NEXT_URL;
+  }
+
+  const allowedPrefixes = ["/dashboard/buyers", "/demo/buyer-dashboard"];
+  const isAllowed = allowedPrefixes.some(
+    (prefix) => url === prefix || url.startsWith(`${prefix}?`),
+  );
+  return isAllowed ? url : DEFAULT_NEXT_URL;
+}
+
+export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return NextResponse.json({ ok: false, error: "Unauthorized." }, { status: 401 });
@@ -22,5 +36,8 @@ export async function POST() {
     { $set: { buyerRepAcknowledgedAt: new Date() } },
   );
 
-  return NextResponse.json({ ok: true, nextUrl: "/dashboard/buyers" });
+  const body = (await request.json().catch(() => ({}))) as { nextUrl?: unknown };
+  const nextUrl = sanitizeBuyerRepNextUrl(body.nextUrl);
+
+  return NextResponse.json({ ok: true, nextUrl });
 }
