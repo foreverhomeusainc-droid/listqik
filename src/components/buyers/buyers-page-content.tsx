@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
-import { CompsTool } from "@/components/buyers/comps-tool";
 import { InvestmentCalculatorsApp } from "@/components/calculators/investment/investment-calculators-app";
 import { Container } from "@/components/container";
 import {
@@ -28,8 +27,8 @@ export function BuyersPageContent({
               Buyer deals from MLS — built for home shoppers &amp; operators
             </h1>
             <p className="max-w-3xl text-base text-white/75">
-              Browse teaser inventory, model your payment and present-value scenarios, and sign Buyer
-              Representation to unlock addresses, private remarks, and the comps engine.
+              Browse teaser inventory and model your payment and present-value scenarios. Register,
+              sign Buyer Representation, and open your buyer dashboard to run MLS comps.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
@@ -58,7 +57,7 @@ export function BuyersPageContent({
             limit={6}
             eyebrow="Deals of the Week"
             title="Featured buyer deals"
-            subtitle="Hand-selected MLS opportunities for home shoppers — sign Buyer Representation to unlock full details and comps."
+            subtitle="Hand-selected MLS opportunities for home shoppers — register and sign Buyer Representation to unlock full details in your dashboard."
           />
 
           <section className="space-y-5" id="buyer-calculators">
@@ -85,14 +84,26 @@ export function BuyersPageContent({
             </Suspense>
           </section>
 
-          <section className="rounded-2xl border border-white/10 bg-black/35 p-5 sm:p-6">
+          <section className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 p-5 sm:p-6">
             <h2 className="text-lg font-semibold text-emerald-50">MLS comps generator</h2>
-            <p className="mt-2 text-sm text-white/65">
-              Generate comps instantly with a Syndicate+ Velocity Club account — or request free manual
-              comps from our team.
+            <p className="mt-2 max-w-2xl text-sm text-white/65">
+              The comps engine lives inside your buyer dashboard — not on this public page. Request an
+              account or sign in, complete Buyer Representation, then open the dashboard to generate
+              comps or request manual comps from our team.
             </p>
-            <div className="mt-5">
-              <CompsTool source="buyers-page" />
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/buyers/register"
+                className="inline-flex justify-center rounded-full border border-amber-400/50 px-5 py-2.5 text-sm font-semibold text-amber-100 transition hover:bg-amber-950/35"
+              >
+                Request buyer account
+              </Link>
+              <Link
+                href="/login?callbackUrl=/dashboard/buyers"
+                className="inline-flex justify-center rounded-full border border-emerald-400/50 px-5 py-2.5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-900/35"
+              >
+                Sign in to buyer dashboard
+              </Link>
             </div>
           </section>
         </div>
