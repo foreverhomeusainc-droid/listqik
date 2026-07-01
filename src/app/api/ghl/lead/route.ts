@@ -14,6 +14,17 @@ type LeadPayload = {
     price?: number;
     url?: string;
   };
+  buyerRepresentation?: {
+    fullName: string;
+    phone: string;
+    email: string;
+    city: string;
+    zip: string;
+    mailingAddress: string;
+    propertyType: "buy" | "lease";
+    representationStart: string;
+    representationDuration: string;
+  };
   source?: string;
   utm?: Record<string, string | undefined>;
 };
