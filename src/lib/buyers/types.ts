@@ -1,5 +1,7 @@
 export type BuyerDealStatus = "active" | "pending" | "sold";
 
+export type BuyerDealReviewStatus = "pending" | "approved" | "rejected";
+
 export type BuyerDealTeaser = {
   id: string;
   city: string;
@@ -16,6 +18,7 @@ export type BuyerDealTeaser = {
   heroImageUrl: string;
   domDays: number | null;
   investorScore: number;
+  arvEstimate: number | null;
 };
 
 export type BuyerDealFull = BuyerDealTeaser & {
@@ -29,6 +32,17 @@ export type BuyerDealFull = BuyerDealTeaser & {
   latitude: number | null;
   longitude: number | null;
   syncedAt: string | null;
+  soldPrice: number | null;
+  soldDate: string | null;
+};
+
+export type BuyerDealFilters = {
+  zip?: string;
+  tag?: string;
+  status?: BuyerDealStatus;
+  minScore?: number;
+  maxPrice?: number;
+  sort?: "score" | "price-asc" | "price-desc" | "dom";
 };
 
 export type BuyerAccess = {
@@ -36,4 +50,11 @@ export type BuyerAccess = {
   hasBuyerRep: boolean;
   canViewFullDeals: boolean;
   canRunComps: boolean;
+};
+
+export type BuyerDealAdminRow = BuyerDealFull & {
+  externalId: string;
+  reviewStatus: BuyerDealReviewStatus;
+  active: boolean;
+  teaserFeatured: boolean;
 };

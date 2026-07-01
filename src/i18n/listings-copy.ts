@@ -60,7 +60,7 @@ const COPY: Record<HomeLocale, ListingsCopy> = {
     bathsAbbr: "ba",
     sqftAbbr: "sqft",
     dealsEyebrow: "Deals of the Week",
-    dealsTitle: "Curated picks for buyers & investors",
+    dealsTitle: "TOP PICKS for buyers & investors",
     dealsIntro: "Hand-selected listings with strong value — updated by the ListQik team.",
   },
   es: {
@@ -91,7 +91,7 @@ const COPY: Record<HomeLocale, ListingsCopy> = {
     bathsAbbr: "baños",
     sqftAbbr: "pies²",
     dealsEyebrow: "Ofertas de la semana",
-    dealsTitle: "Selección curada para compradores e inversionistas",
+    dealsTitle: "TOP PICKS para compradores e inversionistas",
     dealsIntro: "Propiedades elegidas por el equipo ListQik con valor destacado.",
   },
 };

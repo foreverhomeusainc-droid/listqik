@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { Container } from "@/components/container";
-import { InvestmentCalculatorsApp } from "@/components/calculators/investment/investment-calculators-app";
-import { buildLocalizedMetadata } from "@/lib/locale-metadata";
-import type { InvestmentCalculatorId } from "@/lib/calculators/types";
-import { investmentCalculatorBySlug } from "@/lib/calculators/types";
+import { redirect } from "next/navigation";
+import {
+  BUYER_INVESTMENT_CALCULATOR_IDS,
+  investmentCalculatorBySlug,
+} from "@/lib/calculators/types";
 
-export const metadata: Metadata = buildLocalizedMetadata("es", "/calculators", {
-  title: "Calculadoras para inversionistas",
-  description: "Calculadoras de inversión: hipoteca, notas, valor presente y más.",
-});
+export const metadata: Metadata = {
+  title: "Calculadoras | ListQik",
+  description: "Calculadoras de inversión en ListQik.",
+};
 
-function resolveTab(tab: string | undefined): InvestmentCalculatorId {
+function esCalculatorsRedirectTarget(tab: string | undefined): string {
   if (tab && investmentCalculatorBySlug(tab)) {
-    return investmentCalculatorBySlug(tab)!.id;
+    const id = investmentCalculatorBySlug(tab)!.id;
+    if (BUYER_INVESTMENT_CALCULATOR_IDS.includes(id)) {
+      return `/buyers?tab=${encodeURIComponent(tab)}#buyer-calculators`;
+    }
+    return `/investors?tab=${encodeURIComponent(tab)}#calculators`;
   }
-  return "mortgage";
+  return "/investors#calculators";
 }
 
 export default async function EsCalculatorsPage({
@@ -24,15 +27,5 @@ export default async function EsCalculatorsPage({
   searchParams: Promise<{ tab?: string }>;
 }) {
   const { tab } = await searchParams;
-  const initialTab = resolveTab(tab);
-
-  return (
-    <main className="py-10 sm:py-14">
-      <Container>
-        <Suspense fallback={<p className="text-sm text-white/60">Loading calculator...</p>}>
-          <InvestmentCalculatorsApp initialTab={initialTab} memberBasePath="/dashboard/calculators" />
-        </Suspense>
-      </Container>
-    </main>
-  );
+  redirect(esCalculatorsRedirectTarget(tab));
 }

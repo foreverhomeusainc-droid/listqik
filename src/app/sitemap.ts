@@ -36,7 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const calculatorRoutes = [
-    "/investors",
     "/calculators/legacy",
     ...LEGACY_CALCULATOR_CATALOG.map((c) => `/calculators/legacy/${c.slug}`),
   ];

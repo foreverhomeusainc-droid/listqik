@@ -6,6 +6,7 @@ import { Container } from "@/components/container";
 import { ListQikLogo } from "@/components/listqik-logo";
 import { NavLink } from "@/components/nav-link";
 import { NavServicesDropdown } from "@/components/nav-services-dropdown";
+import { SiteMobileNav } from "@/components/site-mobile-nav";
 import { getSiteShellChromeCopy, SITE_CHROME_LOCALE } from "@/i18n/site-chrome-copy";
 import { localeSitePath } from "@/lib/locale-site-path";
 
@@ -48,6 +49,7 @@ export function SiteHeaderChrome({ isAuthenticated }: SiteHeaderChromeProps) {
         </nav>
 
         <div className="flex items-center justify-end gap-2 whitespace-nowrap">
+          <SiteMobileNav isAuthenticated={isAuthenticated} />
           {isAuthenticated ? (
             <>
               <Link

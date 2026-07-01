@@ -3,10 +3,10 @@ import { getServerSession } from "next-auth/next";
 import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
 import {
-  calcFingerprintCookieValue,
-  fingerprintFromRequest,
+  attachCalculatorFingerprintCookie,
   recordMemberCalculatorRun,
   resolveCalculatorAccess,
+  resolveCalculatorFingerprint,
 } from "@/lib/calculators/access";
 import { calculatorByAccessKey } from "@/lib/calculators/types";
 import { connectDb } from "@/lib/mongodb";
@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     userEmail = user?.email ?? session.user.email ?? null;
   }
 
-  const fingerprintHash = fingerprintFromRequest(req);
+  const { fingerprintHash, cookieToSet } = resolveCalculatorFingerprint(req);
   const access = await resolveCalculatorAccess({
     calculatorId: calc.id,
     userId,
@@ -41,14 +41,7 @@ export async function GET(req: Request) {
   });
 
   const res = NextResponse.json({ ok: true, access });
-  if (!session?.user?.id && !req.headers.get("cookie")?.includes("lq_calc_fp=")) {
-    res.cookies.set("lq_calc_fp", calcFingerprintCookieValue(), {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-    });
-  }
+  attachCalculatorFingerprintCookie(res, cookieToSet);
   return res;
 }
 
@@ -71,7 +64,7 @@ export async function POST(req: Request) {
     userEmail = user?.email ?? session.user.email ?? null;
   }
 
-  const fingerprintHash = fingerprintFromRequest(req);
+  const { fingerprintHash, cookieToSet } = resolveCalculatorFingerprint(req);
   const access = await resolveCalculatorAccess({
     calculatorId: calc.id,
     userId,
@@ -96,13 +89,6 @@ export async function POST(req: Request) {
   }
 
   const res = NextResponse.json({ ok: true, access });
-  if (!session?.user?.id && !req.headers.get("cookie")?.includes("lq_calc_fp=")) {
-    res.cookies.set("lq_calc_fp", calcFingerprintCookieValue(), {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-    });
-  }
+  attachCalculatorFingerprintCookie(res, cookieToSet);
   return res;
 }

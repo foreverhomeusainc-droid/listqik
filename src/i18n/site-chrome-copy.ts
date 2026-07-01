@@ -29,6 +29,9 @@ export type SiteChromeCopy = {
     legal: string;
     pricing: string;
     listings: string;
+    investors: string;
+    buyers: string;
+    velocityClub: string;
     portfolio: string;
     blogs: string;
     videos: string;
@@ -82,6 +85,9 @@ const SITE_CHROME_COPY: SiteChromeCopy = {
     legal: "Legal",
     pricing: "Pricing",
     listings: "Listings",
+    investors: "Investors",
+    buyers: "Buyer Deals",
+    velocityClub: "Velocity Club",
     portfolio: "Portfolio",
     blogs: "Blogs",
     videos: "Videos",

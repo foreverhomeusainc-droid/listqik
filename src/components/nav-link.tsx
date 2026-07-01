@@ -7,9 +7,11 @@ import { stripEsSitePrefix } from "@/lib/locale-site-path";
 export function NavLink({
   href,
   children,
+  onClick,
 }: {
   href: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
   const pathname = stripEsSitePrefix(usePathname() ?? "");
   const active = pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -17,6 +19,7 @@ export function NavLink({
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={[
         "rounded-full border px-3 py-2 font-mono text-xs font-semibold uppercase tracking-[0.14em] transition",
         active

@@ -142,6 +142,11 @@ export default async function AdminListingsPage({
                         ? listing.dealOfTheWeekRank
                         : 0
                     }
+                    dealOfTheWeekUntil={
+                      listing.dealOfTheWeekUntil
+                        ? new Date(listing.dealOfTheWeekUntil).toISOString()
+                        : null
+                    }
                   />
                 </td>
                 <td className="px-3 py-2">

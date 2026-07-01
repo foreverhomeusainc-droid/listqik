@@ -98,6 +98,9 @@ export function InvestmentCalculatorsApp({
   const { access, loading, blocked, recordRun } = useCalculatorAccess(activeSlug);
   const [ran, setRan] = useState(false);
 
+  const guestLimited =
+    !loading && access && !access.isAuthenticated && !access.canRun;
+
   useEffect(() => {
     setTab(validTab);
   }, [validTab]);
@@ -107,10 +110,10 @@ export function InvestmentCalculatorsApp({
   }, [tab]);
 
   useEffect(() => {
-    if (!loading && !ran && !blocked) {
+    if (!loading && !ran && !blocked && !guestLimited && access?.canRun) {
       void recordRun().then((ok) => ok && setRan(true));
     }
-  }, [loading, ran, blocked, recordRun]);
+  }, [loading, ran, blocked, guestLimited, access?.canRun, recordRun]);
 
   // Mortgage state
   const [homePrice, setHomePrice] = useState("450000");
@@ -280,7 +283,7 @@ export function InvestmentCalculatorsApp({
     [mfUnits, mfInOp, mfGross, mfGrossPeriod, mfExp, mfExpPeriod, mfCap],
   );
 
-  if (blocked) {
+  if (blocked || guestLimited) {
     return (
       <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-8 text-center">
         <h2 className="text-xl font-semibold text-amber-50">Daily limit reached</h2>

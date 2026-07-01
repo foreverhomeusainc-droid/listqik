@@ -53,10 +53,13 @@ export default withAuth(
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 365,
       });
+      res.headers.set("x-listqik-pathname", pathname);
       return res;
     }
 
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set("x-listqik-pathname", pathname);
+    return res;
   },
   {
     callbacks: {

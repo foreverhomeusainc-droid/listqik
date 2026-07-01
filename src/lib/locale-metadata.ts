@@ -6,6 +6,17 @@ import { CALCULATOR_CATALOG } from "@/lib/calculators/types";
 
 const CALCULATOR_ES_SITEMAP_SLUGS = CALCULATOR_CATALOG.map((c) => `/es/calculators/${c.slug}` as const);
 
+/** EN-only routes (no Spanish page yet) — canonical only, no broken es-US hreflang. */
+export function englishOnlyAlternates(enPath: string): NonNullable<Metadata["alternates"]> {
+  const normalized = enPath.startsWith("/") ? enPath : `/${enPath}`;
+  return {
+    canonical: normalized,
+    languages: {
+      "en-US": normalized,
+      "x-default": normalized,
+    },
+  };
+}
 /** EN path (e.g. `/pricing`) → hreflang alternates for EN + ES URL namespace. */
 export function localeAlternates(enPath: string): NonNullable<Metadata["alternates"]> {
   const normalized = enPath.startsWith("/") ? enPath : `/${enPath}`;

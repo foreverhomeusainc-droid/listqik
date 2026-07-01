@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { InvestmentCalculatorsApp } from "@/components/calculators/investment/investment-calculators-app";
 import { InvestorLegacyCalculatorGrid } from "@/components/investors/investor-legacy-calculator-grid";
+import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
+import { CompsTool } from "@/components/buyers/comps-tool";
 import { Container } from "@/components/container";
 import { DealsOfTheWeekSection } from "@/components/listings/deals-of-the-week-section";
 import type { Listing } from "@/data/types";
@@ -48,7 +50,7 @@ export function InvestorsPageContent({ dealsOfTheWeek, initialTab }: InvestorsPa
                   {copy.hero.ctaDeals}
                 </Link>
                 <Link
-                  href="/dashboard/velocity-club"
+                  href="/login?callbackUrl=%2Fdashboard%2Fvelocity-club"
                   className="inline-flex justify-center rounded-full border border-emerald-400/50 px-6 py-2.5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-900/35"
                 >
                   {copy.hero.ctaVelocity}
@@ -101,6 +103,26 @@ export function InvestorsPageContent({ dealsOfTheWeek, initialTab }: InvestorsPa
               title={copy.calculators.legacyTitle}
               intro={copy.calculators.legacyIntro}
             />
+          </section>
+
+          <BuyerDealsTeaser
+            eyebrow="Buyer intelligence"
+            title="Investor buyer deals"
+            subtitle="MLS-sourced opportunities ranked for flippers, wholesalers, and buy-and-hold operators."
+            limit={4}
+            buyersPageHref="/dashboard/buyers"
+            showArv
+          />
+
+          <section className="rounded-2xl border border-white/10 bg-black/35 p-5 sm:p-6">
+            <h2 className="text-lg font-semibold text-emerald-50">MLS comps generator</h2>
+            <p className="mt-2 text-sm text-white/65">
+              Syndicate+ members get instant comps. Everyone else can submit property details for a
+              free manual comps email from our team.
+            </p>
+            <div className="mt-5">
+              <CompsTool source="investors-page" />
+            </div>
           </section>
 
           <DealsOfTheWeekSection

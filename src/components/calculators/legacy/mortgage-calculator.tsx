@@ -31,8 +31,10 @@ export function MortgageCalculator({ access: accessProp }: { access?: Calculator
   const [ran, setRan] = useState(false);
 
   useEffect(() => {
-    if (!hook.loading && !ran) void hook.recordRun().then((ok) => ok && setRan(true));
-  }, [hook.loading, hook, ran]);
+    if (!hook.loading && !ran && !hook.blocked && !hook.guestLimited && hook.access?.canRun) {
+      void hook.recordRun().then((ok) => ok && setRan(true));
+    }
+  }, [hook.loading, hook.blocked, hook.guestLimited, hook.access?.canRun, hook.recordRun, ran]);
 
   const result = useMemo(
     () =>
@@ -48,7 +50,7 @@ export function MortgageCalculator({ access: accessProp }: { access?: Calculator
     [loanAmount, interestRatePct, termYears, annualTaxes, annualInsurance, monthlyHoa, propertyValue],
   );
 
-  if (hook.blocked) {
+  if (hook.blocked || hook.guestLimited) {
     return (
       <CalculatorShell kicker="Capital" title="Mortgage & Leverage" description="Daily limit reached.">
         <p className="text-sm text-amber-100">Sign in for unlimited runs.</p>

@@ -6,7 +6,8 @@ import type { CalculatorId } from "@/lib/calculators/types";
 import { connectDb } from "@/lib/mongodb";
 import { CalculatorUsage } from "@/models/CalculatorUsage";
 
-export const ANON_DAILY_LIMIT = Number(process.env.CALCULATOR_ANON_DAILY_LIMIT ?? 3);
+export const ANON_DAILY_LIMIT = Number(process.env.CALCULATOR_ANON_DAILY_LIMIT ?? 5);
+export const CALC_FINGERPRINT_COOKIE = "lq_calc_fp";
 
 export type CalculatorAccess = {
   calculatorId: CalculatorId;
@@ -23,18 +24,42 @@ function utcDateKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-export function fingerprintFromRequest(req: Request): string {
-  const cookie = req.headers.get("cookie") ?? "";
-  const match = cookie.match(/(?:^|;\s*)lq_calc_fp=([^;]+)/);
+/** Stable anonymous id: always prefer the calc fingerprint cookie (set on first visit). */
+export function resolveCalculatorFingerprint(req: Request): {
+  fingerprintHash: string;
+  cookieToSet: string | null;
+} {
+  const cookieHeader = req.headers.get("cookie") ?? "";
+  const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${CALC_FINGERPRINT_COOKIE}=([^;]+)`));
   if (match?.[1]) {
-    return createHash("sha256").update(match[1]).digest("hex");
+    return {
+      fingerprintHash: createHash("sha256").update(match[1]).digest("hex"),
+      cookieToSet: null,
+    };
   }
-  const ua = req.headers.get("user-agent") ?? "unknown";
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "local";
-  return createHash("sha256").update(`${ip}|${ua}`).digest("hex");
+  const plain = calcFingerprintCookieValue();
+  return {
+    fingerprintHash: createHash("sha256").update(plain).digest("hex"),
+    cookieToSet: plain,
+  };
+}
+
+/** @deprecated Use resolveCalculatorFingerprint for consistent guest tracking. */
+export function fingerprintFromRequest(req: Request): string {
+  return resolveCalculatorFingerprint(req).fingerprintHash;
+}
+
+export function attachCalculatorFingerprintCookie(
+  res: { cookies: { set: (name: string, value: string, options: object) => void } },
+  cookieToSet: string | null,
+): void {
+  if (!cookieToSet) return;
+  res.cookies.set(CALC_FINGERPRINT_COOKIE, cookieToSet, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365,
+    path: "/",
+  });
 }
 
 function tierMeetsPdfExport(tierId: LoyaltyTierId | null): boolean {

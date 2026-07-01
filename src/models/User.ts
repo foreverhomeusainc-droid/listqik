@@ -43,6 +43,8 @@ const userSchema = new Schema(
     loyaltyFirstListingLiveAt: { type: Date, default: null },
     /** Buyer representation agreement — required for full MLS buyer deals access */
     buyerRepAcknowledgedAt: { type: Date, default: null },
+    buyerRepDocumentVersion: { type: String, default: null },
+    savedBuyerDealIds: [{ type: Schema.Types.ObjectId, ref: "MlsBuyerDeal", default: [] }],
   },
   { timestamps: true },
 );

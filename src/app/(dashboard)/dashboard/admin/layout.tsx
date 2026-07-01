@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/admin/purchases", label: "Purchases" },
   { href: "/dashboard/admin/users", label: "Users" },
   { href: "/dashboard/admin/listings", label: "Listings" },
+  { href: "/dashboard/admin/buyer-deals", label: "Buyer deals" },
   { href: "/dashboard/admin/documents", label: "Documents" },
   { href: "/dashboard/admin/offers", label: "Offers" },
   { href: "/dashboard/admin/upgrade-requests", label: "Upgrade requests" },

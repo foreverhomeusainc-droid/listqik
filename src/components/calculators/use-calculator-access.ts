@@ -39,7 +39,14 @@ export function useCalculatorAccess(calculatorSlug: string) {
     void refresh();
   }, [refresh]);
 
-  return { access, loading, blocked, refresh, recordRun };
+  return {
+    access,
+    loading,
+    blocked,
+    guestLimited: !loading && Boolean(access && !access.isAuthenticated && !access.canRun),
+    refresh,
+    recordRun,
+  };
 }
 
 export type PushListingPayload = {

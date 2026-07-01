@@ -15,12 +15,18 @@ export function BuyerDealCard({
   href,
   street,
   privateRemarks,
+  saved,
+  onToggleSave,
+  showArv = false,
 }: {
   deal: BuyerDealTeaser;
   mode?: "teaser" | "full";
   href?: string;
   street?: string;
   privateRemarks?: string;
+  saved?: boolean;
+  onToggleSave?: (saved: boolean) => void;
+  showArv?: boolean;
 }) {
   const image = deal.heroImageUrl || FALLBACK_IMAGE;
   const body = (
@@ -65,6 +71,12 @@ export function BuyerDealCard({
           <div className="text-right">
             <p className="text-xs text-white/50">List</p>
             <p className="font-mono text-sm font-semibold text-lime-200">{money(deal.listPrice)}</p>
+            {showArv && deal.arvEstimate != null && deal.arvEstimate > 0 ? (
+              <p className="mt-1 text-xs text-white/50">ARV</p>
+            ) : null}
+            {showArv && deal.arvEstimate != null && deal.arvEstimate > 0 ? (
+              <p className="font-mono text-sm font-semibold text-amber-200">{money(deal.arvEstimate)}</p>
+            ) : null}
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -91,6 +103,19 @@ export function BuyerDealCard({
             Sign Buyer Rep to unlock address, private remarks, and comps.
           </p>
         )}
+        {mode === "full" && onToggleSave ? (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleSave(!saved);
+            }}
+            className="mt-3 text-xs font-semibold text-amber-200/90 transition hover:text-amber-100"
+          >
+            {saved ? "★ Saved" : "☆ Save"}
+          </button>
+        ) : null}
       </div>
     </>
   );

@@ -31,12 +31,18 @@ export function BuyersPageContent({
               Browse teaser inventory, model your payment and present-value scenarios, and sign Buyer
               Representation to unlock addresses, private remarks, and the comps engine.
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/login?callbackUrl=/buyer-representation"
                 className="inline-flex justify-center rounded-full border border-sky-400/60 bg-sky-500/20 px-6 py-2.5 text-sm font-semibold text-sky-50 transition hover:bg-sky-500/30"
               >
                 Sign in &amp; sign Buyer Rep
+              </Link>
+              <Link
+                href="/buyers/register"
+                className="inline-flex justify-center rounded-full border border-amber-400/50 px-6 py-2.5 text-sm font-semibold text-amber-100 transition hover:bg-amber-950/35"
+              >
+                Request buyer account
               </Link>
               <Link
                 href="/dashboard/buyers"
@@ -47,7 +53,13 @@ export function BuyersPageContent({
             </div>
           </header>
 
-          <BuyerDealsTeaser showCta={false} limit={6} />
+          <BuyerDealsTeaser
+            showCta={false}
+            limit={6}
+            eyebrow="Deals of the Week"
+            title="Featured buyer deals"
+            subtitle="Hand-selected MLS opportunities for home shoppers — sign Buyer Representation to unlock full details and comps."
+          />
 
           <section className="space-y-5" id="buyer-calculators">
             <div>
@@ -74,13 +86,13 @@ export function BuyersPageContent({
           </section>
 
           <section className="rounded-2xl border border-white/10 bg-black/35 p-5 sm:p-6">
-            <h2 className="text-lg font-semibold text-emerald-50">Comps preview</h2>
+            <h2 className="text-lg font-semibold text-emerald-50">MLS comps generator</h2>
             <p className="mt-2 text-sm text-white/65">
-              Run a sample comp after signing Buyer Rep. Teaser visitors can see the tool layout but
-              must authenticate and sign the agreement to execute.
+              Generate comps instantly with a Syndicate+ Velocity Club account — or request free manual
+              comps from our team.
             </p>
             <div className="mt-5">
-              <CompsTool />
+              <CompsTool source="buyers-page" />
             </div>
           </section>
         </div>

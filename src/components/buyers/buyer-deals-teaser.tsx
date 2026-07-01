@@ -6,17 +6,21 @@ import { BuyerDealCard } from "@/components/buyers/buyer-deal-card";
 import type { BuyerDealTeaser } from "@/lib/buyers/types";
 
 export function BuyerDealsTeaser({
-  title = "Investor buyer deals",
-  subtitle = "MLS-sourced opportunities ranked for flippers, wholesalers, and buy-and-hold operators.",
+  eyebrow = "Market preview",
+  title = "Featured MLS listings",
+  subtitle = "Active homes across Texas. Sign Buyer Representation to unlock addresses, private remarks, and comps.",
   limit = 4,
   showCta = true,
   buyersPageHref = "/buyers",
+  showArv = false,
 }: {
+  eyebrow?: string;
   title?: string;
   subtitle?: string;
   limit?: number;
   showCta?: boolean;
   buyersPageHref?: string;
+  showArv?: boolean;
 }) {
   const [deals, setDeals] = useState<BuyerDealTeaser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +42,7 @@ export function BuyerDealsTeaser({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">
-            Buyer intelligence
+            {eyebrow}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-emerald-50 sm:text-3xl">{title}</h2>
           <p className="mt-2 max-w-2xl text-sm text-white/70">{subtitle}</p>
@@ -60,7 +64,13 @@ export function BuyerDealsTeaser({
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {deals.map((deal) => (
-            <BuyerDealCard key={deal.id} deal={deal} mode="teaser" href={buyersPageHref} />
+            <BuyerDealCard
+              key={deal.id}
+              deal={deal}
+              mode="teaser"
+              href={buyersPageHref}
+              showArv={showArv}
+            />
           ))}
         </div>
       )}

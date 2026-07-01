@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { authOptions } from "@/lib/auth-options";
 import { isAdminEmail } from "@/lib/admin";
+import { isBuyerOnlyDashboardPath } from "@/lib/buyers/dashboard-paths";
 import { hasAcknowledgedUserAgreement } from "@/lib/user-agreement";
 
 export const metadata: Metadata = {
@@ -19,9 +21,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   }
   const isAdmin = isAdminEmail(session.user.email);
 
-  // Seller accounts must acknowledge the ListQik User Agreement before entering
-  // any /dashboard route. Admins manage the platform and bypass the gate.
-  if (!isAdmin) {
+  const pathname = (await headers()).get("x-listqik-pathname") ?? "";
+  const buyerOnlyRoute = isBuyerOnlyDashboardPath(pathname);
+
+  if (!isAdmin && !buyerOnlyRoute) {
     const acknowledged = await hasAcknowledgedUserAgreement(session.user.id);
     if (!acknowledged) {
       redirect("/listing-agreement");
@@ -30,7 +33,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   return (
     <div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),rgba(2,6,3,0.95)_55%)] text-emerald-100 antialiased">
-      <DashboardShell isAdmin={isAdmin}>{children}</DashboardShell>
+      <DashboardShell isAdmin={isAdmin} buyerMode={buyerOnlyRoute}>
+        {children}
+      </DashboardShell>
     </div>
   );
 }

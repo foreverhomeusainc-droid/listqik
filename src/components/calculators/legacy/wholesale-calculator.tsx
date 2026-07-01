@@ -28,8 +28,10 @@ export function WholesaleCalculator({ access: accessProp }: { access?: Calculato
   const [ran, setRan] = useState(false);
 
   useEffect(() => {
-    if (!hook.loading && !ran) void hook.recordRun().then((ok) => ok && setRan(true));
-  }, [hook.loading, hook, ran]);
+    if (!hook.loading && !ran && !hook.blocked && !hook.guestLimited && hook.access?.canRun) {
+      void hook.recordRun().then((ok) => ok && setRan(true));
+    }
+  }, [hook.loading, hook.blocked, hook.guestLimited, hook.access?.canRun, hook.recordRun, ran]);
 
   const result = useMemo(
     () =>
@@ -42,7 +44,7 @@ export function WholesaleCalculator({ access: accessProp }: { access?: Calculato
     [arv, repairCosts, investorMarginPct, assignmentFee],
   );
 
-  if (hook.blocked) {
+  if (hook.blocked || hook.guestLimited) {
     return (
       <CalculatorShell kicker="Wholesale" title="Wholesale Deal" description="Daily limit reached.">
         <p className="text-sm text-amber-100">Sign in for unlimited runs.</p>

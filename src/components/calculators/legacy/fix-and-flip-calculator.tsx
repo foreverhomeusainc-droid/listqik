@@ -36,12 +36,12 @@ export function FixAndFlipCalculator({
   const [ran, setRan] = useState(false);
 
   useEffect(() => {
-    if (!hook.loading && !ran) {
+    if (!hook.loading && !ran && !hook.blocked && !hook.guestLimited && hook.access?.canRun) {
       void hook.recordRun().then((ok) => {
         if (ok) setRan(true);
       });
     }
-  }, [hook.loading, hook, ran]);
+  }, [hook.loading, hook.blocked, hook.guestLimited, hook.access?.canRun, hook.recordRun, ran]);
 
   const result = useMemo(
     () =>
@@ -68,7 +68,7 @@ export function FixAndFlipCalculator({
     "ListQik savings": money(result.listQikSavings),
   };
 
-  if (hook.blocked && !memberMode) {
+  if ((hook.blocked || hook.guestLimited) && !memberMode) {
     return (
       <CalculatorShell
         kicker="Deal Analyzer"

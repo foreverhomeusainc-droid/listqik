@@ -121,6 +121,30 @@ export function SiteFooterChrome() {
                     {t.listings}
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href={localeSitePath("/investors", SITE_CHROME_LOCALE)}
+                  >
+                    {t.investors}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href={localeSitePath("/buyers", SITE_CHROME_LOCALE)}
+                  >
+                    {t.buyers}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-white/70 hover:text-white"
+                    href="/dashboard/velocity-club"
+                  >
+                    {t.velocityClub}
+                  </Link>
+                </li>
               </ul>
             </div>
 

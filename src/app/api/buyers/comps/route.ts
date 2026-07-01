@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { Types } from "mongoose";
 import { authOptions } from "@/lib/auth-options";
-import { hasAcknowledgedBuyerRep } from "@/lib/buyer-rep";
+import { resolveCompsAccess } from "@/lib/buyers/comps-access";
 import { runComps } from "@/lib/buyers/comps";
 import { compsPoolForZip } from "@/lib/buyers/deals-service";
 
@@ -16,14 +16,20 @@ type Body = {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
-    return NextResponse.json({ ok: false, error: "Unauthorized." }, { status: 401 });
-  }
+  const access = await resolveCompsAccess({
+    userId: session?.user?.id ?? null,
+    userEmail: session?.user?.email ?? null,
+  });
 
-  const hasRep = await hasAcknowledgedBuyerRep(session.user.id);
-  if (!hasRep) {
+  if (!access.canRunInstant) {
     return NextResponse.json(
-      { ok: false, error: "Buyer Representation Agreement required.", repUrl: "/buyer-representation" },
+      {
+        ok: false,
+        error: "Premium feature. Sign in with a Syndicate+ Velocity Club account, or request free manual comps.",
+        code: "comps_premium_required",
+        access,
+        loginUrl: `/login?callbackUrl=${encodeURIComponent("/buyers")}`,
+      },
       { status: 403 },
     );
   }

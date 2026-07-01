@@ -163,7 +163,12 @@ export function HomePageContent({ featuredListings }: { featuredListings?: Listi
 
       <section className="pt-8 sm:pt-10 lg:pt-14">
         <Container>
-          <BuyerDealsTeaser limit={4} />
+          <BuyerDealsTeaser
+            eyebrow="Buyer intelligence"
+            title="Investor buyer deals"
+            subtitle="MLS-sourced opportunities ranked for flippers, wholesalers, and buy-and-hold operators."
+            limit={4}
+          />
         </Container>
       </section>
 

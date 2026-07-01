@@ -7,9 +7,11 @@ import { SignOutButton } from "@/components/dashboard/sign-out-button";
 export function DashboardShell({
   children,
   isAdmin,
+  buyerMode = false,
 }: {
   children: ReactNode;
   isAdmin: boolean;
+  buyerMode?: boolean;
 }) {
   return (
     <>
@@ -22,7 +24,9 @@ export function DashboardShell({
             <Link href="/resources/blogs" className="text-emerald-300/70 transition hover:text-emerald-200">
               Help Center
             </Link>
-            <span className="font-semibold text-emerald-100">Listing Dashboard</span>
+            <span className="font-semibold text-emerald-100">
+              {buyerMode ? "Buyer Dashboard" : "Listing Dashboard"}
+            </span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <details className="group relative">
@@ -79,12 +83,21 @@ export function DashboardShell({
                 </div>
               </div>
             </details>
-            <Link
-              href="/pricing"
-              className="rounded-full border border-emerald-400/70 bg-emerald-500/20 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-400/30"
-            >
-              List your home
-            </Link>
+            {!buyerMode ? (
+              <Link
+                href="/pricing"
+                className="rounded-full border border-emerald-400/70 bg-emerald-500/20 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-400/30"
+              >
+                List your home
+              </Link>
+            ) : (
+              <Link
+                href="/buyers"
+                className="rounded-full border border-emerald-400/70 bg-emerald-500/20 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-400/30"
+              >
+                Buyer hub
+              </Link>
+            )}
           </div>
         </div>
       </header>

@@ -47,9 +47,20 @@ export function LoginForm() {
       </Link>
       <h1 className="text-2xl font-semibold text-emerald-50">Sign in</h1>
       <p className="mt-2 text-sm text-muted">
-        Use the email and password for your seller account. After checkout, new sellers finish setup
-        from the link emailed from our order automation (or open the setup URL returned by the payment
-        webhook) before signing in here.
+        Use the email and password for your ListQik account. Sellers finish setup from the checkout
+        confirmation email; buyers and investors sign in after your account is created (admin invite
+        or purchase), then complete Buyer Representation for MLS deals and comps.
+      </p>
+      <p className="mt-3 text-sm text-white/60">
+        New buyer?{" "}
+        <Link href="/buyers" className="text-sky-300 underline-offset-2 hover:underline">
+          Explore buyer deals
+        </Link>{" "}
+        or contact{" "}
+        <a href="mailto:concierge@listqik.com" className="text-emerald-300 underline-offset-2 hover:underline">
+          concierge@listqik.com
+        </a>{" "}
+        for access.
       </p>
       <form
         className="mt-8 space-y-4"

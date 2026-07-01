@@ -8,16 +8,21 @@ export function AdminListingSiteControls({
   publishedOnSite,
   dealOfTheWeek,
   dealOfTheWeekRank,
+  dealOfTheWeekUntil,
 }: {
   listingId: string;
   slug?: string | null;
   publishedOnSite: boolean;
   dealOfTheWeek: boolean;
   dealOfTheWeekRank?: number;
+  dealOfTheWeekUntil?: string | null;
 }) {
   const [published, setPublished] = useState(publishedOnSite);
   const [deal, setDeal] = useState(dealOfTheWeek);
   const [rank, setRank] = useState(dealOfTheWeekRank ?? 0);
+  const [dealUntil, setDealUntil] = useState(
+    dealOfTheWeekUntil ? dealOfTheWeekUntil.slice(0, 10) : "",
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [publicSlug, setPublicSlug] = useState(slug ?? "");
@@ -79,18 +84,35 @@ export function AdminListingSiteControls({
         <span className="text-amber-100/90">Deal of the Week</span>
       </label>
       {deal ? (
-        <div className="flex items-center gap-1 pl-5">
-          <span className="text-white/45">Rank</span>
-          <input
-            type="number"
-            min={0}
-            max={99}
-            value={rank}
-            disabled={busy}
-            onChange={(e) => setRank(parseInt(e.target.value, 10) || 0)}
-            onBlur={() => void patch({ dealOfTheWeekRank: rank })}
-            className="w-12 rounded border border-white/15 bg-black/40 px-1 py-0.5 text-white"
-          />
+        <div className="space-y-1 pl-5">
+          <div className="flex items-center gap-1">
+            <span className="text-white/45">Rank</span>
+            <input
+              type="number"
+              min={0}
+              max={99}
+              value={rank}
+              disabled={busy}
+              onChange={(e) => setRank(parseInt(e.target.value, 10) || 0)}
+              onBlur={() => void patch({ dealOfTheWeekRank: rank })}
+              className="w-12 rounded border border-white/15 bg-black/40 px-1 py-0.5 text-white"
+            />
+          </div>
+          <label className="flex flex-col gap-0.5 text-white/45">
+            <span>Featured until (optional)</span>
+            <input
+              type="date"
+              value={dealUntil}
+              disabled={busy}
+              onChange={(e) => setDealUntil(e.target.value)}
+              onBlur={() =>
+                void patch({
+                  dealOfTheWeekUntil: dealUntil ? new Date(dealUntil).toISOString() : null,
+                })
+              }
+              className="rounded border border-white/15 bg-black/40 px-1 py-0.5 text-white"
+            />
+          </label>
         </div>
       ) : null}
       {publicSlug && published ? (
