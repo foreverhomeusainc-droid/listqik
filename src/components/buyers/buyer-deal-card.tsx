@@ -11,30 +11,39 @@ const FALLBACK_IMAGE =
 
 export function BuyerDealCard({
   deal,
-  mode = "teaser",
+  mode = "preview",
   href,
   street,
   privateRemarks,
   saved,
   onToggleSave,
   showArv = false,
+  showMarketValue = true,
+  dealLabel,
 }: {
   deal: BuyerDealTeaser;
-  mode?: "teaser" | "full";
+  mode?: "preview" | "full";
   href?: string;
   street?: string;
   privateRemarks?: string;
   saved?: boolean;
   onToggleSave?: (saved: boolean) => void;
   showArv?: boolean;
+  showMarketValue?: boolean;
+  dealLabel?: string;
 }) {
   const image = deal.heroImageUrl || FALLBACK_IMAGE;
+  const amv = deal.approximateMarketValue;
+  const hasMarketGap =
+    showMarketValue && amv != null && amv > 0 && amv > deal.listPrice;
+  const belowMarket = hasMarketGap ? amv - deal.listPrice : 0;
+
   const body = (
     <>
       <div className="relative aspect-[16/10] w-full overflow-hidden">
         <Image
           src={image}
-          alt={`${deal.city} investor deal`}
+          alt={`${deal.city} buyer deal`}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
@@ -46,13 +55,13 @@ export function BuyerDealCard({
           </span>
           {deal.domDays != null ? (
             <span className="rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[10px] font-semibold text-white/85">
-              {deal.domDays} DOM
+              {deal.domDays} days on market
             </span>
           ) : null}
         </div>
-        {mode === "teaser" ? (
-          <div className="absolute bottom-3 right-3 rounded-full border border-amber-400/40 bg-amber-950/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-100">
-            Teaser
+        {dealLabel ? (
+          <div className="absolute bottom-3 right-3 rounded-full border border-lime-400/50 bg-lime-950/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-lime-100">
+            {dealLabel}
           </div>
         ) : null}
       </div>
@@ -69,16 +78,29 @@ export function BuyerDealCard({
             </p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-white/50">List</p>
+            <p className="text-xs text-white/50">{mode === "preview" ? "Starts at" : "List price"}</p>
             <p className="font-mono text-sm font-semibold text-lime-200">{money(deal.listPrice)}</p>
-            {showArv && deal.arvEstimate != null && deal.arvEstimate > 0 ? (
-              <p className="mt-1 text-xs text-white/50">ARV</p>
+            {showMarketValue && amv != null && amv > 0 ? (
+              <>
+                <p className="mt-1 text-xs text-white/50">Approx. market value</p>
+                <p className="font-mono text-sm font-semibold text-sky-200">{money(amv)}</p>
+              </>
             ) : null}
             {showArv && deal.arvEstimate != null && deal.arvEstimate > 0 ? (
-              <p className="font-mono text-sm font-semibold text-amber-200">{money(deal.arvEstimate)}</p>
+              <>
+                <p className="mt-1 text-xs text-white/50">ARV</p>
+                <p className="font-mono text-sm font-semibold text-amber-200">
+                  {money(deal.arvEstimate)}
+                </p>
+              </>
             ) : null}
           </div>
         </div>
+        {hasMarketGap ? (
+          <p className="mt-3 rounded-lg border border-lime-500/25 bg-lime-950/25 px-3 py-2 text-xs font-medium text-lime-100/95">
+            Listed about {money(belowMarket)} below approximate market value — see why this is a deal.
+          </p>
+        ) : null}
         <div className="mt-3 flex flex-wrap gap-2">
           {deal.investorTags.slice(0, 4).map((tag) => (
             <span
@@ -99,8 +121,8 @@ export function BuyerDealCard({
         {mode === "full" ? (
           <p className="mt-3 text-xs font-semibold text-lime-300/90">Investor score {deal.investorScore}</p>
         ) : (
-          <p className="mt-4 text-xs text-amber-100/70">
-            Sign Buyer Rep to unlock address, private remarks, and comps.
+          <p className="mt-4 text-xs text-white/55">
+            Sign Buyer Representation to unlock the full address, private remarks, and comps.
           </p>
         )}
         {mode === "full" && onToggleSave ? (

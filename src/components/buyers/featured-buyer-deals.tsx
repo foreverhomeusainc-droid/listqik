@@ -5,10 +5,15 @@ import { useEffect, useState } from "react";
 import { BuyerDealCard } from "@/components/buyers/buyer-deal-card";
 import type { BuyerDealTeaser } from "@/lib/buyers/types";
 
-export function BuyerDealsTeaser({
-  eyebrow = "Market preview",
-  title = "Featured MLS listings",
-  subtitle = "Active homes across Texas. Sign Buyer Representation to unlock addresses, private remarks, and comps.",
+function dealLabelFor(deal: BuyerDealTeaser, index: number): string {
+  if (deal.dealFeatured && index === 0) return "Deal of the Week";
+  return `Deal ${index + 1}`;
+}
+
+export function FeaturedBuyerDeals({
+  eyebrow = "Deals of the Week",
+  title = "Hand-picked MLS deals",
+  subtitle = "Each listing shows list price next to approximate market value so you can see the gap — not just a teaser.",
   limit = 4,
   showCta = true,
   buyersPageHref = "/buyers",
@@ -28,7 +33,7 @@ export function BuyerDealsTeaser({
   useEffect(() => {
     void (async () => {
       try {
-        const res = await fetch(`/api/buyers/teaser?limit=${limit}`, { cache: "no-store" });
+        const res = await fetch(`/api/buyers/featured-deals?limit=${limit}`, { cache: "no-store" });
         const data = (await res.json()) as { ok?: boolean; deals?: BuyerDealTeaser[] };
         if (data.deals) setDeals(data.deals);
       } finally {
@@ -52,33 +57,41 @@ export function BuyerDealsTeaser({
             href={buyersPageHref}
             className="inline-flex shrink-0 justify-center rounded-full border border-emerald-400/50 px-5 py-2.5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-900/35"
           >
-            View buyer deals
+            View all buyer deals
           </Link>
         ) : null}
       </div>
 
       {loading ? (
-        <p className="text-sm text-white/50">Loading featured deals...</p>
+        <p className="text-sm text-white/50">Loading deals...</p>
       ) : deals.length === 0 ? (
-        <p className="text-sm text-white/50">No teaser deals available yet.</p>
+        <p className="text-sm text-white/50">
+          No featured deals yet. Check back soon — we add new MLS picks each week.
+        </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {deals.map((deal) => (
+          {deals.map((deal, index) => (
             <BuyerDealCard
               key={deal.id}
               deal={deal}
-              mode="teaser"
+              mode="preview"
               href={buyersPageHref}
               showArv={showArv}
+              showMarketValue={!showArv}
+              dealLabel={dealLabelFor(deal, index)}
             />
           ))}
         </div>
       )}
 
       <p className="text-xs text-white/45">
-        Teaser view only. Full MLS fields, private remarks, and comps require a signed Buyer
-        Representation Agreement with Central Metro Realty.
+        Approximate market value is set by our team after reviewing recent MLS sales — not a
+        guarantee of value. Full address, private remarks, and comps require signed Buyer
+        Representation with Central Metro Realty.
       </p>
     </section>
   );
 }
+
+/** @deprecated Use FeaturedBuyerDeals */
+export const BuyerDealsTeaser = FeaturedBuyerDeals;

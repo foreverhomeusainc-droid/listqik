@@ -8,6 +8,7 @@ export type BuyerDealTeaser = {
   state: string;
   zip: string;
   listPrice: number;
+  approximateMarketValue: number | null;
   beds: number | null;
   baths: number | null;
   sqft: number | null;
@@ -19,6 +20,7 @@ export type BuyerDealTeaser = {
   domDays: number | null;
   investorScore: number;
   arvEstimate: number | null;
+  dealFeatured: boolean;
 };
 
 export type BuyerDealFull = BuyerDealTeaser & {
@@ -56,5 +58,6 @@ export type BuyerDealAdminRow = BuyerDealFull & {
   externalId: string;
   reviewStatus: BuyerDealReviewStatus;
   active: boolean;
-  teaserFeatured: boolean;
+  /** Shown publicly as Deal of the Week when approximate market value is set. */
+  dealFeatured: boolean;
 };

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense } from "react";
-import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
+import { FeaturedBuyerDeals } from "@/components/buyers/featured-buyer-deals";
 import { InvestmentCalculatorsApp } from "@/components/calculators/investment/investment-calculators-app";
 import { Container } from "@/components/container";
 import {
@@ -24,11 +24,12 @@ export function BuyersPageContent({
               Buyer deals
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Buyer deals from MLS — built for home shoppers &amp; operators
+              Real MLS deals — priced so you can see the value
             </h1>
             <p className="max-w-3xl text-base text-white/75">
-              Browse teaser inventory and model your payment and present-value scenarios. Register,
-              sign Buyer Representation, and open your buyer dashboard to run MLS comps.
+              We highlight homes listed below approximate market value. Compare list price to our
+              market estimate, then register and sign Buyer Representation to unlock full details
+              and comps in your dashboard.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
@@ -52,12 +53,12 @@ export function BuyersPageContent({
             </div>
           </header>
 
-          <BuyerDealsTeaser
+          <FeaturedBuyerDeals
             showCta={false}
             limit={6}
             eyebrow="Deals of the Week"
-            title="Featured buyer deals"
-            subtitle="Hand-selected MLS opportunities for home shoppers — register and sign Buyer Representation to unlock full details in your dashboard."
+            title="This week's picks"
+            subtitle="List price next to approximate market value — so you know why it's a deal before you sign in."
           />
 
           <section className="space-y-5" id="buyer-calculators">

@@ -19,7 +19,8 @@ export async function PATCH(req: Request) {
     id?: string;
     reviewStatus?: BuyerDealReviewStatus;
     active?: boolean;
-    teaserFeatured?: boolean;
+    dealFeatured?: boolean;
+    approximateMarketValue?: number | null;
     investorScore?: number;
   };
   try {
@@ -35,7 +36,11 @@ export async function PATCH(req: Request) {
   const patch: Parameters<typeof updateBuyerDealAdmin>[1] = {};
   if (body.reviewStatus) patch.reviewStatus = body.reviewStatus;
   if (typeof body.active === "boolean") patch.active = body.active;
-  if (typeof body.teaserFeatured === "boolean") patch.teaserFeatured = body.teaserFeatured;
+  if (typeof body.dealFeatured === "boolean") patch.dealFeatured = body.dealFeatured;
+  if (body.approximateMarketValue === null) patch.approximateMarketValue = null;
+  else if (typeof body.approximateMarketValue === "number" && body.approximateMarketValue > 0) {
+    patch.approximateMarketValue = Math.round(body.approximateMarketValue);
+  }
   if (typeof body.investorScore === "number") patch.investorScore = body.investorScore;
 
   if (body.reviewStatus === "approved") patch.active = true;

@@ -30,6 +30,7 @@ function mapTeaser(row: {
   state: string;
   zip: string;
   listPrice: number;
+  approximateMarketValue?: number | null;
   beds?: number | null;
   baths?: number | null;
   sqft?: number | null;
@@ -41,6 +42,7 @@ function mapTeaser(row: {
   domDays?: number | null;
   investorScore?: number;
   arvEstimate?: number | null;
+  teaserFeatured?: boolean;
 }): BuyerDealTeaser {
   return {
     id: row._id.toString(),
@@ -48,6 +50,7 @@ function mapTeaser(row: {
     state: row.state,
     zip: row.zip,
     listPrice: row.listPrice,
+    approximateMarketValue: row.approximateMarketValue ?? null,
     beds: row.beds ?? null,
     baths: row.baths ?? null,
     sqft: row.sqft ?? null,
@@ -59,6 +62,7 @@ function mapTeaser(row: {
     domDays: row.domDays ?? null,
     investorScore: row.investorScore ?? 0,
     arvEstimate: row.arvEstimate ?? null,
+    dealFeatured: Boolean(row.teaserFeatured),
   };
 }
 
@@ -118,7 +122,7 @@ function mapAdminRow(row: Parameters<typeof mapFullDeal>[0] & { externalId?: str
     externalId: row.externalId ?? "",
     reviewStatus: (row.reviewStatus ?? "approved") as BuyerDealReviewStatus,
     active: row.active !== false,
-    teaserFeatured: Boolean(row.teaserFeatured),
+    dealFeatured: Boolean(row.teaserFeatured),
   };
 }
 
@@ -181,20 +185,28 @@ export async function ensureBuyerDealsSeeded(): Promise<void> {
   }
 }
 
-export async function listTeaserDeals(limit = 6): Promise<BuyerDealTeaser[]> {
+export async function listFeaturedDeals(limit = 6): Promise<BuyerDealTeaser[]> {
   await ensureBuyerDealsSeeded();
   const rows = await MlsBuyerDeal.find({
     ...feedQuery({ status: { $in: ["active", "pending"] } }),
   })
-    .sort({ teaserFeatured: -1, investorScore: -1, listPrice: -1 })
-    .limit(limit * 2)
+    .sort({ teaserFeatured: -1, approximateMarketValue: -1, investorScore: -1, listPrice: -1 })
+    .limit(limit * 3)
     .lean();
 
   return rows
     .filter((r) => !isCompOnlyDeal(r.investorTags as string[] | undefined))
+    .filter(
+      (r) =>
+        Boolean(r.teaserFeatured) ||
+        (typeof r.approximateMarketValue === "number" && r.approximateMarketValue > 0),
+    )
     .slice(0, limit)
     .map(mapTeaser);
 }
+
+/** @deprecated Use listFeaturedDeals */
+export const listTeaserDeals = listFeaturedDeals;
 
 export async function listFullDeals(filters: BuyerDealFilters = {}): Promise<BuyerDealFull[]> {
   await ensureBuyerDealsSeeded();
@@ -257,15 +269,22 @@ export async function updateBuyerDealAdmin(
   patch: Partial<{
     reviewStatus: BuyerDealReviewStatus;
     active: boolean;
+    dealFeatured: boolean;
     teaserFeatured: boolean;
+    approximateMarketValue: number | null;
     investorScore: number;
   }>,
 ): Promise<BuyerDealAdminRow | null> {
   if (!Types.ObjectId.isValid(id)) return null;
   await connectDb();
+  const set: Record<string, unknown> = { ...patch };
+  if (typeof patch.dealFeatured === "boolean") {
+    set.teaserFeatured = patch.dealFeatured;
+    delete set.dealFeatured;
+  }
   const row = await MlsBuyerDeal.findByIdAndUpdate(
     id,
-    { $set: patch },
+    { $set: set },
     { new: true },
   ).lean();
   return row ? mapAdminRow(row) : null;

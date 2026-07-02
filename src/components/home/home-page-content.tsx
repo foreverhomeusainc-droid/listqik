@@ -12,7 +12,7 @@ import { useSiteLocale } from "@/components/site-locale-provider";
 import { getHomepageCopy } from "@/i18n/homepage-copy";
 import type { Listing } from "@/data/types";
 import { ListingCard } from "@/components/listing-card";
-import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
+import { FeaturedBuyerDeals } from "@/components/buyers/featured-buyer-deals";
 import { NetProceedsCalculator } from "@/components/net-proceeds-calculator";
 import { listings as staticListings } from "@/data/listings";
 
@@ -163,10 +163,10 @@ export function HomePageContent({ featuredListings }: { featuredListings?: Listi
 
       <section className="pt-8 sm:pt-10 lg:pt-14">
         <Container>
-          <BuyerDealsTeaser
-            eyebrow="Buyer intelligence"
-            title="Investor buyer deals"
-            subtitle="MLS-sourced opportunities ranked for flippers, wholesalers, and buy-and-hold operators."
+          <FeaturedBuyerDeals
+            eyebrow="Deals of the Week"
+            title="MLS homes priced below market"
+            subtitle="See list price and approximate market value side by side — real deals, not teasers."
             limit={4}
           />
         </Container>

@@ -54,7 +54,7 @@ export const INVESTORS_COPY: InvestorsCopy = {
       },
       {
         title: "MLS buyer intelligence",
-        body: "Teaser inventory on the public site; full addresses, private remarks, and comps after Buyer Representation — built for operators, not retail browsers.",
+        body: "Featured deals on the public site show list price vs approximate market value; full addresses, private remarks, and comps unlock after Buyer Representation.",
       },
       {
         title: "Velocity Club tiers",

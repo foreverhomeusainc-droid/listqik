@@ -63,7 +63,7 @@ export function BuyerRepAcknowledge({ nextUrl = "/dashboard/buyers" }: { nextUrl
           href="/buyers"
           className="inline-flex justify-center rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-white/80 transition hover:border-white/35"
         >
-          Back to teaser
+          Back to buyer deals
         </Link>
       </div>
     </div>

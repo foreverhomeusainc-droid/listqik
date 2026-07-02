@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { InvestmentCalculatorsApp } from "@/components/calculators/investment/investment-calculators-app";
 import { InvestorLegacyCalculatorGrid } from "@/components/investors/investor-legacy-calculator-grid";
-import { BuyerDealsTeaser } from "@/components/buyers/buyer-deals-teaser";
+import { FeaturedBuyerDeals } from "@/components/buyers/featured-buyer-deals";
 import { CompsTool } from "@/components/buyers/comps-tool";
 import { Container } from "@/components/container";
 import { DealsOfTheWeekSection } from "@/components/listings/deals-of-the-week-section";
@@ -105,10 +105,10 @@ export function InvestorsPageContent({ dealsOfTheWeek, initialTab }: InvestorsPa
             />
           </section>
 
-          <BuyerDealsTeaser
-            eyebrow="Buyer intelligence"
-            title="Investor buyer deals"
-            subtitle="MLS-sourced opportunities ranked for flippers, wholesalers, and buy-and-hold operators."
+          <FeaturedBuyerDeals
+            eyebrow="Investor deals"
+            title="MLS investor inventory"
+            subtitle="Ranked opportunities for flippers, wholesalers, and buy-and-hold operators — with ARV where available."
             limit={4}
             buyersPageHref="/dashboard/buyers"
             showArv

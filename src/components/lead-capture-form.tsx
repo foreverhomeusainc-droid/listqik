@@ -2,10 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { BuyerRepresentationModal } from "@/components/buyers/buyer-representation-modal";
-import {
-  formatBuyerRepresentationForCrm,
-  type BuyerRepresentationIntake,
-} from "@/lib/buyers/representation-intake";
+import type { BuyerRepresentationIntake } from "@/lib/buyers/representation-intake";
 
 type LeadCaptureListingContext = {
   slug?: string;
@@ -26,6 +23,7 @@ export function LeadCaptureForm({
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState<string | null>(null);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,19 +42,14 @@ export function LeadCaptureForm({
       return;
     }
     setError("");
+    setModalError(null);
     setModalOpen(true);
   }
 
   async function submitWithBuyerRep(intake: BuyerRepresentationIntake) {
     setStatus("sending");
+    setModalError(null);
     setError("");
-
-    const listingLabel = listing?.title
-      ? `${listing.title} (${listing.city ?? ""}, ${listing.state ?? ""})`
-      : undefined;
-
-    const repBlock = formatBuyerRepresentationForCrm(intake, listingLabel);
-    const combinedMessage = [message.trim(), repBlock].filter(Boolean).join("\n\n");
 
     const utm = (() => {
       if (typeof window === "undefined") return {};
@@ -65,14 +58,14 @@ export function LeadCaptureForm({
       return Object.fromEntries(keys.map((k) => [k, params.get(k) ?? undefined]));
     })();
 
-    const res = await fetch("/api/ghl/lead", {
+    const res = await fetch("/api/inquiries", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         name: intake.fullName,
         email: intake.email,
         phone: intake.phone,
-        message: combinedMessage || undefined,
+        message: message.trim() || undefined,
         consent,
         source: `${source}-buyer-rep`,
         listing,
@@ -81,16 +74,18 @@ export function LeadCaptureForm({
         company: "",
       }),
     }).catch((err: unknown) => {
-      setStatus("error");
-      setError(err instanceof Error ? err.message : "Network error");
+      const msg = err instanceof Error ? err.message : "Network error";
+      setModalError(msg);
+      setStatus("idle");
       return null;
     });
 
     if (!res) return;
     if (!res.ok) {
       const data = (await res.json().catch(() => null)) as { error?: string } | null;
-      setStatus("error");
-      setError(data?.error || "Submission failed");
+      const msg = data?.error || "Submission failed";
+      setModalError(msg);
+      setStatus("idle");
       return;
     }
 
@@ -115,7 +110,7 @@ export function LeadCaptureForm({
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
             <div className="text-sm font-semibold text-white">Submitted.</div>
             <div className="mt-1 text-sm text-muted">
-              Thanks — we&apos;ll reach out shortly with buyer representation next steps.
+              Thanks — our team will reach out shortly with buyer representation next steps.
             </div>
           </div>
         ) : (
@@ -176,9 +171,9 @@ export function LeadCaptureForm({
               </span>
             </label>
 
-            {status === "error" || error ? (
+            {error ? (
               <div className="rounded-2xl border border-white/10 bg-black/30 p-3 text-sm text-[color:var(--lp-danger)]">
-                {error || "Something went wrong."}
+                {error}
               </div>
             ) : null}
 
@@ -192,7 +187,8 @@ export function LeadCaptureForm({
             </button>
 
             <p className="text-xs text-white/50">
-              Next: complete Buyer Representation details, then your inquiry routes to our CRM.
+              Next: complete Buyer Representation details. Your request is saved securely for our
+              team — no third-party CRM required.
             </p>
           </div>
         )}
@@ -212,7 +208,7 @@ export function LeadCaptureForm({
         }}
         listingTitle={listing?.title}
         busy={status === "sending"}
-        error={status === "error" ? error : null}
+        error={modalError}
       />
     </>
   );

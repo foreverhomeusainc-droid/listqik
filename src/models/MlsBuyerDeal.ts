@@ -11,6 +11,8 @@ const mlsBuyerDealSchema = new Schema(
     state: { type: String, trim: true, default: "Texas" },
     zip: { type: String, trim: true, required: true, index: true },
     listPrice: { type: Number, required: true, min: 0 },
+    /** Buyer-facing value anchor — set in admin after comps/market review. */
+    approximateMarketValue: { type: Number, default: null },
     arvEstimate: { type: Number, default: null },
     beds: { type: Number, default: null },
     baths: { type: Number, default: null },
