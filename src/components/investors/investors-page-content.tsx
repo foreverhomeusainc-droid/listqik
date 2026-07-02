@@ -59,26 +59,6 @@ export function InvestorsPageContent({ dealsOfTheWeek, initialTab }: InvestorsPa
             </div>
           </header>
 
-          <section className="space-y-6" aria-labelledby="why-investors">
-            <div>
-              <h2 id="why-investors" className="text-2xl font-semibold text-emerald-50 sm:text-3xl">
-                {copy.why.title}
-              </h2>
-              <p className="mt-3 max-w-3xl text-base text-white/70">{copy.why.intro}</p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {copy.why.pillars.map((pillar) => (
-                <article
-                  key={pillar.title}
-                  className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 p-5 sm:p-6"
-                >
-                  <h3 className="text-lg font-semibold text-emerald-100">{pillar.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/70">{pillar.body}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
           <section className="space-y-6" id="calculators">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">
@@ -103,6 +83,26 @@ export function InvestorsPageContent({ dealsOfTheWeek, initialTab }: InvestorsPa
               title={copy.calculators.legacyTitle}
               intro={copy.calculators.legacyIntro}
             />
+          </section>
+
+          <section className="space-y-6" aria-labelledby="why-investors">
+            <div>
+              <h2 id="why-investors" className="text-2xl font-semibold text-emerald-50 sm:text-3xl">
+                {copy.why.title}
+              </h2>
+              <p className="mt-3 max-w-3xl text-base text-white/70">{copy.why.intro}</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {copy.why.pillars.map((pillar) => (
+                <article
+                  key={pillar.title}
+                  className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 p-5 sm:p-6"
+                >
+                  <h3 className="text-lg font-semibold text-emerald-100">{pillar.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">{pillar.body}</p>
+                </article>
+              ))}
+            </div>
           </section>
 
           <FeaturedBuyerDeals

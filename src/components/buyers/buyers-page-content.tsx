@@ -53,14 +53,6 @@ export function BuyersPageContent({
             </div>
           </header>
 
-          <FeaturedBuyerDeals
-            showCta={false}
-            limit={6}
-            eyebrow="Deals of the Week"
-            title="This week's picks"
-            subtitle="List price next to approximate market value — so you know why it's a deal before you sign in."
-          />
-
           <section className="space-y-5" id="buyer-calculators">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300/70">
@@ -84,6 +76,14 @@ export function BuyersPageContent({
               />
             </Suspense>
           </section>
+
+          <FeaturedBuyerDeals
+            showCta={false}
+            limit={6}
+            eyebrow="Deals of the Week"
+            title="This week's picks"
+            subtitle="List price next to approximate market value — so you know why it's a deal before you sign in."
+          />
 
           <section className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 p-5 sm:p-6">
             <h2 className="text-lg font-semibold text-emerald-50">MLS comps generator</h2>
