@@ -50,7 +50,7 @@ export const INVESTORS_COPY: InvestorsCopy = {
     pillars: [
       {
         title: "Underwrite in minutes",
-        body: "Run reverse-invest, note-buyer, cap-rate, and legacy flip/BRRRR models without exporting to spreadsheets. Push winning deals to a live listing when you are ready to sell.",
+        body: "Run note-buyer, cap-rate, multifamily, reverse mortgage, and legacy flip/BRRRR models without exporting to spreadsheets. Push winning deals to a live listing when you are ready to sell.",
       },
       {
         title: "MLS buyer intelligence",

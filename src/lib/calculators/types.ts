@@ -40,14 +40,6 @@ export const INVESTMENT_CALCULATOR_CATALOG: InvestmentCalculatorMeta[] = [
     investorFocus: "Purchase financing",
   },
   {
-    id: "reverse-invest",
-    slug: "reverse-invest",
-    name: "Reverse Invest",
-    tabLabel: "Reverse Invest",
-    description: "Private reverse mortgage investor analysis with scenarios and charts.",
-    investorFocus: "Note investors",
-  },
-  {
     id: "note-buyer",
     slug: "note-buyer",
     name: "Note Buyer",
@@ -79,6 +71,14 @@ export const INVESTMENT_CALCULATOR_CATALOG: InvestmentCalculatorMeta[] = [
     description: "Cap-rate valuation with in-operation unit adjustment.",
     investorFocus: "Multifamily valuation",
   },
+  {
+    id: "reverse-invest",
+    slug: "reverse-invest",
+    name: "Reverse Mortgage",
+    tabLabel: "Reverse Mortgage",
+    description: "Private reverse mortgage investor analysis with scenarios and charts.",
+    investorFocus: "Note investors",
+  },
 ];
 
 export const CALCULATOR_CATALOG = INVESTMENT_CALCULATOR_CATALOG;
@@ -91,10 +91,10 @@ export const BUYER_INVESTMENT_CALCULATOR_IDS: InvestmentCalculatorId[] = [
 
 /** Note, valuation, and cash-flow tools — surfaced on the Investors page. */
 export const INVESTOR_INVESTMENT_CALCULATOR_IDS: InvestmentCalculatorId[] = [
-  "reverse-invest",
   "note-buyer",
   "rent-home",
   "multifamily",
+  "reverse-invest",
 ];
 
 export const ALL_CALCULATOR_IDS: CalculatorId[] = [

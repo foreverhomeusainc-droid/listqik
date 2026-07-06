@@ -45,7 +45,7 @@ export default async function InvestorsPage({
   return (
     <InvestorsPageContent
       dealsOfTheWeek={dealsOfTheWeek}
-      initialTab={resolveTab(tab) ?? INVESTOR_INVESTMENT_CALCULATOR_IDS[0] ?? "reverse-invest"}
+      initialTab={resolveTab(tab) ?? INVESTOR_INVESTMENT_CALCULATOR_IDS[0] ?? "note-buyer"}
     />
   );
 }

@@ -73,7 +73,7 @@ export function InvestmentCalculatorsApp({
   showHeader = true,
   headerEyebrow = "Investor tools",
   headerTitle = "Investment Calculators",
-  headerSubtitle = "Mortgage, reverse invest, note buying, present value, rent home, and multi-family valuation — updated live as you edit inputs.",
+  headerSubtitle = "Mortgage, note buying, present value, rent home, multi-family valuation, and reverse mortgage — updated live as you edit inputs.",
 }: {
   memberBasePath?: string;
   initialTab?: InvestmentCalculatorId;
