@@ -1,8 +1,10 @@
+import { randomBytes } from "crypto";
 import type {
   BuyerDealAdminRow,
   BuyerDealFilters,
   BuyerDealFull,
   BuyerDealReviewStatus,
+  BuyerDealStatus,
   BuyerDealTeaser,
 } from "@/lib/buyers/types";
 import { Types } from "mongoose";
@@ -288,6 +290,63 @@ export async function updateBuyerDealAdmin(
     { new: true },
   ).lean();
   return row ? mapAdminRow(row) : null;
+}
+
+export type CreateBuyerDealAdminInput = {
+  city: string;
+  state?: string;
+  zip: string;
+  listPrice: number;
+  approximateMarketValue?: number | null;
+  beds?: number | null;
+  baths?: number | null;
+  sqft?: number | null;
+  investorTags?: string[];
+  publicRemarks?: string;
+  heroImageUrl?: string;
+  status?: BuyerDealStatus;
+  dealFeatured?: boolean;
+  domDays?: number | null;
+  street?: string;
+  propertyType?: "single-family" | "condo" | "townhome" | "multi-family" | "other";
+};
+
+export async function createBuyerDealAdmin(
+  input: CreateBuyerDealAdminInput,
+): Promise<BuyerDealAdminRow> {
+  await connectDb();
+  const externalId = `admin-${Date.now()}-${randomBytes(4).toString("hex")}`;
+  const now = new Date();
+  const row = await MlsBuyerDeal.create({
+    externalId,
+    mlsNumber: "",
+    mlsName: "Admin",
+    street: input.street?.trim() ?? "",
+    city: input.city.trim(),
+    state: (input.state?.trim() || "Texas").replace(/^TX$/i, "Texas"),
+    zip: input.zip.trim(),
+    listPrice: input.listPrice,
+    approximateMarketValue:
+      typeof input.approximateMarketValue === "number" && input.approximateMarketValue > 0
+        ? Math.round(input.approximateMarketValue)
+        : null,
+    beds: input.beds ?? null,
+    baths: input.baths ?? null,
+    sqft: input.sqft ?? null,
+    propertyType: input.propertyType ?? "single-family",
+    status: input.status ?? "active",
+    domDays: input.domDays ?? null,
+    investorScore: 75,
+    investorTags: (input.investorTags ?? []).map((t) => t.trim().toLowerCase()).filter(Boolean).slice(0, 8),
+    teaserFeatured: Boolean(input.dealFeatured),
+    publicRemarks: input.publicRemarks?.trim() ?? "",
+    heroImageUrl: input.heroImageUrl?.trim() ?? "",
+    active: true,
+    reviewStatus: "approved",
+    createdByAdmin: true,
+    syncedAt: now,
+  });
+  return mapAdminRow(row.toObject());
 }
 
 export async function upsertMlsBuyerDeals(

@@ -69,6 +69,7 @@ export type ListingInsightInput = {
   planLabel?: string | null;
   price?: number | null;
   setupFinalizedAt?: Date | string | null;
+  createdByAdmin?: boolean;
   updatedAt?: Date | string | null;
   createdAt?: Date | string | null;
 };
@@ -177,6 +178,9 @@ function disclosuresComplete(l: ListingInsightInput): boolean {
 }
 
 export function estimateSetupProgress(l: ListingInsightInput): { completed: number; total: number; pct: number } {
+  if (l.createdByAdmin) {
+    return { completed: 6, total: 6, pct: 100 };
+  }
   const steps = [
     generalComplete(l),
     contactComplete(l),
@@ -199,6 +203,9 @@ export function getListingBlockers(
   listing: ListingInsightInput,
   documentFileNames: string[] = [],
 ): string[] {
+  if (listing.createdByAdmin) {
+    return [];
+  }
   const errors = [...validateListingForFinalize(listing)];
 
   if (

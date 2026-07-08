@@ -3,14 +3,20 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AdminHeroImageUpload } from "@/components/admin/admin-hero-image-upload";
 
 export function AdminCreateListingForm() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [heroImageUrl, setHeroImageUrl] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!heroImageUrl.trim()) {
+      setError("Upload a hero photo first.");
+      return;
+    }
     setBusy(true);
     setError(null);
     const fd = new FormData(e.currentTarget);
@@ -35,7 +41,7 @@ export function AdminCreateListingForm() {
       tags,
       propertyType: String(fd.get("propertyType") ?? "SINGLE_FAMILY"),
       status: String(fd.get("status") ?? "ACTIVE"),
-      heroImageUrl: String(fd.get("heroImageUrl") ?? ""),
+      heroImageUrl,
       publicRemarks: String(fd.get("publicRemarks") ?? ""),
       publishedOnSite: fd.get("publishedOnSite") === "on",
       dealOfTheWeek: fd.get("dealOfTheWeek") === "on",
@@ -96,8 +102,12 @@ export function AdminCreateListingForm() {
         </div>
       </div>
 
+      <AdminHeroImageUpload
+        uploadUrl="/api/admin/listings/upload-image"
+        onUrlChange={setHeroImageUrl}
+      />
+
       <Field label="Tags (comma-separated)" name="tags" placeholder="walkable, modern, investor" />
-      <Field label="Hero image URL" name="heroImageUrl" placeholder="https://… or paste after R2 upload" />
       <div className="space-y-1.5">
         <label className="text-xs font-semibold uppercase tracking-wide text-white/55">Summary</label>
         <textarea

@@ -10,12 +10,15 @@ export default function AdminCreateListingPage() {
         </Link>
         <h2 className="mt-2 text-lg font-semibold text-emerald-50">Add public listing</h2>
         <p className="mt-1 max-w-2xl text-sm text-white/65">
-          Create inventory that appears on{" "}
+          Marketing listings on{" "}
           <a href="/listings" className="text-emerald-300 underline" target="_blank" rel="noreferrer">
             listqik.com/listings
           </a>
-          . Seller-paid listings auto-publish when finalized as Active; use this form for admin-curated
-          inventory and broker specials.
+          . For buyer deal cards on /buyers, use{" "}
+          <Link href="/dashboard/admin/buyer-deals/new" className="text-sky-300 underline">
+            Add buyer deal
+          </Link>
+          .
         </p>
       </header>
       <AdminCreateListingForm />

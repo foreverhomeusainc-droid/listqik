@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/admin-api-auth";
-import { listAdminBuyerDeals, updateBuyerDealAdmin } from "@/lib/buyers/deals-service";
-import type { BuyerDealReviewStatus } from "@/lib/buyers/types";
+import { createBuyerDealAdmin, listAdminBuyerDeals, updateBuyerDealAdmin } from "@/lib/buyers/deals-service";
+import type { BuyerDealReviewStatus, BuyerDealStatus } from "@/lib/buyers/types";
 
 export async function GET() {
   const auth = await requireAdminSession();
@@ -9,6 +9,74 @@ export async function GET() {
 
   const deals = await listAdminBuyerDeals();
   return NextResponse.json({ ok: true, deals });
+}
+
+type CreateBody = {
+  city?: string;
+  state?: string;
+  zip?: string;
+  listPrice?: number;
+  approximateMarketValue?: number | null;
+  beds?: number | null;
+  baths?: number | null;
+  sqft?: number | null;
+  investorTags?: string[];
+  publicRemarks?: string;
+  heroImageUrl?: string;
+  status?: BuyerDealStatus;
+  dealFeatured?: boolean;
+  domDays?: number | null;
+  street?: string;
+  propertyType?: "single-family" | "condo" | "townhome" | "multi-family" | "other";
+};
+
+export async function POST(req: Request) {
+  const auth = await requireAdminSession();
+  if (auth.error) return auth.error;
+
+  let body: CreateBody;
+  try {
+    body = (await req.json()) as CreateBody;
+  } catch {
+    return NextResponse.json({ ok: false, error: "Invalid JSON." }, { status: 400 });
+  }
+
+  const city = body.city?.trim() ?? "";
+  const zip = body.zip?.trim() ?? "";
+  if (!city || !zip) {
+    return NextResponse.json({ ok: false, error: "City and ZIP are required." }, { status: 400 });
+  }
+  if (typeof body.listPrice !== "number" || body.listPrice <= 0) {
+    return NextResponse.json({ ok: false, error: "Valid list price is required." }, { status: 400 });
+  }
+  if (!body.heroImageUrl?.trim()) {
+    return NextResponse.json({ ok: false, error: "Hero image is required." }, { status: 400 });
+  }
+
+  const tags = Array.isArray(body.investorTags)
+    ? body.investorTags.map((t) => (typeof t === "string" ? t.trim() : "")).filter(Boolean)
+    : [];
+
+  const deal = await createBuyerDealAdmin({
+    city,
+    state: body.state,
+    zip,
+    listPrice: body.listPrice,
+    approximateMarketValue: body.approximateMarketValue,
+    beds: body.beds,
+    baths: body.baths,
+    sqft: body.sqft,
+    investorTags: tags,
+    publicRemarks: body.publicRemarks,
+    heroImageUrl: body.heroImageUrl,
+    status: body.status,
+    dealFeatured: body.dealFeatured,
+    domDays: body.domDays,
+    street: body.street,
+    propertyType: body.propertyType,
+  });
+
+  return NextResponse.json({ ok: true, deal });
 }
 
 export async function PATCH(req: Request) {

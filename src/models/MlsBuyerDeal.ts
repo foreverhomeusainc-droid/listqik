@@ -49,6 +49,7 @@ const mlsBuyerDealSchema = new Schema(
       index: true,
     },
     syncedAt: { type: Date, default: null },
+    createdByAdmin: { type: Boolean, default: false, index: true },
   },
   { timestamps: true },
 );
