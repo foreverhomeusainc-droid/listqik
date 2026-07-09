@@ -16,6 +16,12 @@ function parseMoneyInput(raw: string): number | null {
   return Math.round(n);
 }
 
+function parseScoreInput(raw: string): number | null {
+  const n = Number(raw.replace(/[^0-9]/g, ""));
+  if (!Number.isFinite(n)) return null;
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
 const STATUS_BADGE: Record<BuyerDealReviewStatus, string> = {
   pending: "border-amber-400/40 bg-amber-950/40 text-amber-100",
   approved: "border-emerald-400/40 bg-emerald-950/40 text-emerald-100",
@@ -29,6 +35,7 @@ export function AdminBuyerDealsConsole() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [amvDrafts, setAmvDrafts] = useState<Record<string, string>>({});
+  const [scoreDrafts, setScoreDrafts] = useState<Record<string, string>>({});
   const [editingPhotosId, setEditingPhotosId] = useState<string | null>(null);
 
   async function load() {
@@ -53,6 +60,7 @@ export function AdminBuyerDealsConsole() {
           ]),
         ),
       );
+      setScoreDrafts(Object.fromEntries(rows.map((d) => [d.id, String(d.investorScore)])));
     } catch {
       setError("Network error.");
     } finally {
@@ -71,6 +79,7 @@ export function AdminBuyerDealsConsole() {
       active?: boolean;
       dealFeatured?: boolean;
       approximateMarketValue?: number | null;
+      investorScore?: number;
       heroImageUrl?: string;
       additionalPhotoUrls?: string[];
     },
@@ -89,6 +98,9 @@ export function AdminBuyerDealsConsole() {
       setDeals((rows) => rows.map((r) => (r.id === id ? data.deal! : r)));
       if (typeof patch.approximateMarketValue === "number") {
         setAmvDrafts((prev) => ({ ...prev, [id]: String(patch.approximateMarketValue) }));
+      }
+      if (typeof patch.investorScore === "number") {
+        setScoreDrafts((prev) => ({ ...prev, [id]: String(patch.investorScore) }));
       }
       return true;
     } finally {
@@ -183,10 +195,14 @@ export function AdminBuyerDealsConsole() {
           <tbody>
             {visible.map((deal) => {
               const amvDraft = amvDrafts[deal.id] ?? "";
+              const scoreDraft = scoreDrafts[deal.id] ?? String(deal.investorScore);
               const parsedAmv = parseMoneyInput(amvDraft);
+              const parsedScore = parseScoreInput(scoreDraft);
               const savedAmv = deal.approximateMarketValue;
               const amvDirty =
                 parsedAmv !== (savedAmv != null && savedAmv > 0 ? savedAmv : null);
+              const scoreDirty =
+                parsedScore != null && parsedScore !== deal.investorScore;
               const gap =
                 parsedAmv != null && parsedAmv > deal.listPrice ? parsedAmv - deal.listPrice : null;
               const photoCount =
@@ -236,7 +252,32 @@ export function AdminBuyerDealsConsole() {
                       ) : null}
                     </div>
                   </td>
-                  <td className="px-3 py-3">{deal.investorScore}</td>
+                  <td className="px-3 py-3">
+                    <div className="flex min-w-[5rem] flex-col gap-1">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="0–100"
+                        value={scoreDraft}
+                        onChange={(e) =>
+                          setScoreDrafts((prev) => ({ ...prev, [deal.id]: e.target.value }))
+                        }
+                        className="w-full rounded border border-white/15 bg-black/40 px-2 py-1 font-mono text-xs text-white"
+                      />
+                      {scoreDirty ? (
+                        <button
+                          type="button"
+                          disabled={busyId === deal.id || parsedScore == null}
+                          onClick={() =>
+                            void patchDeal(deal.id, { investorScore: parsedScore! })
+                          }
+                          className="rounded border border-lime-400/40 px-2 py-0.5 text-[10px] font-semibold text-lime-100 hover:bg-lime-950/30 disabled:opacity-50"
+                        >
+                          Save score
+                        </button>
+                      ) : null}
+                    </div>
+                  </td>
                   <td className="px-3 py-3">
                     <span
                       className={`inline-block rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase ${STATUS_BADGE[deal.reviewStatus]}`}

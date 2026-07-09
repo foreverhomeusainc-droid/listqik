@@ -328,6 +328,9 @@ export async function updateBuyerDealAdmin(
   } else if (typeof patch.approximateMarketValue === "number" && patch.approximateMarketValue > 0) {
     set.approximateMarketValue = Math.round(patch.approximateMarketValue);
   }
+  if (typeof patch.investorScore === "number") {
+    set.investorScore = Math.min(100, Math.max(0, Math.round(patch.investorScore)));
+  }
   const row = await MlsBuyerDeal.findByIdAndUpdate(
     id,
     { $set: set },
@@ -354,6 +357,7 @@ export type CreateBuyerDealAdminInput = {
   domDays?: number | null;
   street?: string;
   propertyType?: "single-family" | "condo" | "townhome" | "multi-family" | "other";
+  investorScore?: number;
 };
 
 export async function createBuyerDealAdmin(
@@ -381,7 +385,10 @@ export async function createBuyerDealAdmin(
     propertyType: input.propertyType ?? "single-family",
     status: input.status ?? "active",
     domDays: input.domDays ?? null,
-    investorScore: 75,
+    investorScore:
+      typeof input.investorScore === "number"
+        ? Math.min(100, Math.max(0, Math.round(input.investorScore)))
+        : 75,
     investorTags: (input.investorTags ?? []).map((t) => t.trim().toLowerCase()).filter(Boolean).slice(0, 8),
     teaserFeatured: Boolean(input.dealFeatured),
     publicRemarks: input.publicRemarks?.trim() ?? "",

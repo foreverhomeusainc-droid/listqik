@@ -30,6 +30,7 @@ type CreateBody = {
   domDays?: number | null;
   street?: string;
   propertyType?: "single-family" | "condo" | "townhome" | "multi-family" | "other";
+  investorScore?: number;
 };
 
 export async function POST(req: Request) {
@@ -77,6 +78,7 @@ export async function POST(req: Request) {
     domDays: body.domDays,
     street: body.street,
     propertyType: body.propertyType,
+    investorScore: body.investorScore,
   });
 
   return NextResponse.json({ ok: true, deal });
@@ -125,7 +127,9 @@ export async function PATCH(req: Request) {
   else if (typeof body.approximateMarketValue === "number" && body.approximateMarketValue > 0) {
     patch.approximateMarketValue = Math.round(body.approximateMarketValue);
   }
-  if (typeof body.investorScore === "number") patch.investorScore = body.investorScore;
+  if (typeof body.investorScore === "number") {
+    patch.investorScore = Math.min(100, Math.max(0, Math.round(body.investorScore)));
+  }
   if (body.heroImageUrl !== undefined) {
     const hero = body.heroImageUrl.trim();
     if (!hero) {

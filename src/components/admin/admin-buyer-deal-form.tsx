@@ -18,6 +18,7 @@ type PreviewState = {
   baths: number;
   sqft: number;
   domDays: number;
+  investorScore: number;
   status: BuyerDealStatus;
   publicRemarks: string;
   tags: string;
@@ -35,6 +36,7 @@ function dealToPreview(deal: BuyerDealAdminRow): PreviewState {
     baths: deal.baths ?? 0,
     sqft: deal.sqft ?? 0,
     domDays: deal.domDays ?? 0,
+    investorScore: deal.investorScore,
     status: deal.status,
     publicRemarks: deal.publicRemarks,
     tags: deal.investorTags.join(", "),
@@ -64,6 +66,7 @@ export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
           baths: 2,
           sqft: 1920,
           domDays: 24,
+          investorScore: 75,
           status: "active",
           publicRemarks:
             "Heights-adjacent single-family home with curb appeal and room to expand. Listed under recent neighborhood sales.",
@@ -93,11 +96,11 @@ export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
       heroImageUrl: photos.heroImageUrl,
       additionalPhotoUrls: photos.additionalPhotoUrls,
       domDays: preview.domDays,
-      investorScore: deal?.investorScore ?? 75,
+      investorScore: preview.investorScore,
       arvEstimate: null,
       dealFeatured: preview.dealFeatured,
     }),
-    [preview, photos, deal?.id, deal?.investorScore],
+    [preview, photos, deal?.id],
   );
 
   const payload = {
@@ -110,6 +113,7 @@ export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
     baths: preview.baths,
     sqft: preview.sqft,
     domDays: preview.domDays,
+    investorScore: preview.investorScore,
     investorTags: preview.tags
       .split(",")
       .map((t) => t.trim())
@@ -204,6 +208,16 @@ export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
             onChange={(v) => setField("domDays", Number(v) || 0)}
           />
           <Field
+            label="Investor score (0–100)"
+            type="number"
+            min="0"
+            max="100"
+            value={String(preview.investorScore)}
+            onChange={(v) =>
+              setField("investorScore", Math.min(100, Math.max(0, Number(v) || 0)))
+            }
+          />
+          <Field
             label="Beds"
             type="number"
             value={String(preview.beds)}
@@ -295,7 +309,7 @@ export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
 
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">Live preview</p>
-        <BuyerDealCard deal={previewDeal} mode="preview" dealLabel="Deal of the Week" />
+        <BuyerDealCard deal={previewDeal} mode="full" dealLabel="Deal of the Week" />
       </div>
     </div>
   );
@@ -309,6 +323,8 @@ function Field({
   required,
   placeholder,
   step,
+  min,
+  max,
 }: {
   label: string;
   value: string;
@@ -317,6 +333,8 @@ function Field({
   required?: boolean;
   placeholder?: string;
   step?: string;
+  min?: string;
+  max?: string;
 }) {
   return (
     <div className="space-y-1.5">
@@ -326,6 +344,8 @@ function Field({
         required={required}
         value={value}
         step={step}
+        min={min}
+        max={max}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30"
