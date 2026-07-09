@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminListingPhotosEditor } from "@/components/admin/admin-listing-photos-editor";
+import { AdminListingRowActions } from "@/components/admin/admin-listing-row-actions";
 import { AdminListingSiteControls } from "@/components/admin/admin-listing-site-controls";
 import { connectDb } from "@/lib/mongodb";
 import {
@@ -181,7 +182,9 @@ export default async function AdminListingsPage({
                     }
                   />
                   {listing.createdByAdmin ? (
-                    <AdminListingPhotosEditor
+                    <>
+                      <AdminListingRowActions listingId={String(listing._id)} />
+                      <AdminListingPhotosEditor
                       listingId={String(listing._id)}
                       heroImageUrl={
                         typeof listing.heroImageUrl === "string" ? listing.heroImageUrl : ""
@@ -192,6 +195,7 @@ export default async function AdminListingsPage({
                           : []
                       }
                     />
+                    </>
                   ) : null}
                 </td>
                 <td className="px-3 py-2">

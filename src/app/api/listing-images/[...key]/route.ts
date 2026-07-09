@@ -16,13 +16,15 @@ const BROWSER_CACHE_SECONDS = 30 * 60; // 30 minutes — half of the signed URL 
  * transparently follow it. This sidesteps any direct R2 CORS/public-bucket
  * setup — only the AWS SDK needs to be able to sign URLs server-side.
  *
- * Keys are constrained to `listings/` or `blogs/` prefixes so the route can't
- * be abused as a general R2 reader.
+ * Keys are constrained to `listings/`, `blogs/`, or `buyer-deals/` prefixes so
+ * the route can't be abused as a general R2 reader.
  */
 function isAllowedMediaKey(key: string) {
   return (
     !key.includes("..") &&
-    (key.startsWith("listings/") || key.startsWith("blogs/"))
+    (key.startsWith("listings/") ||
+      key.startsWith("blogs/") ||
+      key.startsWith("buyer-deals/"))
   );
 }
 

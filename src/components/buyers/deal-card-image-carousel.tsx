@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { isProxiedImageUrl } from "@/lib/r2";
 
 export function DealCardImageCarousel({
   images,
@@ -30,7 +31,7 @@ export function DealCardImageCarousel({
         fill
         sizes="(max-width: 768px) 100vw, 33vw"
         className="object-cover transition duration-500 group-hover:scale-[1.03]"
-        unoptimized={current.startsWith("http")}
+        unoptimized={current.startsWith("http") || isProxiedImageUrl(current)}
       />
       {hasMultiple ? (
         <>

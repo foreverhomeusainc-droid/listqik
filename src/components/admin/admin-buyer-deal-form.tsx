@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { AdminPropertyPhotosUpload } from "@/components/admin/admin-property-photos-upload";
 import type { AdminPropertyPhotos } from "@/components/admin/admin-property-photos-upload";
 import { BuyerDealCard } from "@/components/buyers/buyer-deal-card";
-import type { BuyerDealStatus, BuyerDealTeaser } from "@/lib/buyers/types";
+import type { BuyerDealAdminRow, BuyerDealStatus, BuyerDealTeaser } from "@/lib/buyers/types";
 
 type PreviewState = {
   city: string;
@@ -24,35 +24,57 @@ type PreviewState = {
   dealFeatured: boolean;
 };
 
-export function AdminCreateBuyerDealForm() {
+function dealToPreview(deal: BuyerDealAdminRow): PreviewState {
+  return {
+    city: deal.city,
+    state: deal.state,
+    zip: deal.zip,
+    listPrice: deal.listPrice,
+    approximateMarketValue: deal.approximateMarketValue ?? 0,
+    beds: deal.beds ?? 0,
+    baths: deal.baths ?? 0,
+    sqft: deal.sqft ?? 0,
+    domDays: deal.domDays ?? 0,
+    status: deal.status,
+    publicRemarks: deal.publicRemarks,
+    tags: deal.investorTags.join(", "),
+    dealFeatured: deal.dealFeatured,
+  };
+}
+
+export function AdminBuyerDealForm({ deal }: { deal?: BuyerDealAdminRow }) {
   const router = useRouter();
+  const isEdit = Boolean(deal?.id);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [photos, setPhotos] = useState<AdminPropertyPhotos>({
-    heroImageUrl: "",
-    additionalPhotoUrls: [],
+    heroImageUrl: deal?.heroImageUrl ?? "",
+    additionalPhotoUrls: deal?.additionalPhotoUrls ?? [],
   });
-
-  const [preview, setPreview] = useState<PreviewState>({
-    city: "Houston",
-    state: "Texas",
-    zip: "77008",
-    listPrice: 525000,
-    approximateMarketValue: 572000,
-    beds: 3,
-    baths: 2,
-    sqft: 1920,
-    domDays: 24,
-    status: "active",
-    publicRemarks:
-      "Heights-adjacent single-family home with curb appeal and room to expand. Listed under recent neighborhood sales.",
-    tags: "flip, heights-adjacent",
-    dealFeatured: true,
-  });
+  const [preview, setPreview] = useState<PreviewState>(
+    deal
+      ? dealToPreview(deal)
+      : {
+          city: "Houston",
+          state: "Texas",
+          zip: "77008",
+          listPrice: 525000,
+          approximateMarketValue: 572000,
+          beds: 3,
+          baths: 2,
+          sqft: 1920,
+          domDays: 24,
+          status: "active",
+          publicRemarks:
+            "Heights-adjacent single-family home with curb appeal and room to expand. Listed under recent neighborhood sales.",
+          tags: "flip, heights-adjacent",
+          dealFeatured: true,
+        },
+  );
 
   const previewDeal: BuyerDealTeaser = useMemo(
     () => ({
-      id: "preview",
+      id: deal?.id ?? "preview",
       city: preview.city,
       state: preview.state,
       zip: preview.zip,
@@ -71,12 +93,33 @@ export function AdminCreateBuyerDealForm() {
       heroImageUrl: photos.heroImageUrl,
       additionalPhotoUrls: photos.additionalPhotoUrls,
       domDays: preview.domDays,
-      investorScore: 75,
+      investorScore: deal?.investorScore ?? 75,
       arvEstimate: null,
       dealFeatured: preview.dealFeatured,
     }),
-    [preview, photos],
+    [preview, photos, deal?.id, deal?.investorScore],
   );
+
+  const payload = {
+    city: preview.city,
+    state: preview.state,
+    zip: preview.zip,
+    listPrice: preview.listPrice,
+    approximateMarketValue: preview.approximateMarketValue || null,
+    beds: preview.beds,
+    baths: preview.baths,
+    sqft: preview.sqft,
+    domDays: preview.domDays,
+    investorTags: preview.tags
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean),
+    publicRemarks: preview.publicRemarks,
+    heroImageUrl: photos.heroImageUrl,
+    additionalPhotoUrls: photos.additionalPhotoUrls,
+    status: preview.status,
+    dealFeatured: preview.dealFeatured,
+  };
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -87,40 +130,41 @@ export function AdminCreateBuyerDealForm() {
     setBusy(true);
     setError(null);
 
-    const tags = preview.tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-
-    const res = await fetch("/api/admin/buyer-deals", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        city: preview.city,
-        state: preview.state,
-        zip: preview.zip,
-        listPrice: preview.listPrice,
-        approximateMarketValue: preview.approximateMarketValue || null,
-        beds: preview.beds,
-        baths: preview.baths,
-        sqft: preview.sqft,
-        domDays: preview.domDays,
-        investorTags: tags,
-        publicRemarks: preview.publicRemarks,
-        heroImageUrl: photos.heroImageUrl,
-        additionalPhotoUrls: photos.additionalPhotoUrls,
-        status: preview.status,
-        dealFeatured: preview.dealFeatured,
-      }),
-    });
+    const res = await fetch(
+      isEdit ? "/api/admin/buyer-deals" : "/api/admin/buyer-deals",
+      {
+        method: isEdit ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(isEdit ? { id: deal!.id, ...payload } : payload),
+      },
+    );
     const data = (await res.json()) as { ok?: boolean; error?: string };
     setBusy(false);
     if (!res.ok || !data.ok) {
-      setError(data.error ?? "Could not create deal.");
+      setError(data.error ?? (isEdit ? "Could not save deal." : "Could not create deal."));
       return;
     }
     router.push("/dashboard/admin/buyer-deals");
     router.refresh();
+  }
+
+  async function onDelete() {
+    if (!deal?.id) return;
+    if (!window.confirm("Delete this buyer deal permanently?")) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/buyer-deals/${deal.id}`, { method: "DELETE" });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? "Could not delete deal.");
+        return;
+      }
+      router.push("/dashboard/admin/buyer-deals");
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
   }
 
   function setField<K extends keyof PreviewState>(key: K, value: PreviewState[K]) {
@@ -182,9 +226,7 @@ export function AdminCreateBuyerDealForm() {
             <label className="text-xs font-semibold uppercase tracking-wide text-white/55">Status</label>
             <select
               value={preview.status}
-              onChange={(e) =>
-                setField("status", e.target.value as BuyerDealStatus)
-              }
+              onChange={(e) => setField("status", e.target.value as BuyerDealStatus)}
               className="w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white"
             >
               <option value="active">Active</option>
@@ -224,13 +266,13 @@ export function AdminCreateBuyerDealForm() {
 
         {error ? <p className="text-sm text-rose-300">{error}</p> : null}
 
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <button
             type="submit"
             disabled={busy}
             className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500 disabled:opacity-60"
           >
-            {busy ? "Publishing…" : "Publish buyer deal"}
+            {busy ? "Saving…" : isEdit ? "Save changes" : "Publish buyer deal"}
           </button>
           <Link
             href="/dashboard/admin/buyer-deals"
@@ -238,16 +280,22 @@ export function AdminCreateBuyerDealForm() {
           >
             Cancel
           </Link>
+          {isEdit ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void onDelete()}
+              className="rounded-lg border border-rose-400/40 px-4 py-2 text-sm font-semibold text-rose-200 hover:bg-rose-950/40 disabled:opacity-60"
+            >
+              Delete
+            </button>
+          ) : null}
         </div>
       </form>
 
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/70">Live preview</p>
         <BuyerDealCard deal={previewDeal} mode="preview" dealLabel="Deal of the Week" />
-        <p className="text-xs text-white/45">
-          This is what buyers see on /buyers before they sign Buyer Representation. No county, legal
-          description, or seller MLS fields required.
-        </p>
       </div>
     </div>
   );

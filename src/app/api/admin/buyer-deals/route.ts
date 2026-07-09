@@ -95,6 +95,17 @@ export async function PATCH(req: Request) {
     investorScore?: number;
     heroImageUrl?: string;
     additionalPhotoUrls?: string[];
+    city?: string;
+    state?: string;
+    zip?: string;
+    listPrice?: number;
+    beds?: number | null;
+    baths?: number | null;
+    sqft?: number | null;
+    domDays?: number | null;
+    investorTags?: string[];
+    publicRemarks?: string;
+    status?: BuyerDealStatus;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -124,6 +135,21 @@ export async function PATCH(req: Request) {
   }
   if (body.additionalPhotoUrls !== undefined) {
     patch.additionalPhotoUrls = parseAdminPhotoUrls(body.additionalPhotoUrls);
+  }
+  if (body.city?.trim()) patch.city = body.city.trim();
+  if (body.state?.trim()) patch.state = body.state.trim();
+  if (body.zip?.trim()) patch.zip = body.zip.trim();
+  if (typeof body.listPrice === "number" && body.listPrice > 0) patch.listPrice = body.listPrice;
+  if (body.beds !== undefined) patch.beds = body.beds;
+  if (body.baths !== undefined) patch.baths = body.baths;
+  if (body.sqft !== undefined) patch.sqft = body.sqft;
+  if (body.domDays !== undefined) patch.domDays = body.domDays;
+  if (body.publicRemarks !== undefined) patch.publicRemarks = body.publicRemarks;
+  if (body.status) patch.status = body.status;
+  if (Array.isArray(body.investorTags)) {
+    patch.investorTags = body.investorTags
+      .map((t) => (typeof t === "string" ? t.trim() : ""))
+      .filter(Boolean);
   }
 
   if (body.reviewStatus === "approved") patch.active = true;

@@ -250,6 +250,20 @@ export async function listAdminBuyerDeals(): Promise<BuyerDealAdminRow[]> {
   return rows.map(mapAdminRow);
 }
 
+export async function getBuyerDealAdminById(id: string): Promise<BuyerDealAdminRow | null> {
+  if (!Types.ObjectId.isValid(id)) return null;
+  await connectDb();
+  const row = await MlsBuyerDeal.findById(id).lean();
+  return row ? mapAdminRow(row) : null;
+}
+
+export async function deleteBuyerDealAdmin(id: string): Promise<boolean> {
+  if (!Types.ObjectId.isValid(id)) return false;
+  await connectDb();
+  const result = await MlsBuyerDeal.findByIdAndDelete(id);
+  return Boolean(result);
+}
+
 export async function updateBuyerDealAdmin(
   id: string,
   patch: Partial<{
@@ -261,6 +275,19 @@ export async function updateBuyerDealAdmin(
     investorScore: number;
     heroImageUrl: string;
     additionalPhotoUrls: string[];
+    city: string;
+    state: string;
+    zip: string;
+    street: string;
+    listPrice: number;
+    beds: number | null;
+    baths: number | null;
+    sqft: number | null;
+    domDays: number | null;
+    publicRemarks: string;
+    investorTags: string[];
+    status: BuyerDealStatus;
+    propertyType: "single-family" | "condo" | "townhome" | "multi-family" | "other";
   }>,
 ): Promise<BuyerDealAdminRow | null> {
   if (!Types.ObjectId.isValid(id)) return null;
@@ -275,6 +302,31 @@ export async function updateBuyerDealAdmin(
   }
   if (typeof patch.heroImageUrl === "string") {
     set.heroImageUrl = patch.heroImageUrl.trim();
+  }
+  if (typeof patch.city === "string") set.city = patch.city.trim();
+  if (typeof patch.state === "string") {
+    set.state = patch.state.trim().replace(/^TX$/i, "Texas");
+  }
+  if (typeof patch.zip === "string") set.zip = patch.zip.trim();
+  if (typeof patch.street === "string") set.street = patch.street.trim();
+  if (typeof patch.listPrice === "number" && patch.listPrice > 0) set.listPrice = patch.listPrice;
+  if (patch.beds !== undefined) set.beds = patch.beds;
+  if (patch.baths !== undefined) set.baths = patch.baths;
+  if (patch.sqft !== undefined) set.sqft = patch.sqft;
+  if (patch.domDays !== undefined) set.domDays = patch.domDays;
+  if (typeof patch.publicRemarks === "string") set.publicRemarks = patch.publicRemarks;
+  if (patch.status) set.status = patch.status;
+  if (patch.propertyType) set.propertyType = patch.propertyType;
+  if (patch.investorTags) {
+    set.investorTags = patch.investorTags
+      .map((t) => t.trim().toLowerCase())
+      .filter(Boolean)
+      .slice(0, 8);
+  }
+  if (patch.approximateMarketValue === null) {
+    set.approximateMarketValue = null;
+  } else if (typeof patch.approximateMarketValue === "number" && patch.approximateMarketValue > 0) {
+    set.approximateMarketValue = Math.round(patch.approximateMarketValue);
   }
   const row = await MlsBuyerDeal.findByIdAndUpdate(
     id,

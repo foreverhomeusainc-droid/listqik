@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, Fragment } from "react";
 import { AdminEditPhotosPanel } from "@/components/admin/admin-edit-photos-panel";
 import type { AdminPropertyPhotos } from "@/components/admin/admin-property-photos-upload";
@@ -104,6 +105,23 @@ export function AdminBuyerDealsConsole() {
       setEditingPhotosId(null);
     } catch {
       throw new Error("Could not save photos.");
+    }
+  }
+
+  async function deleteDeal(id: string) {
+    if (!window.confirm("Delete this buyer deal permanently?")) return;
+    setBusyId(id);
+    try {
+      const res = await fetch(`/api/admin/buyer-deals/${id}`, { method: "DELETE" });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? "Could not delete deal.");
+        return;
+      }
+      setDeals((rows) => rows.filter((r) => r.id !== id));
+      if (editingPhotosId === id) setEditingPhotosId(null);
+    } finally {
+      setBusyId(null);
     }
   }
 
@@ -252,6 +270,20 @@ export function AdminBuyerDealsConsole() {
                           </button>
                         </>
                       ) : null}
+                      <Link
+                        href={`/dashboard/admin/buyer-deals/${deal.id}/edit`}
+                        className="rounded border border-emerald-400/35 px-2 py-1 text-xs text-emerald-100 hover:bg-emerald-900/25"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        disabled={busyId === deal.id}
+                        onClick={() => void deleteDeal(deal.id)}
+                        className="rounded border border-rose-400/35 px-2 py-1 text-xs text-rose-200 hover:bg-rose-950/30 disabled:opacity-50"
+                      >
+                        Delete
+                      </button>
                       <button
                         type="button"
                         disabled={busyId === deal.id}

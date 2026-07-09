@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AdminCreateBuyerDealForm } from "@/components/admin/admin-create-buyer-deal-form";
+import { AdminBuyerDealForm } from "@/components/admin/admin-buyer-deal-form";
 
 export default function AdminCreateBuyerDealPage() {
   return (
@@ -14,7 +14,7 @@ export default function AdminCreateBuyerDealPage() {
           the Week. No seller MLS compliance or county/legal fields.
         </p>
       </header>
-      <AdminCreateBuyerDealForm />
+      <AdminBuyerDealForm />
     </div>
   );
 }

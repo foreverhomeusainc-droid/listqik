@@ -51,6 +51,10 @@ export function createR2Client() {
  * directly. Otherwise we fall back to our same-origin proxy so `<img src>`
  * works without exposing the R2 S3 endpoint (which requires auth).
  */
+export function isProxiedImageUrl(url: string): boolean {
+  return url.startsWith("/api/listing-images/");
+}
+
 export function buildPublicImageUrl(key: string): string {
   const cfg = getR2Config();
   if (cfg.publicBaseUrl) {
