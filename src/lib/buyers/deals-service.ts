@@ -259,6 +259,8 @@ export async function updateBuyerDealAdmin(
     teaserFeatured: boolean;
     approximateMarketValue: number | null;
     investorScore: number;
+    heroImageUrl: string;
+    additionalPhotoUrls: string[];
   }>,
 ): Promise<BuyerDealAdminRow | null> {
   if (!Types.ObjectId.isValid(id)) return null;
@@ -267,6 +269,12 @@ export async function updateBuyerDealAdmin(
   if (typeof patch.dealFeatured === "boolean") {
     set.teaserFeatured = patch.dealFeatured;
     delete set.dealFeatured;
+  }
+  if (patch.additionalPhotoUrls !== undefined) {
+    set.additionalPhotoUrls = parseAdminPhotoUrls(patch.additionalPhotoUrls);
+  }
+  if (typeof patch.heroImageUrl === "string") {
+    set.heroImageUrl = patch.heroImageUrl.trim();
   }
   const row = await MlsBuyerDeal.findByIdAndUpdate(
     id,

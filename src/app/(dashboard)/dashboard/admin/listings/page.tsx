@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminListingPhotosEditor } from "@/components/admin/admin-listing-photos-editor";
 import { AdminListingSiteControls } from "@/components/admin/admin-listing-site-controls";
 import { connectDb } from "@/lib/mongodb";
 import {
@@ -160,6 +161,19 @@ export default async function AdminListingsPage({
                         : null
                     }
                   />
+                  {listing.createdByAdmin ? (
+                    <AdminListingPhotosEditor
+                      listingId={String(listing._id)}
+                      heroImageUrl={
+                        typeof listing.heroImageUrl === "string" ? listing.heroImageUrl : ""
+                      }
+                      additionalPhotoUrls={
+                        Array.isArray(listing.additionalPhotoUrls)
+                          ? (listing.additionalPhotoUrls as string[])
+                          : []
+                      }
+                    />
+                  ) : null}
                 </td>
                 <td className="px-3 py-2">
                   <span className="font-semibold text-emerald-200">{progress.pct}%</span>

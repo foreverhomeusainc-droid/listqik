@@ -93,6 +93,8 @@ export async function PATCH(req: Request) {
     dealFeatured?: boolean;
     approximateMarketValue?: number | null;
     investorScore?: number;
+    heroImageUrl?: string;
+    additionalPhotoUrls?: string[];
   };
   try {
     body = (await req.json()) as typeof body;
@@ -113,6 +115,16 @@ export async function PATCH(req: Request) {
     patch.approximateMarketValue = Math.round(body.approximateMarketValue);
   }
   if (typeof body.investorScore === "number") patch.investorScore = body.investorScore;
+  if (body.heroImageUrl !== undefined) {
+    const hero = body.heroImageUrl.trim();
+    if (!hero) {
+      return NextResponse.json({ ok: false, error: "Hero image is required." }, { status: 400 });
+    }
+    patch.heroImageUrl = hero;
+  }
+  if (body.additionalPhotoUrls !== undefined) {
+    patch.additionalPhotoUrls = parseAdminPhotoUrls(body.additionalPhotoUrls);
+  }
 
   if (body.reviewStatus === "approved") patch.active = true;
 

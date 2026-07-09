@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
+import { AdminEditPhotosPanel } from "@/components/admin/admin-edit-photos-panel";
+import type { AdminPropertyPhotos } from "@/components/admin/admin-property-photos-upload";
 import type { BuyerDealAdminRow, BuyerDealReviewStatus } from "@/lib/buyers/types";
 
 function money(n: number) {
@@ -26,6 +28,7 @@ export function AdminBuyerDealsConsole() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [amvDrafts, setAmvDrafts] = useState<Record<string, string>>({});
+  const [editingPhotosId, setEditingPhotosId] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -67,6 +70,8 @@ export function AdminBuyerDealsConsole() {
       active?: boolean;
       dealFeatured?: boolean;
       approximateMarketValue?: number | null;
+      heroImageUrl?: string;
+      additionalPhotoUrls?: string[];
     },
   ) {
     setBusyId(id);
@@ -76,15 +81,29 @@ export function AdminBuyerDealsConsole() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, ...patch }),
       });
-      const data = (await res.json()) as { ok?: boolean; deal?: BuyerDealAdminRow };
-      if (data.ok && data.deal) {
-        setDeals((rows) => rows.map((r) => (r.id === id ? data.deal! : r)));
-        if (typeof patch.approximateMarketValue === "number") {
-          setAmvDrafts((prev) => ({ ...prev, [id]: String(patch.approximateMarketValue) }));
-        }
+      const data = (await res.json()) as { ok?: boolean; deal?: BuyerDealAdminRow; error?: string };
+      if (!res.ok || !data.ok || !data.deal) {
+        throw new Error(data.error ?? "Update failed.");
       }
+      setDeals((rows) => rows.map((r) => (r.id === id ? data.deal! : r)));
+      if (typeof patch.approximateMarketValue === "number") {
+        setAmvDrafts((prev) => ({ ...prev, [id]: String(patch.approximateMarketValue) }));
+      }
+      return true;
     } finally {
       setBusyId(null);
+    }
+  }
+
+  async function savePhotos(id: string, photos: AdminPropertyPhotos) {
+    try {
+      await patchDeal(id, {
+        heroImageUrl: photos.heroImageUrl,
+        additionalPhotoUrls: photos.additionalPhotoUrls,
+      });
+      setEditingPhotosId(null);
+    } catch {
+      throw new Error("Could not save photos.");
     }
   }
 
@@ -152,9 +171,12 @@ export function AdminBuyerDealsConsole() {
                 parsedAmv !== (savedAmv != null && savedAmv > 0 ? savedAmv : null);
               const gap =
                 parsedAmv != null && parsedAmv > deal.listPrice ? parsedAmv - deal.listPrice : null;
+              const photoCount =
+                (deal.heroImageUrl ? 1 : 0) + (deal.additionalPhotoUrls?.length ?? 0);
 
               return (
-                <tr key={deal.id} className="border-t border-white/10">
+                <Fragment key={deal.id}>
+                <tr className="border-t border-white/10">
                   <td className="px-3 py-3">
                     <p className="font-medium text-emerald-50">
                       {deal.street ? `${deal.street}, ` : ""}
@@ -234,6 +256,16 @@ export function AdminBuyerDealsConsole() {
                         type="button"
                         disabled={busyId === deal.id}
                         onClick={() =>
+                          setEditingPhotosId((cur) => (cur === deal.id ? null : deal.id))
+                        }
+                        className="rounded border border-sky-400/35 px-2 py-1 text-xs text-sky-100 hover:bg-sky-900/25 disabled:opacity-50"
+                      >
+                        Photos ({photoCount})
+                      </button>
+                      <button
+                        type="button"
+                        disabled={busyId === deal.id}
+                        onClick={() =>
                           void patchDeal(deal.id, { dealFeatured: !deal.dealFeatured })
                         }
                         className="rounded border border-white/20 px-2 py-1 text-xs text-white/80 hover:bg-white/5 disabled:opacity-50"
@@ -243,6 +275,23 @@ export function AdminBuyerDealsConsole() {
                     </div>
                   </td>
                 </tr>
+                {editingPhotosId === deal.id ? (
+                  <tr className="border-t border-white/5 bg-black/20">
+                    <td colSpan={7} className="px-3 py-4">
+                      <AdminEditPhotosPanel
+                        uploadUrl="/api/admin/buyer-deals/upload-image"
+                        initial={{
+                          heroImageUrl: deal.heroImageUrl ?? "",
+                          additionalPhotoUrls: deal.additionalPhotoUrls ?? [],
+                        }}
+                        busy={busyId === deal.id}
+                        onSave={(photos) => savePhotos(deal.id, photos)}
+                        onCancel={() => setEditingPhotosId(null)}
+                      />
+                    </td>
+                  </tr>
+                ) : null}
+                </Fragment>
               );
             })}
           </tbody>

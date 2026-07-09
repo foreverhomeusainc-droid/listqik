@@ -6,6 +6,7 @@ import {
   publishListingOnSite,
 } from "@/lib/listings/public-listings-service";
 import { connectDb } from "@/lib/mongodb";
+import { parseAdminPhotoUrls } from "@/lib/admin-photo-urls";
 import { Listing } from "@/models/Listing";
 
 type PatchBody = {
@@ -20,6 +21,7 @@ type PatchBody = {
   sqft?: number | null;
   tags?: string[];
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   publicRemarks?: string;
   status?: "ACTIVE" | "PENDING" | "SOLD" | "INCOMPLETE" | "EXPIRED";
   price?: number;
@@ -63,6 +65,9 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   if (body.sqft !== undefined) listing.sqft = body.sqft;
   if (body.tags !== undefined) listing.tags = parseTags(body.tags) ?? [];
   if (body.heroImageUrl !== undefined) listing.heroImageUrl = body.heroImageUrl.trim() || undefined;
+  if (body.additionalPhotoUrls !== undefined) {
+    listing.additionalPhotoUrls = parseAdminPhotoUrls(body.additionalPhotoUrls);
+  }
   if (body.publicRemarks !== undefined) listing.publicRemarks = body.publicRemarks;
   if (body.price !== undefined && body.price > 0) listing.price = body.price;
   if (body.status !== undefined) listing.status = body.status;
@@ -117,6 +122,10 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       slug: listing.slug ?? null,
       publishedOnSite: listing.publishedOnSite,
       dealOfTheWeek: listing.dealOfTheWeek,
+      heroImageUrl: listing.heroImageUrl ?? "",
+      additionalPhotoUrls: Array.isArray(listing.additionalPhotoUrls)
+        ? listing.additionalPhotoUrls
+        : [],
       publicUrl: listing.slug && listing.publishedOnSite ? `/listings/${listing.slug}` : null,
     },
   });
