@@ -6,6 +6,7 @@ import {
   publishListingOnSite,
 } from "@/lib/listings/public-listings-service";
 import { connectDb } from "@/lib/mongodb";
+import { parseAdminPhotoUrls } from "@/lib/admin-photo-urls";
 import { Listing } from "@/models/Listing";
 
 type CreateBody = {
@@ -24,6 +25,7 @@ type CreateBody = {
   propertyType?: "SINGLE_FAMILY" | "CONDOMINIUM";
   status?: "ACTIVE" | "PENDING" | "SOLD";
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   publicRemarks?: string;
   publishedOnSite?: boolean;
   dealOfTheWeek?: boolean;
@@ -101,6 +103,7 @@ export async function POST(req: Request) {
     propertyType: body.propertyType === "CONDOMINIUM" ? "CONDOMINIUM" : "SINGLE_FAMILY",
     status: body.status === "PENDING" || body.status === "SOLD" ? body.status : "ACTIVE",
     heroImageUrl: body.heroImageUrl?.trim() || undefined,
+    additionalPhotoUrls: parseAdminPhotoUrls(body.additionalPhotoUrls),
     publicRemarks: body.publicRemarks?.trim() || "",
     publishedOnSite: publish,
     publishedAt: publish ? new Date() : null,

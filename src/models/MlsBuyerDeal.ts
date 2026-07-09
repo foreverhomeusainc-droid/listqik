@@ -37,6 +37,7 @@ const mlsBuyerDealSchema = new Schema(
     privateRemarks: { type: String, default: "" },
     drivingDirections: { type: String, default: "" },
     heroImageUrl: { type: String, trim: true, default: "" },
+    additionalPhotoUrls: { type: [String], default: [] },
     latitude: { type: Number, default: null },
     longitude: { type: Number, default: null },
     soldPrice: { type: Number, default: null },

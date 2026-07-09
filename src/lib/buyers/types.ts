@@ -17,6 +17,7 @@ export type BuyerDealTeaser = {
   investorTags: string[];
   publicRemarks: string;
   heroImageUrl: string;
+  additionalPhotoUrls: string[];
   domDays: number | null;
   investorScore: number;
   arvEstimate: number | null;

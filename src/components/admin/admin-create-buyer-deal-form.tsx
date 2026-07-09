@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { AdminHeroImageUpload } from "@/components/admin/admin-hero-image-upload";
+import { AdminPropertyPhotosUpload } from "@/components/admin/admin-property-photos-upload";
+import type { AdminPropertyPhotos } from "@/components/admin/admin-property-photos-upload";
 import { BuyerDealCard } from "@/components/buyers/buyer-deal-card";
 import type { BuyerDealStatus, BuyerDealTeaser } from "@/lib/buyers/types";
 
@@ -27,7 +28,10 @@ export function AdminCreateBuyerDealForm() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [heroImageUrl, setHeroImageUrl] = useState("");
+  const [photos, setPhotos] = useState<AdminPropertyPhotos>({
+    heroImageUrl: "",
+    additionalPhotoUrls: [],
+  });
 
   const [preview, setPreview] = useState<PreviewState>({
     city: "Houston",
@@ -64,18 +68,19 @@ export function AdminCreateBuyerDealForm() {
         .map((t) => t.trim())
         .filter(Boolean),
       publicRemarks: preview.publicRemarks,
-      heroImageUrl,
+      heroImageUrl: photos.heroImageUrl,
+      additionalPhotoUrls: photos.additionalPhotoUrls,
       domDays: preview.domDays,
       investorScore: 75,
       arvEstimate: null,
       dealFeatured: preview.dealFeatured,
     }),
-    [preview, heroImageUrl],
+    [preview, photos],
   );
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!heroImageUrl) {
+    if (!photos.heroImageUrl) {
       setError("Upload a hero photo first.");
       return;
     }
@@ -102,7 +107,8 @@ export function AdminCreateBuyerDealForm() {
         domDays: preview.domDays,
         investorTags: tags,
         publicRemarks: preview.publicRemarks,
-        heroImageUrl,
+        heroImageUrl: photos.heroImageUrl,
+        additionalPhotoUrls: photos.additionalPhotoUrls,
         status: preview.status,
         dealFeatured: preview.dealFeatured,
       }),
@@ -124,9 +130,10 @@ export function AdminCreateBuyerDealForm() {
   return (
     <div className="grid gap-8 xl:grid-cols-2">
       <form onSubmit={(e) => void onSubmit(e)} className="space-y-5">
-        <AdminHeroImageUpload
+        <AdminPropertyPhotosUpload
           uploadUrl="/api/admin/buyer-deals/upload-image"
-          onUrlChange={setHeroImageUrl}
+          value={photos}
+          onChange={setPhotos}
         />
 
         <div className="grid gap-4 sm:grid-cols-2">

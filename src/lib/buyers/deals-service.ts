@@ -9,6 +9,7 @@ import type {
 } from "@/lib/buyers/types";
 import { Types } from "mongoose";
 import { connectDb } from "@/lib/mongodb";
+import { parseAdminPhotoUrls } from "@/lib/admin-photo-urls";
 import { MlsBuyerDeal } from "@/models/MlsBuyerDeal";
 
 /** Comp-only rows stay in DB for comps math but not in buyer feed. */
@@ -40,6 +41,7 @@ function mapTeaser(row: {
   investorTags?: string[];
   publicRemarks?: string;
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   domDays?: number | null;
   investorScore?: number;
   arvEstimate?: number | null;
@@ -60,6 +62,9 @@ function mapTeaser(row: {
     investorTags: row.investorTags ?? [],
     publicRemarks: row.publicRemarks ?? "",
     heroImageUrl: row.heroImageUrl ?? "",
+    additionalPhotoUrls: Array.isArray(row.additionalPhotoUrls)
+      ? row.additionalPhotoUrls.filter((u): u is string => typeof u === "string" && u.trim().length > 0)
+      : [],
     domDays: row.domDays ?? null,
     investorScore: row.investorScore ?? 0,
     arvEstimate: row.arvEstimate ?? null,
@@ -88,6 +93,7 @@ export function mapFullDeal(row: {
   privateRemarks?: string;
   drivingDirections?: string;
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   domDays?: number | null;
   investorScore?: number;
   rentEstimateMonthly?: number | null;
@@ -282,6 +288,7 @@ export type CreateBuyerDealAdminInput = {
   investorTags?: string[];
   publicRemarks?: string;
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   status?: BuyerDealStatus;
   dealFeatured?: boolean;
   domDays?: number | null;
@@ -319,6 +326,7 @@ export async function createBuyerDealAdmin(
     teaserFeatured: Boolean(input.dealFeatured),
     publicRemarks: input.publicRemarks?.trim() ?? "",
     heroImageUrl: input.heroImageUrl?.trim() ?? "",
+    additionalPhotoUrls: parseAdminPhotoUrls(input.additionalPhotoUrls),
     active: true,
     reviewStatus: "approved",
     createdByAdmin: true,

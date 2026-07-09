@@ -1,13 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
+import { DealCardImageCarousel } from "@/components/buyers/deal-card-image-carousel";
+import { buyerDealImageUrls } from "@/lib/buyers/deal-images";
 import type { BuyerDealTeaser } from "@/lib/buyers/types";
 
 function money(n: number) {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 }
-
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80";
 
 export function BuyerDealCard({
   deal,
@@ -32,7 +30,8 @@ export function BuyerDealCard({
   showMarketValue?: boolean;
   dealLabel?: string;
 }) {
-  const image = deal.heroImageUrl || FALLBACK_IMAGE;
+  const images = buyerDealImageUrls(deal);
+  const imageAlt = `${deal.city} buyer deal`;
   const amv = deal.approximateMarketValue;
   const hasMarketGap =
     showMarketValue && amv != null && amv > 0 && amv > deal.listPrice;
@@ -41,13 +40,7 @@ export function BuyerDealCard({
   const body = (
     <>
       <div className="relative aspect-[16/10] w-full overflow-hidden">
-        <Image
-          src={image}
-          alt={`${deal.city} buyer deal`}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
-        />
+        <DealCardImageCarousel images={images} alt={imageAlt} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           <span className="rounded-full border border-emerald-400/40 bg-black/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-100">

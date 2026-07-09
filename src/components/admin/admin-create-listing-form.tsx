@@ -3,17 +3,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AdminHeroImageUpload } from "@/components/admin/admin-hero-image-upload";
+import { AdminPropertyPhotosUpload } from "@/components/admin/admin-property-photos-upload";
+import type { AdminPropertyPhotos } from "@/components/admin/admin-property-photos-upload";
 
 export function AdminCreateListingForm() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [heroImageUrl, setHeroImageUrl] = useState("");
+  const [photos, setPhotos] = useState<AdminPropertyPhotos>({
+    heroImageUrl: "",
+    additionalPhotoUrls: [],
+  });
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!heroImageUrl.trim()) {
+    if (!photos.heroImageUrl.trim()) {
       setError("Upload a hero photo first.");
       return;
     }
@@ -41,7 +45,8 @@ export function AdminCreateListingForm() {
       tags,
       propertyType: String(fd.get("propertyType") ?? "SINGLE_FAMILY"),
       status: String(fd.get("status") ?? "ACTIVE"),
-      heroImageUrl,
+      heroImageUrl: photos.heroImageUrl,
+      additionalPhotoUrls: photos.additionalPhotoUrls,
       publicRemarks: String(fd.get("publicRemarks") ?? ""),
       publishedOnSite: fd.get("publishedOnSite") === "on",
       dealOfTheWeek: fd.get("dealOfTheWeek") === "on",
@@ -102,9 +107,10 @@ export function AdminCreateListingForm() {
         </div>
       </div>
 
-      <AdminHeroImageUpload
+      <AdminPropertyPhotosUpload
         uploadUrl="/api/admin/listings/upload-image"
-        onUrlChange={setHeroImageUrl}
+        value={photos}
+        onChange={setPhotos}
       />
 
       <Field label="Tags (comma-separated)" name="tags" placeholder="walkable, modern, investor" />

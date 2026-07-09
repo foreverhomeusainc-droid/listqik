@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { LeadCaptureForm } from "@/components/lead-capture-form";
+import { ListingPhotoGallery } from "@/components/listings/listing-photo-gallery";
 import {
   getPublishedListingBySlug,
   listPublishedListings,
@@ -69,34 +69,33 @@ export default async function ListingDetailPage({
   const listing = await getPublishedListingBySlug(slug);
   if (!listing) return notFound();
 
+  const photos = [
+    listing.heroImage,
+    ...(listing.gallery ?? []),
+  ];
+
   return (
     <div className="py-10 sm:py-14">
       <Container>
         <div className="grid gap-8 lg:grid-cols-5 lg:items-start">
           <div className="lg:col-span-3">
             <div className="glass-surface overflow-hidden">
-              <div className="relative aspect-[16/10] w-full">
-                <Image
-                  src={listing.heroImage.src}
-                  alt={listing.heroImage.alt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover"
-                  priority
-                  unoptimized={listing.heroImage.src.startsWith("/api/listing-images/")}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <div className="absolute left-5 top-5 flex flex-wrap gap-2">
-                  <span className="chip">{listing.status.toUpperCase()}</span>
-                  <span className="chip">{listing.type.replace("-", " ")}</span>
-                  {listing.featured ? <span className="chip">Deal of the Week</span> : null}
-                  {listing.tags.slice(0, 2).map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <ListingPhotoGallery
+                images={photos}
+                alt={listing.title}
+                badges={
+                  <>
+                    <span className="chip">{listing.status.toUpperCase()}</span>
+                    <span className="chip">{listing.type.replace("-", " ")}</span>
+                    {listing.featured ? <span className="chip">Deal of the Week</span> : null}
+                    {listing.tags.slice(0, 2).map((t) => (
+                      <span key={t} className="chip">
+                        {t}
+                      </span>
+                    ))}
+                  </>
+                }
+              />
               <div className="p-6 sm:p-8">
                 <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                   {listing.title}

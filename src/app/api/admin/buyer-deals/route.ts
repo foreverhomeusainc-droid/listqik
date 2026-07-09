@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/admin-api-auth";
+import { parseAdminPhotoUrls } from "@/lib/admin-photo-urls";
 import { createBuyerDealAdmin, listAdminBuyerDeals, updateBuyerDealAdmin } from "@/lib/buyers/deals-service";
 import type { BuyerDealReviewStatus, BuyerDealStatus } from "@/lib/buyers/types";
 
@@ -23,6 +24,7 @@ type CreateBody = {
   investorTags?: string[];
   publicRemarks?: string;
   heroImageUrl?: string;
+  additionalPhotoUrls?: string[];
   status?: BuyerDealStatus;
   dealFeatured?: boolean;
   domDays?: number | null;
@@ -69,6 +71,7 @@ export async function POST(req: Request) {
     investorTags: tags,
     publicRemarks: body.publicRemarks,
     heroImageUrl: body.heroImageUrl,
+    additionalPhotoUrls: parseAdminPhotoUrls(body.additionalPhotoUrls),
     status: body.status,
     dealFeatured: body.dealFeatured,
     domDays: body.domDays,
