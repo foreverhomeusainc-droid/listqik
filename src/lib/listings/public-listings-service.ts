@@ -1,5 +1,4 @@
 import type { Listing as PublicListing, ListingStatus, ListingType } from "@/data/types";
-import { listings as staticListings } from "@/data/listings";
 import { buildPublicImageUrl } from "@/lib/r2";
 import { slugifyListingParts } from "@/lib/listings/listing-slug";
 import { connectDb } from "@/lib/mongodb";
@@ -139,8 +138,7 @@ export async function listPublishedListings(): Promise<PublicListing[]> {
     .map((d) => mapMongoListingToPublic(d))
     .filter((l): l is PublicListing => l !== null);
 
-  if (mapped.length > 0) return mapped;
-  return staticListings;
+  return mapped;
 }
 
 export async function listDealsOfTheWeek(limit = 4): Promise<PublicListing[]> {
@@ -154,8 +152,7 @@ export async function listDealsOfTheWeek(limit = 4): Promise<PublicListing[]> {
     .map((d) => mapMongoListingToPublic(d))
     .filter((l): l is PublicListing => l !== null);
 
-  if (mapped.length > 0) return mapped;
-  return staticListings.filter((l) => l.featured).slice(0, limit);
+  return mapped;
 }
 
 export async function getPublishedListingBySlug(slug: string): Promise<PublicListing | null> {
@@ -170,7 +167,7 @@ export async function getPublishedListingBySlug(slug: string): Promise<PublicLis
     return mapMongoListingToPublic(doc);
   }
 
-  return staticListings.find((l) => l.slug === slug) ?? null;
+  return null;
 }
 
 export async function ensureUniqueListingSlug(

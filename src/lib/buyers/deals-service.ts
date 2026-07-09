@@ -10,7 +10,6 @@ import type {
 import { Types } from "mongoose";
 import { connectDb } from "@/lib/mongodb";
 import { MlsBuyerDeal } from "@/models/MlsBuyerDeal";
-import buyerDealsSeed from "@/data/buyer-deals-seed.json";
 
 /** Comp-only rows stay in DB for comps math but not in buyer feed. */
 export function isCompOnlyDeal(tags: string[] | undefined): boolean {
@@ -166,29 +165,8 @@ function applyClientFilters(deals: BuyerDealFull[], filters: BuyerDealFilters): 
   return out;
 }
 
-export async function ensureBuyerDealsSeeded(): Promise<void> {
-  await connectDb();
-  const now = new Date();
-  for (const row of buyerDealsSeed.deals) {
-    const tags = row.investorTags ?? [];
-    const reviewStatus = isCompOnlyDeal(tags) ? "approved" : "approved";
-    await MlsBuyerDeal.findOneAndUpdate(
-      { externalId: row.externalId },
-      {
-        $set: {
-          ...row,
-          active: true,
-          reviewStatus,
-          syncedAt: now,
-        },
-      },
-      { upsert: true },
-    );
-  }
-}
-
 export async function listFeaturedDeals(limit = 6): Promise<BuyerDealTeaser[]> {
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const rows = await MlsBuyerDeal.find({
     ...feedQuery({ status: { $in: ["active", "pending"] } }),
   })
@@ -211,7 +189,7 @@ export async function listFeaturedDeals(limit = 6): Promise<BuyerDealTeaser[]> {
 export const listTeaserDeals = listFeaturedDeals;
 
 export async function listFullDeals(filters: BuyerDealFilters = {}): Promise<BuyerDealFull[]> {
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const query: Record<string, unknown> = { ...feedQuery() };
   if (filters.zip?.trim()) query.zip = new RegExp(`^${filters.zip.trim()}`);
   if (filters.tag?.trim()) query.investorTags = filters.tag.trim().toLowerCase();
@@ -234,7 +212,7 @@ export async function listFullDeals(filters: BuyerDealFilters = {}): Promise<Buy
 
 export async function getFullDealById(id: string): Promise<BuyerDealFull | null> {
   if (!Types.ObjectId.isValid(id)) return null;
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const row = await MlsBuyerDeal.findOne({
     _id: new Types.ObjectId(id),
     active: true,
@@ -247,7 +225,7 @@ export async function getFullDealById(id: string): Promise<BuyerDealFull | null>
 export async function listDealsByIds(ids: string[]): Promise<BuyerDealFull[]> {
   const objectIds = ids.filter((id) => Types.ObjectId.isValid(id)).map((id) => new Types.ObjectId(id));
   if (objectIds.length === 0) return [];
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const rows = await MlsBuyerDeal.find({
     _id: { $in: objectIds },
     active: true,
@@ -259,7 +237,7 @@ export async function listDealsByIds(ids: string[]): Promise<BuyerDealFull[]> {
 }
 
 export async function listAdminBuyerDeals(): Promise<BuyerDealAdminRow[]> {
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const rows = await MlsBuyerDeal.find({})
     .sort({ reviewStatus: 1, investorScore: -1, updatedAt: -1 })
     .lean();
@@ -384,7 +362,7 @@ export async function upsertMlsBuyerDeals(
 }
 
 export async function compsPoolForZip(zip: string, excludeId?: string) {
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const filter: Record<string, unknown> = {
     active: true,
     zip,
@@ -402,7 +380,7 @@ export async function compsPoolForZip(zip: string, excludeId?: string) {
 }
 
 export async function getLatestFeedSyncAt(): Promise<string | null> {
-  await ensureBuyerDealsSeeded();
+  await connectDb();
   const row = await MlsBuyerDeal.findOne({ reviewStatus: "approved" })
     .sort({ syncedAt: -1 })
     .select({ syncedAt: 1 })

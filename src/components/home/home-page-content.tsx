@@ -14,17 +14,13 @@ import type { Listing } from "@/data/types";
 import { ListingCard } from "@/components/listing-card";
 import { FeaturedBuyerDeals } from "@/components/buyers/featured-buyer-deals";
 import { NetProceedsCalculator } from "@/components/net-proceeds-calculator";
-import { listings as staticListings } from "@/data/listings";
 
 const MISSION_HREFS = ["/pricing", "/pricing", "/listings"] as const;
 
 export function HomePageContent({ featuredListings }: { featuredListings?: Listing[] }) {
   const { locale, ready } = useSiteLocale();
   const copy = getHomepageCopy(locale);
-  const featured =
-    featuredListings && featuredListings.length > 0
-      ? featuredListings.slice(0, 3)
-      : staticListings.filter((l) => l.featured).slice(0, 3);
+  const featured = featuredListings?.slice(0, 3) ?? [];
 
   if (!ready) {
     return (
@@ -210,6 +206,7 @@ export function HomePageContent({ featuredListings }: { featuredListings?: Listi
         </Container>
       </section>
 
+      {featured.length > 0 ? (
       <section className="pt-8 pb-12 sm:pt-10 sm:pb-16 lg:pb-24">
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
@@ -238,6 +235,7 @@ export function HomePageContent({ featuredListings }: { featuredListings?: Listi
           </div>
         </Container>
       </section>
+      ) : null}
     </MarketingPageScrim>
   );
 }
