@@ -12,6 +12,14 @@ import { Listing } from "@/models/Listing";
 import { ListingDocument } from "@/models/ListingDocument";
 import { User } from "@/models/User";
 
+function listingAddressKey(listing: {
+  street?: string | null;
+  city?: string | null;
+  zip?: string | null;
+}) {
+  return `${(listing.street ?? "").trim().toLowerCase()}|${(listing.city ?? "").trim().toLowerCase()}|${(listing.zip ?? "").trim()}`;
+}
+
 const FILTERS = ["all", "stuck", "incomplete", "active", "pending", "published", "deals"] as const;
 type Filter = (typeof FILTERS)[number];
 
@@ -42,6 +50,12 @@ export default async function AdminListingsPage({
     const bucket = docsByListing.get(key) ?? [];
     bucket.push(doc.fileName ?? "");
     docsByListing.set(key, bucket);
+  }
+
+  const addressCounts = new Map<string, number>();
+  for (const listing of listings) {
+    const key = listingAddressKey(listing);
+    addressCounts.set(key, (addressCounts.get(key) ?? 0) + 1);
   }
 
   const rows = listings
@@ -125,6 +139,11 @@ export default async function AdminListingsPage({
                 <td className="px-3 py-2 max-w-xs">
                   <p className="font-medium">{listingAddressShort(listing)}</p>
                   <p className="text-xs text-white/50">{listing.planLabel || "—"}</p>
+                  {(addressCounts.get(listingAddressKey(listing)) ?? 0) > 1 ? (
+                    <p className="mt-1 text-xs font-semibold text-amber-200/90">
+                      Duplicate address — unpublish or delete extras
+                    </p>
+                  ) : null}
                 </td>
                 <td className="px-3 py-2">
                   {owner ? (

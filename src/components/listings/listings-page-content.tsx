@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Container } from "@/components/container";
 import { DealsOfTheWeekSection } from "@/components/listings/deals-of-the-week-section";
 import { ListingsExplorer } from "@/components/listings-explorer";
@@ -16,6 +17,12 @@ export function ListingsPageContent({
 }) {
   const { locale, ready } = useSiteLocale();
   const copy = getListingsCopy(locale);
+
+  /** Deals of the Week already appear above — don't duplicate them in the main grid. */
+  const gridListings = useMemo(() => {
+    const featuredSlugs = new Set(dealsOfTheWeek.map((d) => d.slug));
+    return listings.filter((l) => !featuredSlugs.has(l.slug));
+  }, [listings, dealsOfTheWeek]);
 
   return (
     <div
@@ -46,9 +53,11 @@ export function ListingsPageContent({
           />
         ) : null}
 
-        <div className="mt-8">
-          <ListingsExplorer listings={listings} />
-        </div>
+        {gridListings.length > 0 || dealsOfTheWeek.length === 0 ? (
+          <div className="mt-8">
+            <ListingsExplorer listings={gridListings} />
+          </div>
+        ) : null}
       </Container>
     </div>
   );
