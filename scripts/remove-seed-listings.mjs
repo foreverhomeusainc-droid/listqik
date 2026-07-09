@@ -33,6 +33,13 @@ const STATIC_LISTING_SLUGS = [
   "san-antonio-78209-alamo-heights-panel",
 ];
 
+const STATIC_LISTING_TITLES = [
+  "South Lamar Glass Loft",
+  "Highland Park Cobalt",
+  "West U Greenline",
+  "Alamo Heights Panel",
+];
+
 function loadEnvLocal() {
   const envPath = path.resolve(process.cwd(), ".env.local");
   if (!fs.existsSync(envPath)) return;
@@ -95,7 +102,12 @@ async function main() {
   }
 
   if (listingsName) {
-    const listingFilter = { slug: { $in: STATIC_LISTING_SLUGS } };
+    const listingFilter = {
+      $or: [
+        { slug: { $in: STATIC_LISTING_SLUGS } },
+        { title: { $in: STATIC_LISTING_TITLES } },
+      ],
+    };
     const listingMatches = await db.collection(listingsName).find(listingFilter).toArray();
     console.log(`\nStatic placeholder listings to remove: ${listingMatches.length}`);
     for (const row of listingMatches) {

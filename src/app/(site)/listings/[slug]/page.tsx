@@ -8,7 +8,7 @@ import {
   listPublishedListings,
 } from "@/lib/listings/public-listings-service";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 function formatMoney(n: number) {
   return n.toLocaleString(undefined, {

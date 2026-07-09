@@ -6,7 +6,7 @@ import { buildLocalizedMetadata } from "@/lib/locale-metadata";
 
 export const metadata: Metadata = buildLocalizedMetadata("es", "/listings", getSitePageMeta("listings", "es"));
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function EsListingsPage() {
   const [listings, dealsOfTheWeek] = await Promise.all([

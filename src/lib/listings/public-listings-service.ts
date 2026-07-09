@@ -1,6 +1,7 @@
 import type { Listing as PublicListing, ListingStatus, ListingType } from "@/data/types";
 import { buildPublicImageUrl } from "@/lib/r2";
 import { slugifyListingParts } from "@/lib/listings/listing-slug";
+import { isPlaceholderListing } from "@/lib/listings/placeholder-listings";
 import { connectDb } from "@/lib/mongodb";
 import { Listing } from "@/models/Listing";
 import type { Types } from "mongoose";
@@ -66,6 +67,7 @@ function listingTitle(doc: MongoListingDoc): string {
 }
 
 export function mapMongoListingToPublic(doc: MongoListingDoc): PublicListing | null {
+  if (isPlaceholderListing(doc)) return null;
   if (!doc.publishedOnSite) return null;
   if (!["ACTIVE", "PENDING", "SOLD"].includes(doc.status)) return null;
 
