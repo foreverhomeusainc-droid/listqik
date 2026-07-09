@@ -86,7 +86,22 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
         street: listing.street,
         slug: listing.slug,
       });
+    } else {
+      listing.dealOfTheWeek = false;
+      listing.dealOfTheWeekUntil = null;
     }
+  }
+
+  if (listing.dealOfTheWeek && !listing.publishedOnSite) {
+    listing.publishedOnSite = true;
+    if (!listing.publishedAt) listing.publishedAt = new Date();
+    listing.slug = await assignListingSlug({
+      _id: listing._id,
+      city: listing.city,
+      zip: listing.zip,
+      street: listing.street,
+      slug: listing.slug,
+    });
   }
 
   await listing.save();

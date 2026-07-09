@@ -66,7 +66,19 @@ export default async function AdminListingsPage({
         <div>
           <h2 className="text-lg font-semibold text-emerald-50">Listings</h2>
           <p className="mt-1 text-sm text-white/65">
-            Setup progress, public site publishing, and Deals of the Week.
+            Setup progress, public site publishing, and Deals of the Week on{" "}
+            <a href="/listings" className="text-emerald-300 underline" target="_blank" rel="noreferrer">
+              /listings
+            </a>
+            . For buyer deal cards on{" "}
+            <a href="/buyers" className="text-sky-300 underline" target="_blank" rel="noreferrer">
+              /buyers
+            </a>
+            , use{" "}
+            <Link href="/dashboard/admin/buyer-deals" className="text-sky-300 underline">
+              Buyer deals
+            </Link>
+            .
           </p>
         </div>
         <Link

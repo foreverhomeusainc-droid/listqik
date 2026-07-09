@@ -39,13 +39,24 @@ export function AdminListingSiteControls({
       const data = (await res.json()) as {
         ok?: boolean;
         error?: string;
-        listing?: { slug?: string; publicUrl?: string };
+        listing?: {
+          slug?: string;
+          publicUrl?: string;
+          publishedOnSite?: boolean;
+          dealOfTheWeek?: boolean;
+        };
       };
       if (!res.ok || !data.ok) {
         setError(data.error ?? "Update failed.");
         return false;
       }
       if (data.listing?.slug) setPublicSlug(data.listing.slug);
+      if (typeof data.listing?.publishedOnSite === "boolean") {
+        setPublished(data.listing.publishedOnSite);
+      }
+      if (typeof data.listing?.dealOfTheWeek === "boolean") {
+        setDeal(data.listing.dealOfTheWeek);
+      }
       return true;
     } catch {
       setError("Network error.");
@@ -54,6 +65,8 @@ export function AdminListingSiteControls({
       setBusy(false);
     }
   }
+
+  const dealHidden = deal && !published;
 
   return (
     <div className="space-y-2 text-xs">
@@ -64,7 +77,11 @@ export function AdminListingSiteControls({
           disabled={busy}
           onChange={(e) => {
             const next = e.target.checked;
-            void patch({ publishedOnSite: next }).then((ok) => ok && setPublished(next));
+            void patch({ publishedOnSite: next }).then((ok) => {
+              if (!ok) return;
+              setPublished(next);
+              if (!next) setDeal(false);
+            });
           }}
           className="accent-emerald-500"
         />
@@ -74,15 +91,28 @@ export function AdminListingSiteControls({
         <input
           type="checkbox"
           checked={deal}
-          disabled={busy || !published}
+          disabled={busy}
           onChange={(e) => {
             const next = e.target.checked;
-            void patch({ dealOfTheWeek: next, dealOfTheWeekRank: rank }).then((ok) => ok && setDeal(next));
+            void patch({
+              dealOfTheWeek: next,
+              dealOfTheWeekRank: rank,
+              ...(next ? { publishedOnSite: true } : {}),
+            }).then((ok) => {
+              if (!ok) return;
+              setDeal(next);
+              if (next) setPublished(true);
+            });
           }}
           className="accent-amber-500"
         />
         <span className="text-amber-100/90">Deal of the Week</span>
       </label>
+      {dealHidden ? (
+        <p className="text-amber-200/80">
+          Hidden — check &quot;On listqik.com/listings&quot; to show on the site.
+        </p>
+      ) : null}
       {deal ? (
         <div className="space-y-1 pl-5">
           <div className="flex items-center gap-1">
@@ -125,6 +155,9 @@ export function AdminListingSiteControls({
           View public
         </a>
       ) : null}
+      <p className="text-white/40">
+        Shows on homepage, /listings, and /investors — not /buyers.
+      </p>
       {error ? <p className="text-rose-300">{error}</p> : null}
     </div>
   );

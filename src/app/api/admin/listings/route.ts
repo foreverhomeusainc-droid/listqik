@@ -82,6 +82,7 @@ export async function POST(req: Request) {
   await connectDb();
   const userId = new Types.ObjectId(auth.session.user.id);
   const publish = body.publishedOnSite !== false;
+  const dealOfTheWeek = Boolean(body.dealOfTheWeek) && publish;
 
   const listing = await Listing.create({
     userId,
@@ -103,7 +104,7 @@ export async function POST(req: Request) {
     publicRemarks: body.publicRemarks?.trim() || "",
     publishedOnSite: publish,
     publishedAt: publish ? new Date() : null,
-    dealOfTheWeek: Boolean(body.dealOfTheWeek),
+    dealOfTheWeek,
     dealOfTheWeekRank: typeof body.dealOfTheWeekRank === "number" ? body.dealOfTheWeekRank : 0,
     setupFinalizedAt: new Date(),
     listedOn: new Date(),
