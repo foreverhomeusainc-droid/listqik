@@ -74,12 +74,6 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
   if (!listing) {
     return NextResponse.json({ ok: false, error: "Listing not found." }, { status: 404 });
   }
-  if (!listing.createdByAdmin) {
-    return NextResponse.json(
-      { ok: false, error: "Only admin inventory listings can be deleted here." },
-      { status: 403 },
-    );
-  }
 
   await listing.deleteOne();
   return NextResponse.json({ ok: true });

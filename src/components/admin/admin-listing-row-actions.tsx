@@ -4,12 +4,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function AdminListingRowActions({ listingId }: { listingId: string }) {
+export function AdminListingRowActions({
+  listingId,
+  createdByAdmin = false,
+}: {
+  listingId: string;
+  createdByAdmin?: boolean;
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   async function onDelete() {
-    if (!window.confirm("Delete this admin listing permanently?")) return;
+    const message = createdByAdmin
+      ? "Delete this admin listing permanently? This cannot be undone."
+      : "Delete this seller listing permanently? This removes it from the site and dashboard. This cannot be undone.";
+    if (!window.confirm(message)) return;
     setBusy(true);
     try {
       const res = await fetch(`/api/admin/listings/${listingId}`, { method: "DELETE" });
@@ -38,7 +47,7 @@ export function AdminListingRowActions({ listingId }: { listingId: string }) {
         onClick={() => void onDelete()}
         className="text-xs font-semibold text-rose-300 underline disabled:opacity-50"
       >
-        Delete
+        {busy ? "Deleting…" : "Delete"}
       </button>
     </div>
   );

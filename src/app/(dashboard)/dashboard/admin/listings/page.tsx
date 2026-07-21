@@ -181,10 +181,12 @@ export default async function AdminListingsPage({
                         : null
                     }
                   />
+                  <AdminListingRowActions
+                    listingId={String(listing._id)}
+                    createdByAdmin={Boolean(listing.createdByAdmin)}
+                  />
                   {listing.createdByAdmin ? (
-                    <>
-                      <AdminListingRowActions listingId={String(listing._id)} />
-                      <AdminListingPhotosEditor
+                    <AdminListingPhotosEditor
                       listingId={String(listing._id)}
                       heroImageUrl={
                         typeof listing.heroImageUrl === "string" ? listing.heroImageUrl : ""
@@ -195,7 +197,6 @@ export default async function AdminListingsPage({
                           : []
                       }
                     />
-                    </>
                   ) : null}
                 </td>
                 <td className="px-3 py-2">

@@ -15,7 +15,7 @@ export default async function AdminEditListingPage({
 
   await connectDb();
   const listing = await Listing.findById(id).lean();
-  if (!listing || !listing.createdByAdmin) notFound();
+  if (!listing) notFound();
 
   const data: AdminListingFormData = {
     id: String(listing._id),
@@ -24,7 +24,7 @@ export default async function AdminEditListingPage({
     city: listing.city ?? "",
     state: listing.state ?? "TX",
     zip: listing.zip ?? "",
-    price: listing.price,
+    price: listing.price ?? 0,
     title: listing.title ?? "",
     neighborhood: listing.neighborhood ?? "",
     beds: listing.beds ?? null,
@@ -53,8 +53,16 @@ export default async function AdminEditListingPage({
         <Link href="/dashboard/admin/listings" className="text-xs text-emerald-300 hover:underline">
           ← All listings
         </Link>
-        <h2 className="mt-2 text-lg font-semibold text-emerald-50">Edit admin listing</h2>
+        <h2 className="mt-2 text-lg font-semibold text-emerald-50">
+          {listing.createdByAdmin ? "Edit admin listing" : "Edit listing"}
+        </h2>
         <p className="mt-1 text-sm text-white/65">{data.title || data.street}</p>
+        {!listing.createdByAdmin ? (
+          <p className="mt-1 text-xs text-amber-200/80">
+            Seller listing — edits here update public site fields (address, price, photos, Deal of
+            the Week).
+          </p>
+        ) : null}
       </header>
       <AdminListingForm listing={data} />
     </div>

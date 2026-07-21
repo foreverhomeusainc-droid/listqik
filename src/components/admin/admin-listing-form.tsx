@@ -43,8 +43,8 @@ export function AdminListingForm({ listing }: { listing: AdminListingFormData })
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!photos.heroImageUrl.trim()) {
-      setError("Upload a hero photo first.");
+    if ((publishedOnSite || dealOfTheWeek) && !photos.heroImageUrl.trim()) {
+      setError("Upload a hero photo before publishing or marking Deal of the Week.");
       return;
     }
     setBusy(true);
